@@ -16,7 +16,7 @@ app.get('/api/gameResult', (req,res) => {
     request('http://127.0.0.1:21337/game-result', function (error, response, body) {
         if( error ) {
             if( error.code === 'ECONNREFUSED') {
-                res.status(502).send('Cannot detect that Legends of Runeterra is open.')
+                res.status(502).send({ message: 'Cannot detect that Legends of Runeterra is open. Please ensure that you have Third Party Tools enable and that it is set to 21337.' })
             } else {
                 res.status(502).send(error.code)
             }
