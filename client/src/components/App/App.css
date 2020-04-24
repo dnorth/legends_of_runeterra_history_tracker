@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+}
+
+.App {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.App-light{
+    color:red;
+}
+
+.App-dark{
+    color:#e5e3e8;
+}
