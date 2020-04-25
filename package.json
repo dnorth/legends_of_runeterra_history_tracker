@@ -9,11 +9,9 @@
     "server": "cd server && npm start",
     "start": "concurrently \"npm run client\" \"npm run server\" "
   },
-  {
-    "husky": {
-      "hooks": {
-        "pre-push": "\"npm run test client\""
-      }
+  "husky": {
+    "hooks": {
+      "pre-push": "\"npm run test client\""
     }
   },
   "devDependencies": {
