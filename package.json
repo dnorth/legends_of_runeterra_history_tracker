@@ -5,14 +5,14 @@
   "license": "MIT",
   "scripts": {
     "client": "cd client && npm start",
-    "test client": "cd client && npm test",
+    "client-test": "cd client && npm test",
     "server": "cd server && npm start",
     "start": "concurrently \"npm run client\" \"npm run server\" "
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run test client",
-      "pre-push": "\"npm run test client\""
+      "pre-commit": "npm run client-test",
+      "pre-push": "npm run client-test"
     }
   },
   "devDependencies": {
