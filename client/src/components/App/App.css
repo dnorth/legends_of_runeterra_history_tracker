@@ -1,9 +1,15 @@
-body {
-    margin: 0;
+@font-face {
+    font-family: 'Beaufort for LOL Bold';
+    src: local('Beaufort for LOL Bold'), url('../../fonts/Beaufort for LOL Bold.ttf') format('truetype');
 }
 
-.App {
-    font-family: "Gill Sans W04", GillSans, "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+body {
+    margin: 0;
+    font-family: "Beaufort for LOL Bold", "Gill Sans W04", GillSans, "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1em;
+    font-size: 3.42375em;
 }
 
 .App-light{

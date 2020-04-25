@@ -2,6 +2,8 @@ import React from 'react'
 import Authentication from '../../util/Authentication/Authentication'
 import WinTracker from '../WinTracker'
 
+import '../../fonts/Beaufort for LOL Bold.ttf'
+
 import './App.css'
 
 export default class App extends React.Component{

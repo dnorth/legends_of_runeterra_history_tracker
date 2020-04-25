@@ -68,18 +68,7 @@ const WinTracker = () => {
     return (
         <div className="winTrackerContainer">
             <div>
-                <div>
-                    Wins: {trackerData.wins}
-                </div>
-                <div>
-                    Losses: {trackerData.losses}
-                </div>
-                <div>
-                    Winstreak: {trackerData.winStreak}
-                </div>
-                <div>
-                    Loss Streak: {trackerData.lossStreak}
-                </div>
+                <div>{trackerData.wins} &minus; {trackerData.losses}</div>
             </div>
         </div>
     )
