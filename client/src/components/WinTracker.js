@@ -59,7 +59,6 @@ const WinTracker = () => {
                 setTrackerData(organizeTrackerData(trackerData, responseBody))
             } catch(error) {
                 console.log('error: ', error.message)
-                setTrackerData(defaultState)
             }
         }
 
