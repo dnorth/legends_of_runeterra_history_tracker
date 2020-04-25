@@ -10,6 +10,7 @@ body {
     letter-spacing: 0.1em;
     line-height: 1em;
     font-size: 3.42375em;
+    text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black;
 }
 
 .App-light{

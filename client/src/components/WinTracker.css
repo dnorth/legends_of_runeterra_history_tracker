@@ -1,6 +1,6 @@
 .winTrackerContainer {
-    margin: 16px;
+    margin: 28px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     color: white;
 }
