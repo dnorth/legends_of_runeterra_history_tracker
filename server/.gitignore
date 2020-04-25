@@ -25,3 +25,6 @@ coverage
 
 # Benchmarking
 benchmarks/graphs
+
+# Secrets not to be checked-in
+secrets.js

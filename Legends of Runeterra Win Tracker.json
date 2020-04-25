@@ -1,7 +1,7 @@
 {
   "allowHttpBackend": false,
-  "backendCommand": "",
-  "backendFolderName": "",
+  "backendCommand": "npm start",
+  "backendFolderName": "server",
   "certificateExceptions": [
     {
       "isAllowed": true,
@@ -38,6 +38,29 @@
       "linked": false,
       "linkedUserId": "",
       "mode": "viewer",
+      "isPopout": false,
+      "role": "Broadcaster",
+      "orientation": "Portrait",
+      "frameSize": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "id": "2",
+      "label": "Win Tracker Config",
+      "channelId": "45279752",
+      "configurationAnchor": "video_overlay",
+      "displayChannelName": "lachusta",
+      "type": "config",
+      "features": {
+        "isBitsEnabled": false,
+        "isChatEnabled": false,
+        "isSubscriptionStatusAvailable": false
+      },
+      "linked": true,
+      "linkedUserId": "265737932",
+      "mode": "config",
       "isPopout": false,
       "role": "Broadcaster",
       "orientation": "Portrait",
@@ -94,8 +117,8 @@
     "whitelistedConfigUrls": [],
     "whitelistedPanelUrls": []
   },
-  "frontendCommand": "yarn start",
-  "frontendFolderName": "extensions-boilerplate",
+  "frontendCommand": "npm start",
+  "frontendFolderName": "client",
   "name": "Legends of Runeterra Win Tracker",
   "version": 1
 }

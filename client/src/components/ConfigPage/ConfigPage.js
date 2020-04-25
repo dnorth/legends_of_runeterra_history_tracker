@@ -45,12 +45,27 @@ export default class ConfigPage extends React.Component{
         }
     }
 
+    handleChange = (e) => {
+        this.setState({ value: e.target.value})
+    }
+
+    handleSubmit = (e) => {
+        console.log('submitted!')
+        e.preventDefault();
+    }
+
     render(){
         if(this.state.finishedLoading && this.Authentication.isModerator()){
             return(
                 <div className="Config">
                     <div className={this.state.theme==='light' ? 'Config-light' : 'Config-dark'}>
-                        There is no configuration needed for this extension!
+                        <form onSubmit={this.handleSubmit}>
+                            <label>
+                                Port
+                                <input type="text" value={this.state.value} onChange={this.handleChange} />
+                            </label>
+                            <input type="submit" value="Submit" />
+                        </form>
                     </div>
                 </div>
             )
