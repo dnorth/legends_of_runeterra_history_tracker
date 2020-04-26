@@ -6,6 +6,8 @@ import TrackerData from './TrackerData'
 
 const trackerData = new TrackerData();
 
+export const CALL_FREQUENCY = 1000;
+
 const makeRequest = async (url) => {
     const response = await fetch(url)
     const responseBody = await response.json();
@@ -70,7 +72,7 @@ const pollGameState = () => {
         }
 
         fetchData();
-      }, 1000);
+      }, CALL_FREQUENCY);
 }
 
 const TrackerDataFetcher = (props) => {
