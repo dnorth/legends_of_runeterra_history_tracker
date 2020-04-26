@@ -4,7 +4,7 @@ import { useInterval } from '../util/custom-hooks.util'
 import GameStateTypes from './game-state.types'
 import TrackerData from './TrackerData'
 
-const defaultState = { wins: 0, losses: 0, winStreak: 0, lossStreak: 0, rawData: {} }
+const trackerData = new TrackerData();
 
 const makeRequest = async (url) => {
     const response = await fetch(url)
@@ -17,32 +17,32 @@ const makeRequest = async (url) => {
     return responseBody;
 }
 
-const addWinStateToActiveRecord = async (trackerData, setTrackerData, activeRecordId) => {
+const addWinStateToActiveRecord = async (forceTrackerDataRerender, activeRecordId) => {
     try {
         const response = await makeRequest('http://localhost:5000/api/gameResult')
+        
+        TrackerData.editExistingRecord(activeRecordId, { localPlayerWon: response.LocalPlayerWon, gameId: response.GameID })
 
-        trackerData.editExistingRecord(activeRecordId, { localPlayerWon: response.LocalPlayerWon, gameId: response.GameID })
-
-        setTrackerData(trackerData)
+        forceTrackerDataRerender({})
     } catch(error) {
         console.log('error: ', error.message)
     }}
 
-const addTrackerDataRecord = async (trackerData, setTrackerData, opponentName, setActiveRecordId) => {
+const addTrackerDataRecord = async (forceTrackerDataRerender, opponentName, setActiveRecordId) => {
     try {
         const response = await makeRequest('http://localhost:5000/api/staticDecklist')
 
-        const newRecordId = trackerData.addRecordToHistory({ opponentName, deckCode: response.DeckCode, localPlayerWon: null })
+        const newId = TrackerData.addRecordToHistory({ opponentName, deckCode: response.DeckCode, localPlayerWon: null })
 
-        setActiveRecordId(newRecordId);
-        setTrackerData(trackerData);
+        setActiveRecordId(newId);
+        forceTrackerDataRerender({});
     } catch(error) {
         console.log('error: ', error.message)
     }
 }
 
 const pollGameState = () => {
-    let [trackerData, setTrackerData] = useState(new TrackerData());
+    let [_, forceTrackerDataRerender] = useState({});
     let [gameState, setGameState] = useState(GameStateTypes.MENUS);
     let [activeRecordId, setActiveRecordId] = useState(null)
 
@@ -52,14 +52,14 @@ const pollGameState = () => {
                 const response = await makeRequest('http://localhost:5000/api/positionalRectangles')
 
                 if(gameState === GameStateTypes.MENUS && response.GameState === GameStateTypes.INPROGRESS) {
-                    addTrackerDataRecord(trackerData, setTrackerData, response.OpponentName, setActiveRecordId)
+                    addTrackerDataRecord(forceTrackerDataRerender, response.OpponentName, setActiveRecordId)
                     setGameState(GameStateTypes.INPROGRESS)
                 }
 
                 if(gameState === GameStateTypes.INPROGRESS && response.GameState === GameStateTypes.MENUS) {
                     //call the gameResult endpoint and set who won in the rawData record
                     if(activeRecordId) {
-                        addWinStateToActiveRecord(trackerData, setTrackerData, activeRecordId);
+                        addWinStateToActiveRecord(forceTrackerDataRerender, activeRecordId);
                         setActiveRecordId(null);
                     }
                     setGameState(GameStateTypes.MENUS)
@@ -71,12 +71,10 @@ const pollGameState = () => {
 
         fetchData();
       }, 1000);
-
-      return trackerData;
 }
 
 const TrackerDataFetcher = (props) => {
-    const trackerData = pollGameState()
+    pollGameState()
 
     return (
         <>
