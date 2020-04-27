@@ -59,13 +59,7 @@ export default class ConfigPage extends React.Component{
             return(
                 <div className="Config">
                     <div className={this.state.theme==='light' ? 'Config-light' : 'Config-dark'}>
-                        <form onSubmit={this.handleSubmit}>
-                            <label>
-                                Port
-                                <input type="text" value={this.state.value} onChange={this.handleChange} />
-                            </label>
-                            <input type="submit" value="Submit" />
-                        </form>
+                       No configuration needed for this extension!
                     </div>
                 </div>
             )

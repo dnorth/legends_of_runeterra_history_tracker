@@ -1,7 +1,7 @@
 {
   "allowHttpBackend": false,
-  "backendCommand": "npm start",
-  "backendFolderName": "server",
+  "backendCommand": "",
+  "backendFolderName": "",
   "certificateExceptions": [
     {
       "isAllowed": true,
