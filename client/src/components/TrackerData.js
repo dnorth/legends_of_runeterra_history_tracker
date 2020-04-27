@@ -22,6 +22,10 @@ export default class TrackerData {
         return TrackerData.history;
     }
 
+    set history(newFullHistory) {
+        TrackerData.history = newFullHistory;
+    }
+
     get wins() {
         return TrackerData.history.filter(item => item.localPlayerWon === true).length
     }

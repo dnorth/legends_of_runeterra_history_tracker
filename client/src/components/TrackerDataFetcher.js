@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
-
+import { number } from 'prop-types'
 import { useInterval } from '../util/custom-hooks.util'
 import GameStateTypes from './game-state.types'
 import TrackerData from './TrackerData'
 
 const trackerData = new TrackerData();
-
-export const CALL_FREQUENCY = 1000;
 
 const makeRequest = async (url) => {
     const response = await fetch(url)
@@ -43,7 +41,7 @@ const addTrackerDataRecord = async (forceTrackerDataRerender, opponentName, setA
     }
 }
 
-const pollGameState = () => {
+const pollGameState = (pollFrequency) => {
     let [_, forceTrackerDataRerender] = useState({});
     let [gameState, setGameState] = useState(GameStateTypes.MENUS);
     let [activeRecordId, setActiveRecordId] = useState(null)
@@ -72,17 +70,25 @@ const pollGameState = () => {
         }
 
         fetchData();
-      }, CALL_FREQUENCY);
+      }, pollFrequency);
 }
 
 const TrackerDataFetcher = (props) => {
-    pollGameState()
+    pollGameState(props.pollFrequency)
 
     return (
         <>
             {props.children(trackerData)}
         </>
     )
+}
+
+TrackerDataFetcher.defaultProps = {
+    pollFrequency: 1000
+}
+
+TrackerData.propTypes = {
+    pollFrequency: number
 }
 
 export default TrackerDataFetcher
