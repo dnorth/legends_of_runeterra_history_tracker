@@ -66,6 +66,11 @@ app.get('/api/staticDecklist', (req,res) => {
     })
 });
 
+
+app.get('/', (req, res) => {
+    res.send('Alive and well!');
+})
+
 const port = process.env.PORT || 5000;
 app.listen(port);
 

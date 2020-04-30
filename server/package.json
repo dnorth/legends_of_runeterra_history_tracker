@@ -1,7 +1,7 @@
 {
   "name": "legends_of_runeterra_twitch_win_tracker",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "electron-server.js",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
@@ -9,6 +9,10 @@
     "jsonwebtoken": "^8.5.1"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "electron": "electron electron-server.js"
+  },
+  "devDependencies": {
+    "electron": "^8.2.4"
   }
 }
