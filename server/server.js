@@ -1,13 +1,12 @@
 const express = require('express');
 const jsonwebtoken = require('jsonwebtoken');
-const path = require('path');
-const request = require('request');
+
 const { twitchJWT } = require('./secrets');
+const { getLoRClientAPI } = require('./utils');
 
 const app = express();
 
 const secret = Buffer.from(twitchJWT, 'base64');
-const defaultLoRPort = 21337;
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
@@ -18,52 +17,19 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/api/gameResult', (req,res) => {
-    const lorPort = req.query.port || defaultLoRPort;
-
-    request(`http://127.0.0.1:${lorPort}/game-result`, function (error, response, body) {
-        if( error ) {
-            if( error.code === 'ECONNREFUSED') {
-                res.status(502).send({ message: 'Cannot detect that Legends of Runeterra is open. Please ensure that you have Third Party Tools enable and that it is set to 21337.' })
-            } else {
-                res.status(502).send(error.code)
-            }
-        } else {
-            res.send(body)
-        }
-    })
+app.get('/api/gameResult', async (req,res) => {
+    const result = await getLoRClientAPI('game-result')
+    res.send(result);
 });
 
-app.get('/api/positionalRectangles', (req,res) => {
-    const lorPort = req.query.port || defaultLoRPort;
-
-    request(`http://127.0.0.1:${lorPort}/positional-rectangles`, function (error, response, body) {
-        if( error ) {
-            if( error.code === 'ECONNREFUSED') {
-                res.status(502).send({ message: 'Cannot detect that Legends of Runeterra is open. Please ensure that you have Third Party Tools enable and that it is set to 21337.' })
-            } else {
-                res.status(502).send(error.code)
-            }
-        } else {
-            res.send(body)
-        }
-    })
+app.get('/api/positionalRectangles', async (req,res) => {
+    const result = await getLoRClientAPI('positional-rectangles')
+    res.send(result);
 });
 
-app.get('/api/staticDecklist', (req,res) => {
-    const lorPort = req.query.port || defaultLoRPort;
-
-    request(`http://127.0.0.1:${lorPort}/static-decklist`, function (error, response, body) {
-        if( error ) {
-            if( error.code === 'ECONNREFUSED') {
-                res.status(502).send({ message: 'Cannot detect that Legends of Runeterra is open. Please ensure that you have Third Party Tools enable and that it is set to 21337.' })
-            } else {
-                res.status(502).send(error.code)
-            }
-        } else {
-            res.send(body)
-        }
-    })
+app.get('/api/staticDecklist', async (req,res) => {
+    const result = await getLoRClientAPI('static-decklist')
+    res.send(result);
 });
 
 
