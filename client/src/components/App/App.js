@@ -2,6 +2,8 @@ import React from 'react'
 import Authentication from '../../util/Authentication/Authentication'
 import WinTracker from '../WinTracker'
 
+import socketIOClient from 'socket.io-client';
+
 import '../../fonts/Beaufort for LOL Bold.ttf'
 
 import './App.css'
@@ -37,6 +39,9 @@ export default class App extends React.Component{
     }
 
     componentDidMount(){
+        //TODO: do stuff with this!!!!
+        const socket = socketIOClient('http://127.0.0.1:5000');
+
         if(this.twitch){
             this.twitch.onAuthorized((auth)=>{
                 this.Authentication.setToken(auth.token, auth.userId)

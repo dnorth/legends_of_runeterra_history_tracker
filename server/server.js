@@ -1,5 +1,6 @@
 const express = require('express');
 const jsonwebtoken = require('jsonwebtoken');
+const socketIO = require('socket.io');
 
 const { twitchJWT } = require('./secrets');
 const { getLoRClientAPI } = require('./utils');
@@ -39,7 +40,16 @@ app.get('/', (req, res) => {
 })
 
 const port = process.env.PORT || 5000;
-app.listen(port);
+const server = app.listen(port);
+const io = socketIO(server);
+
+io.on('connection', (socket) => {
+    console.log('connected!');
+
+    socket.on('disconnect', () => {
+        console.log('disconnected...');
+    })
+})
 
 const lorHistoryTracker = new LoRHistoryTracker();
 
