@@ -3,6 +3,7 @@ const jsonwebtoken = require('jsonwebtoken');
 
 const { twitchJWT } = require('./secrets');
 const { getLoRClientAPI } = require('./utils');
+const LoRHistoryTracker = require('./LoRHistoryTracker');
 
 const app = express();
 
@@ -39,5 +40,9 @@ app.get('/', (req, res) => {
 
 const port = process.env.PORT || 5000;
 app.listen(port);
+
+const lorHistoryTracker = new LoRHistoryTracker();
+
+lorHistoryTracker.startTrackingHistory(1000);
 
 console.log('App is listening on port ' + port);
