@@ -2,13 +2,10 @@ const express = require('express');
 const jsonwebtoken = require('jsonwebtoken');
 const socketIO = require('socket.io');
 
-const { twitchJWT } = require('./secrets');
-const { getLoRClientAPI } = require('./utils');
 const LoRHistoryTracker = require('./LoRHistoryTracker');
 
 const app = express();
 
-const secret = Buffer.from(twitchJWT, 'base64');
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
@@ -33,7 +30,6 @@ io.on('connection', (socket) => {
     socket.emit('onHistoryUpdated', lorHistoryTracker.history);
 
     socket.on('disconnect', () => {
-        console.log('disconnected...');
     })
 })
 

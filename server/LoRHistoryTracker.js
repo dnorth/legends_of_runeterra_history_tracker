@@ -1,5 +1,5 @@
 const uuidv4 = require('uuid').v4;
-const { getLoRClientAPI } = require('./utils');
+const { getLoRClientAPI } = require('./api-utils');
 const gameStateTypes = require('./GameState.types');
 
 class LoRHistoryTracker {

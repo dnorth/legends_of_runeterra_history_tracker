@@ -1,6 +1,6 @@
 {
-  "name": "react-frontend",
-  "version": "1.0.0",
+  "name": "lor-win-tracker",
+  "version": "0.1.0",
   "description": "",
   "proxy": "http://localhost:5000",
   "main": "index.js",
