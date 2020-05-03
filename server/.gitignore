@@ -28,3 +28,5 @@ benchmarks/graphs
 
 # Secrets not to be checked-in
 secrets.js
+server.cert
+server.key
