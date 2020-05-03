@@ -1,94 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import { number } from 'prop-types'
-import { useInterval } from '../util/custom-hooks.util'
-import GameStateTypes from './game-state.types'
-import TrackerData from './TrackerData'
+import socketIOClient from "socket.io-client";
 
-const trackerData = new TrackerData();
+import TrackerData from './TrackerData';
 
-const makeRequest = async (url) => {
-    const response = await fetch(url)
-    const responseBody = await response.json();
-
-    if (response.status === 502) {
-        throw new Error(responseBody.message)
-    }
-
-    return responseBody;
-}
-
-const addWinStateToActiveRecord = async (forceTrackerDataRerender, activeRecordId) => {
-    try {
-        const response = await makeRequest('http://localhost:5000/api/gameResult')
-        
-        TrackerData.editExistingRecord(activeRecordId, { localPlayerWon: response.LocalPlayerWon, gameId: response.GameID })
-
-        forceTrackerDataRerender({})
-    } catch(error) {
-        console.log('error: ', error.message)
-    }}
-
-const addTrackerDataRecord = async (forceTrackerDataRerender, opponentName, setActiveRecordId) => {
-    try {
-        const response = await makeRequest('http://localhost:5000/api/staticDecklist')
-
-        const newId = TrackerData.addRecordToHistory({ opponentName, deckCode: response.DeckCode, localPlayerWon: null })
-
-        setActiveRecordId(newId);
-        forceTrackerDataRerender({});
-    } catch(error) {
-        console.log('error: ', error.message)
-    }
-}
-
-const pollGameState = (pollFrequency) => {
-    let [_, forceTrackerDataRerender] = useState({});
-    let [gameState, setGameState] = useState(GameStateTypes.MENUS);
-    let [activeRecordId, setActiveRecordId] = useState(null)
-
-    useInterval(() => {
-        const fetchData = async () => {
-            try {
-                const response = await makeRequest('http://localhost:5000/api/positionalRectangles')
-
-                if(gameState === GameStateTypes.MENUS && response.GameState === GameStateTypes.INPROGRESS) {
-                    addTrackerDataRecord(forceTrackerDataRerender, response.OpponentName, setActiveRecordId)
-                    setGameState(GameStateTypes.INPROGRESS)
-                }
-
-                if(gameState === GameStateTypes.INPROGRESS && response.GameState === GameStateTypes.MENUS) {
-                    //call the gameResult endpoint and set who won in the rawData record
-                    if(activeRecordId) {
-                        addWinStateToActiveRecord(forceTrackerDataRerender, activeRecordId);
-                        setActiveRecordId(null);
-                    }
-                    setGameState(GameStateTypes.MENUS)
-                }
-            } catch(error) {
-                console.log('error: ', error.message)
-            }
-        }
-
-        fetchData();
-      }, pollFrequency);
-}
+const LOCAL_SERVER = "http://127.0.0.1:6750";
 
 const TrackerDataFetcher = (props) => {
-    pollGameState(props.pollFrequency)
+    const [trackerData, setTrackerData] = useState([]);
+
+    useEffect(() => {
+        const socket = socketIOClient(LOCAL_SERVER);
+        socket.on("onHistoryUpdated", newFullHistory => {
+            setTrackerData(newFullHistory);
+        })
+    }, []);
 
     return (
         <>
-            {props.children(trackerData)}
+            {props.children(new TrackerData(trackerData))}
         </>
     )
-}
-
-TrackerDataFetcher.defaultProps = {
-    pollFrequency: 1000
-}
-
-TrackerData.propTypes = {
-    pollFrequency: number
 }
 
 export default TrackerDataFetcher

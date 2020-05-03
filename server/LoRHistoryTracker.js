@@ -3,7 +3,8 @@ const { getLoRClientAPI } = require('./utils');
 const gameStateTypes = require('./GameState.types');
 
 class LoRHistoryTracker {
-    constructor() {
+    constructor(io) {
+        this.io = io;
         this.history = [];
         this.gameState = gameStateTypes.MENUS;
         this.activeRecordID = null;
@@ -55,6 +56,7 @@ class LoRHistoryTracker {
         let recordIndex = this.history.findIndex(record => record.id === recordId)
         if(recordIndex !== undefined) {
             this.history[recordIndex] = {...this.history[recordIndex], ...newProperties};
+            this.io.sockets.emit('onHistoryUpdated', this.history);
         }
     }
 
@@ -64,6 +66,7 @@ class LoRHistoryTracker {
 
     set history(newFullHistory) {
         this._history = newFullHistory;
+        this.io.sockets.emit('onHistoryUpdated', this.history);
     }
 
     get wins() {

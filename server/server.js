@@ -19,39 +19,24 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/api/gameResult', async (req,res) => {
-    const result = await getLoRClientAPI('game-result')
-    res.send(result);
-});
-
-app.get('/api/positionalRectangles', async (req,res) => {
-    const result = await getLoRClientAPI('positional-rectangles')
-    res.send(result);
-});
-
-app.get('/api/staticDecklist', async (req,res) => {
-    const result = await getLoRClientAPI('static-decklist')
-    res.send(result);
-});
-
-
 app.get('/', (req, res) => {
     res.send('Alive and well!');
 })
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 6750;
 const server = app.listen(port);
 const io = socketIO(server);
 
+const lorHistoryTracker = new LoRHistoryTracker(io);
+
 io.on('connection', (socket) => {
-    console.log('connected!');
+    socket.emit('onHistoryUpdated', lorHistoryTracker.history);
 
     socket.on('disconnect', () => {
         console.log('disconnected...');
     })
 })
 
-const lorHistoryTracker = new LoRHistoryTracker();
 
 lorHistoryTracker.startTrackingHistory(1000);
 

@@ -15,10 +15,6 @@ class LorStatusChecker {
         LorStatusChecker.status = newStatus;
     }
 
-    static flipStatus() {
-        LorStatusChecker.status = !LorStatusChecker.status;
-    }
-
     static get label() {
         return LorStatusChecker.status ? 'Connected' : 'Not Connected';
     }
@@ -30,8 +26,7 @@ class LorStatusChecker {
     static get menuItem() {
         return new MenuItem({
             label: LorStatusChecker.label,
-            icon: LorStatusChecker.icon,
-            click: LorStatusChecker.flipStatus
+            icon: LorStatusChecker.icon
         });
     }
 }
