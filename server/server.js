@@ -1,6 +1,8 @@
 const express = require('express');
 const jsonwebtoken = require('jsonwebtoken');
 const socketIO = require('socket.io');
+const https = require('https');
+const fs = require('fs');
 
 const LoRHistoryTracker = require('./LoRHistoryTracker');
 
@@ -21,7 +23,15 @@ app.get('/', (req, res) => {
 })
 
 const port = process.env.PORT || 6750;
-const server = app.listen(port);
+
+const server = https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app)
+.listen(port, () => {
+    console.log('App is listening on port ' + port)
+});
+
 const io = socketIO(server);
 
 const lorHistoryTracker = new LoRHistoryTracker(io);
@@ -36,4 +46,3 @@ io.on('connection', (socket) => {
 
 lorHistoryTracker.startTrackingHistory(1000);
 
-console.log('App is listening on port ' + port);

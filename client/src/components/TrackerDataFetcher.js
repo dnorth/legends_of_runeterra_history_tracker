@@ -3,7 +3,7 @@ import socketIOClient from "socket.io-client";
 
 import TrackerData from './TrackerData';
 
-const LOCAL_SERVER = "http://127.0.0.1:6750/";
+const LOCAL_SERVER = "https://127.0.0.1:6750/";
 
 const TrackerDataFetcher = (props) => {
     const [trackerData, setTrackerData] = useState([]);

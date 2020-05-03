@@ -20,6 +20,18 @@
       "isEphemeral": false,
       "isOrigin": false,
       "value": "https://localhost:5000/api/randomNumber"
+    },
+    {
+      "isAllowed": true,
+      "isEphemeral": false,
+      "isOrigin": true,
+      "value": "https://127.0.0.1:6750"
+    },
+    {
+      "isAllowed": true,
+      "isEphemeral": false,
+      "isOrigin": true,
+      "value": "wss://127.0.0.1:6750"
     }
   ],
   "extensionViews": [
