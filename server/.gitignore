@@ -30,3 +30,4 @@ benchmarks/graphs
 secrets.js
 server.cert
 server.key
+dynamodb/config/

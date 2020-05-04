@@ -3,11 +3,15 @@ const jsonwebtoken = require('jsonwebtoken');
 const socketIO = require('socket.io');
 const https = require('https');
 const fs = require('fs');
+const bodyParser = require('body-parser');
+
+const dynamoDBRoutes = require('./dynamodb/routes');
 
 const LoRHistoryTracker = require('./LoRHistoryTracker');
 
 const app = express();
 
+app.use(bodyParser());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
@@ -21,6 +25,8 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
     res.send('Alive and well!');
 })
+
+app.use('/db', dynamoDBRoutes);
 
 const port = process.env.PORT || 6750;
 
