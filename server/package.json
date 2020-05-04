@@ -14,10 +14,14 @@
     "uuid": "^8.0.0"
   },
   "scripts": {
-    "start": "node server.js",
-    "electron": "electron electron-server.js"
+    "start": "concurrently \"npm run server\" \"npm run dynamoDb\" ",
+    "server": "node server.js",
+    "electron": "concurrently \"npm run electron\" \"npm run dynamoDb\" ",
+    "electron-no-db": "electron electron-server.js",
+    "dynamoDb": "cd dynamodb && java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb"
   },
   "devDependencies": {
+    "concurrently": "^5.2.0",
     "electron": "^8.2.4"
   }
 }

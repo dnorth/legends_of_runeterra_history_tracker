@@ -18,7 +18,7 @@ router.get('/fruits', (req, res, next) => {
         if (err) {
             res.send({
                 success: false,
-                message: 'Error: Server Error'
+                message: err.message
             })
         } else {
             const { Items } = data;
@@ -55,7 +55,7 @@ router.post('/fruit', (req, res, next) => {
         if (err) {
             res.send({
                 success: false,
-                message: 'Error: Server Error'
+                message: err.message
             })
         } else {
             console.log('data: ', data);
