@@ -1,5 +1,7 @@
 const uuidv4 = require('uuid').v4;
-const { getLoRClientAPI } = require('./api-utils');
+
+const LoRHistoryRecord = require('./LorHistoryRecord');
+const { getLoRClientAPI, addOrUpdateHistoryRecordToDynamoDB } = require('./api-utils');
 const gameStateTypes = require('./GameState.types');
 
 class LoRHistoryTracker {
@@ -8,6 +10,7 @@ class LoRHistoryTracker {
         this.history = [];
         this.gameState = gameStateTypes.MENUS;
         this.activeRecordID = null;
+        this.sessionId = uuidv4();
     }
 
     startTrackingHistory(pollInterval) {
@@ -15,7 +18,7 @@ class LoRHistoryTracker {
             const response = await getLoRClientAPI('positional-rectangles');
             
             if(!this.activeRecordID && this.gameState === gameStateTypes.MENUS && response.GameState === gameStateTypes.INPROGRESS) {
-                await this.onGameStart(response.OpponentName);
+                await this.onGameStart(response.PlayerName, response.OpponentName);
             }
 
             if(this.activeRecordID && this.gameState === gameStateTypes.INPROGRESS && response.GameState === gameStateTypes.MENUS) {
@@ -24,12 +27,12 @@ class LoRHistoryTracker {
         }, pollInterval);
     }
 
-    async onGameStart(opponentName) {
+    async onGameStart(playerName, opponentName) {
         this.gameState = gameStateTypes.INPROGRESS;
 
         const response = await getLoRClientAPI('static-decklist');
 
-        const newId = this.addRecordToHistory({ opponentName, deckCode: response.DeckCode, localPlayerWon: null })
+        const newId = this.addRecordToHistory({ playerName, opponentName, deckCode: response.DeckCode, localPlayerWon: null, gameStartTimestamp: Date.now(), sessionId: this.sessionId });
 
         this.activeRecordID = newId;
     }
@@ -39,25 +42,38 @@ class LoRHistoryTracker {
 
         const response = await getLoRClientAPI('game-result');
 
-        this.editExistingRecord(this.activeRecordID, { localPlayerWon: response.LocalPlayerWon, gameId: response.GameID });
+        this.editExistingRecord(this.activeRecordID, { localPlayerWon: response.LocalPlayerWon, sessionGameId: response.GameID, gameEndTimestamp: Date.now() });
 
         this.activeRecordID = null;
     }
 
-    addRecordToHistory(newRecord) {
+    addRecordToHistory(newRecordProperties) {
         const newId = uuidv4();
-        const fullRecord = {id: newId, ...newRecord}
-        this.history = [fullRecord, ...this.history]
+        const newRecord = new LoRHistoryRecord({id: newId, ...newRecordProperties});
+        this.history = [newRecord, ...this.history];
+
+        addOrUpdateHistoryRecordToDynamoDB(newRecord);
 
         return newId;
     }
 
     editExistingRecord (recordId, newProperties) {
-        let recordIndex = this.history.findIndex(record => record.id === recordId)
-        if(recordIndex !== undefined) {
-            this.history[recordIndex] = {...this.history[recordIndex], ...newProperties};
+        const recordIndex = this.history.findIndex(record => record.id === recordId);
+        const recordToUpdate = this.history[recordIndex];
+
+        if(recordToUpdate) {
+            const updatedRecord = recordToUpdate.updateRecord({...newProperties});
+            this.history[recordIndex] = updatedRecord;
+            addOrUpdateHistoryRecordToDynamoDB(updatedRecord);
             this.io.sockets.emit('onHistoryUpdated', this.history);
         }
+    }
+
+    resetSession = () => {
+        this.history = [];
+        this.gameState = gameStateTypes.MENUS;
+        this.activeRecordID = null;
+        this.sessionId = uuidv4();
     }
 
     get history() {
