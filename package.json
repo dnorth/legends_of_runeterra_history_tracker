@@ -7,7 +7,9 @@
     "client": "cd client && npm start",
     "client-test": "cd client && npm test",
     "server": "cd server && npm start",
-    "start": "concurrently \"npm run client\" \"npm run server\" "
+    "server-prod": "cd server && npm run start-prod",
+    "start": "concurrently \"npm run client\" \"npm run server\" ",
+    "start-prod": "concurrently \"npm run client\" \"npm run server-prod"
   },
   "husky": {
     "hooks": {

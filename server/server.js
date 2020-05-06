@@ -4,14 +4,20 @@ const socketIO = require('socket.io');
 const https = require('https');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const AWS = require('aws-sdk');
 
+const IS_DEV = process.env.NODE_ENV.trim() !== 'production';
+
+//DynamoDb Config
 const dynamoDBRoutes = require('./dynamodb/routes');
+const dynamoDBConfig = require('./dynamodb/config/config');
+AWS.config.update(IS_DEV ? dynamoDBConfig.aws_local_config : dynamoDBConfig.aws_remote_config);
 
-const LoRHistoryTracker = require('./LoRHistoryTracker');
 
 const app = express();
 
-app.use(bodyParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
@@ -39,6 +45,8 @@ const server = https.createServer({
 });
 
 const io = socketIO(server);
+
+const LoRHistoryTracker = require('./LoRHistoryTracker');
 
 const lorHistoryTracker = new LoRHistoryTracker(io);
 

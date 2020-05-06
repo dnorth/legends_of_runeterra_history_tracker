@@ -15,6 +15,8 @@
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run dynamoDb\" ",
+    "start-no-db": "npm run server",
+    "start-prod": "SET NODE_ENV=production && npm run start-no-db",
     "server": "node server.js",
     "electron": "concurrently \"npm run electron\" \"npm run dynamoDb\" ",
     "electron-no-db": "electron electron-server.js",

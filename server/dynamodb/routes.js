@@ -3,11 +3,8 @@ var express = require('express');
 var router = express.Router();
 
 const dynamoDBConfig = require('./config/config');
-const isDev = process.env.NODE_ENV !== 'production';
 
 router.get('/history', (req, res, next) => {
-    AWS.config.update(isDev ? dynamoDBConfig.aws_local_config : dynamoDBConfig.aws_remote_config);
-
     const docClient = new AWS.DynamoDB.DocumentClient();
 
     const params = {
