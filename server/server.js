@@ -6,12 +6,12 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const AWS = require('aws-sdk');
 
-const IS_DEV = process.env.NODE_ENV.trim() !== 'production';
+const IS_PROD = process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'production';
 
 //DynamoDb Config
 const dynamoDBRoutes = require('./dynamodb/routes');
 const dynamoDBConfig = require('./dynamodb/config/config');
-AWS.config.update(IS_DEV ? dynamoDBConfig.aws_local_config : dynamoDBConfig.aws_remote_config);
+AWS.config.update(IS_PROD ? dynamoDBConfig.aws_remote_config : dynamoDBConfig.aws_local_config);
 
 
 const app = express();

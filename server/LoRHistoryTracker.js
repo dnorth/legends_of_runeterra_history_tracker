@@ -32,7 +32,7 @@ class LoRHistoryTracker {
 
         const response = await getLoRClientAPI('static-decklist');
 
-        const newId = this.addRecordToHistory({ playerName, opponentName, deckCode: response.DeckCode, localPlayerWon: null, gameStartTimestamp: Date.now(), sessionId: this.sessionId });
+        const newId = this.addRecordToHistory({ playerName, opponentName, deckCode: response.DeckCode, localPlayerWon: null, gameStartTimestamp: new Date().toISOString(), sessionId: this.sessionId });
 
         this.activeRecordID = newId;
     }
@@ -42,7 +42,7 @@ class LoRHistoryTracker {
 
         const response = await getLoRClientAPI('game-result');
 
-        this.editExistingRecord(this.activeRecordID, { localPlayerWon: response.LocalPlayerWon, sessionGameId: response.GameID, gameEndTimestamp: Date.now() });
+        this.editExistingRecord(this.activeRecordID, { localPlayerWon: response.LocalPlayerWon, sessionGameId: response.GameID, gameEndTimestamp: new Date().toISOString() });
 
         this.activeRecordID = null;
     }

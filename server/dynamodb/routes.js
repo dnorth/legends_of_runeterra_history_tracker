@@ -4,6 +4,19 @@ var router = express.Router();
 
 const dynamoDBConfig = require('./config/config');
 
+const responseCallback = (err, data, res) => {
+    if (err) {
+        res.send({
+            success: false,
+            message: err.message
+        })
+    } else {
+        const { Items } = data;
+
+        res.send(Items);
+    }
+}
+
 router.get('/history', (req, res, next) => {
     const docClient = new AWS.DynamoDB.DocumentClient();
 
@@ -11,20 +24,33 @@ router.get('/history', (req, res, next) => {
         TableName: dynamoDBConfig.lor_history_table_name
     };
 
-    docClient.scan(params, (err, data) => {
-        if (err) {
-            res.send({
-                success: false,
-                message: err.message
-            })
-        } else {
-            const { Items } = data;
-
-            //TODO: server should be sorting these...
-            const sortedItems = Items.sort((a, b) => b.gameStartTimestamp - a.gameStartTimestamp);
-            res.send(sortedItems);
-        }
-    })
+    docClient.scan(params, (err, data) => responseCallback(err, data, res));
 });
+
+router.get('/history/:playerName', (req, res, next) => {
+    const docClient = new AWS.DynamoDB.DocumentClient();
+    const from = req.query.from || new Date().toISOString();
+
+    const MAX_DAYS_TO_QUERY = 30;
+
+    const maxDaysAgo = new Date(new Date().setDate(new Date().getDate() - MAX_DAYS_TO_QUERY)).toISOString(); //haha, lovely.
+    const maybeTo = req.query.to || maxDaysAgo;
+
+    const to = maybeTo < maxDaysAgo ? maxDaysAgo : maybeTo; //Limit to last MAX_DAYS_TO_QUERY days.
+    
+    const params = {
+        TableName: dynamoDBConfig.lor_history_table_name,
+        KeyConditionExpression: 'playerName = :playerName AND gameStartTimestamp BETWEEN :to AND :from',
+        ScanIndexForward: false,
+        ExpressionAttributeValues: {
+            ":playerName": req.params.playerName,
+            ":from": from,
+            ":to": to
+        },
+        Limit: 50,
+    };
+
+    docClient.query(params, (err, data) => responseCallback(err, data, res));
+})
 
 module.exports = router;
