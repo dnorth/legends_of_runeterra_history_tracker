@@ -30,17 +30,21 @@ class LoRHistoryRecord {
     get dynamoDbBasicParams() {
         return {
             TableName: dynamoDBConfig.lor_history_table_name,
-            Item: {
-                id: this.id,
-                playerName: this.playerName,
-                opponentName: this.opponentName,
-                deckCode: this.deckCode,
-                localPlayerWon: this.localPlayerWon,
-                sessionGameId: this.sessionGameId,
-                gameStartTimestamp: this.gameStartTimestamp,
-                gameEndTimestamp: this.gameEndTimestamp,
-                sessionId: this.sessionId
-            }
+            Item: this.toJson()
+        }
+    }
+
+    toJson = () => {
+        return {
+            id: this.id,
+            playerName: this.playerName,
+            opponentName: this.opponentName,
+            deckCode: this.deckCode,
+            localPlayerWon: this.localPlayerWon,
+            sessionGameId: this.sessionGameId,
+            gameStartTimestamp: this.gameStartTimestamp,
+            gameEndTimestamp: this.gameEndTimestamp,
+            sessionId: this.sessionId
         }
     }
 }

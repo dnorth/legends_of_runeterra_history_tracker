@@ -1,9 +1,12 @@
 const axios = require('axios');
 const AWS = require('aws-sdk');
 
+const { makeBroadcast } = require('./authentication');
+
 const LoRStatusChecker = require('./StatusChecker');
 
 const DEFAULT_LOR_PORT = 21337;
+const broadcasterChannelId = 45279752;
 
 const getLoRClientAPI = async (path, port) => {
     const lorPort = port || DEFAULT_LOR_PORT;
@@ -28,8 +31,9 @@ const addOrUpdateHistoryRecordToDynamoDB = (recordToUpdate) => {
 
     docClient.put(recordToUpdate.dynamoDbBasicParams, (err, data) => {
         if (err) {
-            console.log('error adding record...', err.message);
+            makeBroadcast(broadcasterChannelId, JSON.stringify({"historyUpdated": { record: recordToUpdate.toJson(), success: false } }));
         } else {
+            makeBroadcast(broadcasterChannelId, JSON.stringify({"historyUpdated": { record: recordToUpdate.toJson(), success: true } }));
             console.log(`successfully added/updated record ${recordToUpdate.id}!`);
         }
     });

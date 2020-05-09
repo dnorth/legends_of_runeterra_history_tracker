@@ -1,0 +1,59 @@
+{
+  "allowHttpBackend": false,
+  "backendCommand": "",
+  "backendFolderName": "",
+  "certificateExceptions": [],
+  "extensionViews": [],
+  "frontendCommand": "",
+  "frontendFolderName": "",
+  "manifest": {
+    "anchor": "panel",
+    "assetUrls": [],
+    "authorName": "Chusta",
+    "bitsEnabled": false,
+    "canInstall": true,
+    "configUrl": "https://localhost:8080/config.html",
+    "configurationLocation": "none",
+    "description": "The Legends of Runeterra live history tracker lets you display your history.... live!",
+    "eulaTosUrl": "",
+    "hasChatSupport": false,
+    "iconUrl": "",
+    "iconUrls": {},
+    "id": "r606gixvsow1nuauf4sjoxctm91vcs",
+    "installationCount": -42,
+    "liveConfigUrl": "",
+    "name": "Legends of Runeterra History Tracker",
+    "panelHeight": 300,
+    "privacyPolicyUrl": "",
+    "requestIdentityLink": false,
+    "requiredBroadcasterAbilities": [],
+    "screenshotUrls": [],
+    "sku": "",
+    "state": "Testing",
+    "subscriptionsSupportLevel": "none",
+    "summary": "Legends of Runeterra history AS it's happening... What's not to love?",
+    "supportEmail": "Lds.north+twitch@gamil.com",
+    "vendorCode": "",
+    "version": "0.0.1",
+    "viewerSummary": "",
+    "viewerUrl": "https://localhost:8080/panel.html",
+    "viewerUrls": {
+      "panel": "https://localhost:8080/panel.html"
+    },
+    "views": {
+      "config": {
+        "canLinkExternalContent": false,
+        "viewerUrl": "https://localhost:8080/config.html"
+      },
+      "panel": {
+        "canLinkExternalContent": false,
+        "height": 300,
+        "viewerUrl": "https://localhost:8080/panel.html"
+      }
+    },
+    "whitelistedConfigUrls": [],
+    "whitelistedPanelUrls": []
+  },
+  "name": "Legends of Runeterra History Tracker",
+  "version": 1
+}
