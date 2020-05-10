@@ -50,14 +50,6 @@ export default class App extends React.Component{
                 }
             })
 
-            this.twitch.listen('broadcast',(target,contentType,body)=>{
-                this.twitch.rig.log(`New PubSub message!\n${target}\n${contentType}\n${body}`)
-                // now that you've got a listener, do something with the result... 
-
-                // do something...
-
-            })
-
             this.twitch.onVisibilityChanged((isVisible,_c)=>{
                 this.visibilityChanged(isVisible)
             })
@@ -65,12 +57,6 @@ export default class App extends React.Component{
             this.twitch.onContext((context,delta)=>{
                 this.contextUpdate(context,delta)
             })
-        }
-    }
-
-    componentWillUnmount(){
-        if(this.twitch){
-            this.twitch.unlisten('broadcast', ()=>console.log('successfully unlistened'))
         }
     }
     
