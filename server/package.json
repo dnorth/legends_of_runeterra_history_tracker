@@ -20,7 +20,10 @@
     "server": "node server.js",
     "electron": "concurrently \"npm run electron\" \"npm run dynamoDb\" ",
     "electron-no-db": "electron electron-server.js",
-    "dynamoDb": "cd dynamodb && java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb"
+    "dynamoDb": "cd dynamodb && java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb",
+    "deploy-history-lambda": "cd aws-lambda/getLoRHistoryByChannelId && serverless deploy",
+    "invoke-history-lambda-prod": "cd aws-lambda/getLoRHistoryByChannelId && serverless invoke -f getLoRHistoryByChannelId --path local_request_data.json",
+    "invoke-history-lambda": "cd aws-lambda/getLoRHistoryByChannelId && serverless invoke local -f getLoRHistoryByChannelId --path local_request_data.json"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",

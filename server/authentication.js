@@ -48,9 +48,9 @@ function makeServerBroadcastToken(channelId) {
       try {
         const response = await axios.post(`https://api.twitch.tv/extensions/message/${channelId}`, body, { headers });
 
-        console.log('response: ', response.status);
+        console.log('broadcast successful: ', response.status);
       } catch(e) {
-          console.log('error: ', e)
+          console.log('broadcast failed: ', e.message);
       }
   }
 

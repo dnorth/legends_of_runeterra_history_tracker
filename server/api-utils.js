@@ -32,6 +32,7 @@ const addOrUpdateHistoryRecordToDynamoDB = (recordToUpdate) => {
     docClient.put(recordToUpdate.dynamoDbBasicParams, (err, data) => {
         if (err) {
             makeBroadcast(broadcasterChannelId, JSON.stringify({"historyUpdated": { record: recordToUpdate.toJson(), success: false } }));
+            console.log(`failed to add/update record ${JSON.stringify(recordToUpdate.toJson(), null, 4)}! Error: ${err.message}`);
         } else {
             makeBroadcast(broadcasterChannelId, JSON.stringify({"historyUpdated": { record: recordToUpdate.toJson(), success: true } }));
             console.log(`successfully added/updated record ${recordToUpdate.id}!`);

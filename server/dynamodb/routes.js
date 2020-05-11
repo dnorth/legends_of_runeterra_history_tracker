@@ -27,7 +27,7 @@ router.get('/history', (req, res, next) => {
     docClient.scan(params, (err, data) => responseCallback(err, data, res));
 });
 
-router.get('/history/:playerName', (req, res, next) => {
+router.get('/history/:twitchChannelId', (req, res, next) => {
     const docClient = new AWS.DynamoDB.DocumentClient();
     const from = req.query.from || new Date().toISOString();
 
@@ -40,10 +40,10 @@ router.get('/history/:playerName', (req, res, next) => {
     
     const params = {
         TableName: dynamoDBConfig.lor_history_table_name,
-        KeyConditionExpression: 'playerName = :playerName AND gameStartTimestamp BETWEEN :to AND :from',
+        KeyConditionExpression: 'twitchChannelId = :twitchChannelId AND gameStartTimestamp BETWEEN :to AND :from',
         ScanIndexForward: false,
         ExpressionAttributeValues: {
-            ":playerName": req.params.playerName,
+            ":twitchChannelId": req.params.twitchChannelId,
             ":from": from,
             ":to": to
         },

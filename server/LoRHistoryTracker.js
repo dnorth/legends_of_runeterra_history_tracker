@@ -5,12 +5,13 @@ const { getLoRClientAPI, addOrUpdateHistoryRecordToDynamoDB } = require('./api-u
 const gameStateTypes = require('./GameState.types');
 
 class LoRHistoryTracker {
-    constructor(io) {
+    constructor(io, broadcasterChannelId) {
         this.io = io;
         this.history = [];
         this.gameState = gameStateTypes.MENUS;
         this.activeRecordID = null;
         this.sessionId = uuidv4();
+        this.twitchChannelId = broadcasterChannelId;
     }
 
     startTrackingHistory(pollInterval) {
@@ -49,7 +50,7 @@ class LoRHistoryTracker {
 
     addRecordToHistory(newRecordProperties) {
         const newId = uuidv4();
-        const newRecord = new LoRHistoryRecord({id: newId, ...newRecordProperties});
+        const newRecord = new LoRHistoryRecord({ twitchChannelId: this.twitchChannelId, id: newId, ...newRecordProperties});
         this.history = [newRecord, ...this.history];
 
         addOrUpdateHistoryRecordToDynamoDB(newRecord);

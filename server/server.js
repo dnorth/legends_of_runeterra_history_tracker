@@ -46,9 +46,11 @@ const server = https.createServer({
 
 const io = socketIO(server);
 
+const broadcasterChannelId = 45279752;
+
 const LoRHistoryTracker = require('./LoRHistoryTracker');
 
-const lorHistoryTracker = new LoRHistoryTracker(io);
+const lorHistoryTracker = new LoRHistoryTracker(io, broadcasterChannelId);
 
 io.on('connection', (socket) => {
     socket.emit('onHistoryUpdated', lorHistoryTracker.history);

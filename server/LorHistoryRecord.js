@@ -1,7 +1,7 @@
 const dynamoDBConfig = require('./dynamodb/config/config');
 
 class LoRHistoryRecord {
-    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId }) {
+    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId }) {
         this.id = id;
         this.playerName = playerName;
         this.opponentName = opponentName;
@@ -11,9 +11,10 @@ class LoRHistoryRecord {
         this.gameStartTimestamp = gameStartTimestamp;
         this.gameEndTimestamp = gameEndTimestamp;
         this.sessionId = sessionId;
+        this.twitchChannelId = twitchChannelId.toString();
     }
 
-    updateRecord = ({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId }) => {
+    updateRecord = ({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId }) => {
         this.id = id || this.id;
         this.playerName = playerName || this.playerName;
         this.opponentName = opponentName || this.opponentName;
@@ -23,6 +24,7 @@ class LoRHistoryRecord {
         this.gameStartTimestamp = gameStartTimestamp || this.gameStartTimestamp;
         this.gameEndTimestamp = gameEndTimestamp || this.gameEndTimestamp;
         this.sessionId = sessionId || this.sessionId;
+        this.twitchChannelId = twitchChannelId || this.twitchChannelId;
 
         return this;
     }
@@ -44,7 +46,8 @@ class LoRHistoryRecord {
             sessionGameId: this.sessionGameId,
             gameStartTimestamp: this.gameStartTimestamp,
             gameEndTimestamp: this.gameEndTimestamp,
-            sessionId: this.sessionId
+            sessionId: this.sessionId,
+            twitchChannelId: this.twitchChannelId
         }
     }
 }
