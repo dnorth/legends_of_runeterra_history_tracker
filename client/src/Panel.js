@@ -1,8 +1,8 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import App from "./components/App/App"
+import PanelApp from "./components/PanelApp/PanelApp"
 
 ReactDOM.render(
-  <App />,
+  <PanelApp />,
   document.getElementById("root")
 )

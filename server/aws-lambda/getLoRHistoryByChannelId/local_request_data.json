@@ -2,7 +2,8 @@
     "path": "history",
     "httpMethod": "GET",
     "headers": {
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODkyNjMyMjMsIm9wYXF1ZV91c2VyX2lkIjoiVTQ1Mjc5NzUyIiwicm9sZSI6ImJyb2FkY2FzdGVyIiwicHVic3ViX3Blcm1zIjp7Imxpc3RlbiI6WyJicm9hZGNhc3QiLCJnbG9iYWwiXSwic2VuZCI6WyJicm9hZGNhc3QiXX0sImNoYW5uZWxfaWQiOiI0NTI3OTc1MiIsInVzZXJfaWQiOiI0NTI3OTc1MiIsImlhdCI6MTU4OTE3NjgyM30.CinjNloVcCHhVYlBiA3LvTdzOmltaxvQLHI3Z-ZM9OM"
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODkyNjMyMjMsIm9wYXF1ZV91c2VyX2lkIjoiVTQ1Mjc5NzUyIiwicm9sZSI6ImJyb2FkY2FzdGVyIiwicHVic3ViX3Blcm1zIjp7Imxpc3RlbiI6WyJicm9hZGNhc3QiLCJnbG9iYWwiXSwic2VuZCI6WyJicm9hZGNhc3QiXX0sImNoYW5uZWxfaWQiOiI0NTI3OTc1MiIsInVzZXJfaWQiOiI0NTI3OTc1MiIsImlhdCI6MTU4OTE3NjgyM30.CinjNloVcCHhVYlBiA3LvTdzOmltaxvQLHI3Z-ZM9OM",
+        "Requesting-Client": "Win Tracker"
     },
     "queryStringParameters": {}
 }

@@ -63,6 +63,7 @@ functions:
     handler: handler.getLoRHistoryByChannelId
     environment:
       WIN_TRACKER_SECRET: ${ssm:/twitch-win-tracker-secret~true}
+      HISTORY_TRACKER_SECRET: ${ssm:/twitch-history-tracker-secret~true}
       DYNAMODB_ACCESS_KEY_ID: ${ssm:/dynamodb-access-key-id~true}
       DYNAMODB_SECRET_ACCESS_KEY: ${ssm:/dynamodb-secret-access-key~true}
       NODE_ENV: production
@@ -70,9 +71,13 @@ functions:
       - http: 
           path: history
           method: get
-          headers:
-            - Authorization
-          cors: true
+          cors:
+            origin: '*' 
+            headers:
+              - Authorization
+              - Requesting-Client
+              - Content-Type
+            allowCredentials: false
           request:
             parameters:
               querystrings:
@@ -113,6 +118,27 @@ functions:
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,Requesting-Client'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+    GatewayResponseDefault5XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,Requesting-Client'"
+        ResponseType: DEFAULT_5XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+
 #resources:
 #  Resources:
 #    NewResource:

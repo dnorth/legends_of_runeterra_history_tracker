@@ -1,8 +1,8 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import App from "./components/App/App"
+import OverlayApp from "./components/OverlayApp/OverlayApp"
 
 ReactDOM.render(
-  <App />,
+  <OverlayApp />,
   document.getElementById("root")
 )

@@ -1,10 +1,10 @@
 import React from 'react'
 import Authentication from '../../util/Authentication/Authentication'
-import WinTracker from '../WinTracker'
+import PanelHistoryTracker from './PanelHistoryTracker'
 
 import '../../fonts/Beaufort for LOL Bold.ttf'
 
-import './App.css'
+import './PanelApp.css'
 
 export default class App extends React.Component{
     constructor(props){
@@ -63,7 +63,7 @@ export default class App extends React.Component{
     render(){
         if(this.state.finishedLoading && this.state.isVisible){
             return (
-                <WinTracker authentication={this.Authentication} />
+                <PanelHistoryTracker authentication={this.Authentication} />
             )
         }else{
             return (

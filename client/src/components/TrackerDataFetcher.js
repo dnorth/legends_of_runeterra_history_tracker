@@ -35,7 +35,7 @@ const TrackerDataFetcher = (props) => {
 
         const getFullHistoryOnLoad = async () => {
             try {
-                const response = await authentication.makeCall(HISTORY_ENDPOINT);
+                const response = await authentication.makeCall(HISTORY_ENDPOINT, props.requestingClient);
                 const responseBody = await response.json();
 
                 dispatch({ type: 'setFullHistory', fullHistory: responseBody.data });

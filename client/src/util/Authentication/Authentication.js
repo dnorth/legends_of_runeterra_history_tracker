@@ -86,12 +86,13 @@ export default class Authentication{
      * 
      */
 
-    makeCall(url, method="GET"){
+    makeCall(url, requestingClient, method="GET"){
         return new Promise((resolve, reject)=>{
             if(this.isAuthenticated()){
                 let headers={
                     'Content-Type':'application/json',
-                    'Authorization': `Bearer ${this.state.token}`
+                    'Authorization': `Bearer ${this.state.token}`,
+                    'Requesting-Client': requestingClient
                 }
     
                 fetch(url,

@@ -8,11 +8,12 @@ const serverTokenDurationSec = 30;
 const IS_PROD = process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'production';
 
 const winTrackerSecret = IS_PROD ? process.env.WIN_TRACKER_SECRET : require("../../secrets").winTrackerSecret;
+const historyTrackerSecret = IS_PROD ? process.env.HISTORY_TRACKER_SECRET : require("../../secrets").historyTrackerSecret;
 const dynamoDBConfig = IS_PROD ? { accessKeyId: process.env.DYNAMODB_ACCESS_KEY_ID, secretAccessKey: process.env.DYNAMODB_SECRET_ACCESS_KEY, region: 'us-east-2' } : require('../../dynamodb/config/config').aws_local_config;
 
-var secret = Buffer.from(winTrackerSecret, 'base64');
+const verifyAndDecode = (base64EncodedSecret, header) => {
+    const secret = Buffer.from(base64EncodedSecret, 'base64');
 
-const verifyAndDecode = (header) => {
     if (header && header.startsWith(bearerPrefix)) {
         try {
             const token = header.substring(bearerPrefix.length);
@@ -29,14 +30,23 @@ const getFormattedResponse = (statusCode, message) => (
   {
     statusCode,
     headers: {
-      "Access-Control-Allow-Origin" : "*"
+      "Access-Control-Allow-Origin" : "*",
+      "Access-Control-Allow-Headers": "Authorization,Requesting-Client,Content-Type"
     },
     body: JSON.stringify(message, null, 4)
   }
 )
 
 module.exports.getLoRHistoryByChannelId = async event => {
-  const decodedJwt = verifyAndDecode(event.headers && event.headers.Authorization);
+  if(!event.headers || !event.headers['requesting-client']) {
+    return getFormattedResponse(400, {
+      message: 'Valid Requesting Client Required.'
+    })
+  }
+
+  const base64EncodedSecret = event.headers['requesting-client'] === 'Win Tracker' ? winTrackerSecret : historyTrackerSecret;
+
+  const decodedJwt = verifyAndDecode(base64EncodedSecret, event.headers && event.headers.Authorization);
 
   if (decodedJwt) {
     const channelId = decodedJwt.channel_id;
@@ -64,7 +74,7 @@ module.exports.getLoRHistoryByChannelId = async event => {
             ":from": from,
             ":to": to
         },
-        Limit: 50,
+        Limit: 30,
     };
 
     try {

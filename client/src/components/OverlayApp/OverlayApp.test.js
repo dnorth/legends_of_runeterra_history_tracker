@@ -1,9 +1,9 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import App from './App'
+import OverlayApp from './OverlayApp'
 
 test('renders without failing', ()=>{
-    let wrapper = shallow(<App />)
+    let wrapper = shallow(<OverlayApp />)
 
     expect(wrapper).toBeDefined()
 })
