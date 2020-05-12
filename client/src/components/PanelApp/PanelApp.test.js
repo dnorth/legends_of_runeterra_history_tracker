@@ -9,7 +9,7 @@ test('renders without failing', ()=>{
 })
 
 test('able to change theme based on context',()=>{
-    let wrapper = shallow(<App />)
+    let wrapper = shallow(<PanelApp />)
     let instance = wrapper.instance()
 
     expect(wrapper.state('theme')).toEqual('light')
