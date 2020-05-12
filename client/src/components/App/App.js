@@ -63,7 +63,7 @@ export default class App extends React.Component{
     render(){
         if(this.state.finishedLoading && this.state.isVisible){
             return (
-                <WinTracker />
+                <WinTracker authentication={this.Authentication} />
             )
         }else{
             return (

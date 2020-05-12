@@ -4,16 +4,19 @@ import TrackerDataFetcher from './TrackerDataFetcher'
 
 import './WinTracker.css'
 
-const WinTracker = () => {
+const WinTracker = (props) => {
     return (
-        <TrackerDataFetcher>
-            {(trackerData) => (
-                <div className="winTrackerContainer">
-                    <div>
-                        <div>{trackerData.wins} &minus; {trackerData.losses}</div>
+        <TrackerDataFetcher authentication={props.authentication}>
+            {({ trackerData, isLoaded }) => isLoaded
+                ? (
+                    <div className="winTrackerContainer">
+                        <div>
+                            <div>{trackerData.wins} &minus; {trackerData.losses}</div>
+                        </div>
                     </div>
-                </div>
-            )}
+                ) 
+                : <div></div>
+            }
         </TrackerDataFetcher>
     )
 }

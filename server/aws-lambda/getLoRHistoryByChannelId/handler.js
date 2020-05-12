@@ -25,7 +25,15 @@ const verifyAndDecode = (header) => {
     return null;
 }
 
-const getFormattedBody = (message) => JSON.stringify(message, null, 4)
+const getFormattedResponse = (statusCode, message) => (
+  {
+    statusCode,
+    headers: {
+      "Access-Control-Allow-Origin" : "*"
+    },
+    body: JSON.stringify(message, null, 4)
+  }
+)
 
 module.exports.getLoRHistoryByChannelId = async event => {
   const decodedJwt = verifyAndDecode(event.headers && event.headers.Authorization);
@@ -62,28 +70,20 @@ module.exports.getLoRHistoryByChannelId = async event => {
     try {
       const response = await docClient.query(params).promise();
 
-      return {
-        statusCode: 200,
-        body: getFormattedBody({
-          data: response.Items
-        })
-      }
+      return getFormattedResponse(200, {
+        data: response.Items
+      })
+
     } catch(error) {
-      return {
-        statusCode: 500,
-        body: getFormattedBody({
+      return getFormattedResponse(500, {
           errorMessage: error.message,
           message: 'Could not get items...',
           data: []
         })
-      }
     }
   } else {
-    return {
-      statusCode: 401,
-      body: getFormattedBody({
-        message: 'Valid JWT required.'
-      })
-    }
+    return getFormattedResponse(401, {
+      message: 'Valid JWT required.'
+    })
   }
 };
