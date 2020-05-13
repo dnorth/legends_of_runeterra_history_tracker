@@ -86,7 +86,7 @@ export default class Authentication{
      * 
      */
 
-    makeCall(url, requestingClient, method="GET"){
+    makeCall(url, method="GET", requestingClient){
         return new Promise((resolve, reject)=>{
             if(this.isAuthenticated()){
                 let headers={

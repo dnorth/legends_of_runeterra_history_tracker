@@ -1,8 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 
+import ClientHistoryRecord from './ClientHistoryRecord'
+
 export default class TrackerData {
     constructor(history = []) {
-        this.history = history;
+        this.history = history.map(record => new ClientHistoryRecord(record));
     }
 
     get history() {
@@ -10,7 +12,7 @@ export default class TrackerData {
     }
 
     set history(newFullHistory) {
-        this._history = newFullHistory;
+        this._history = newFullHistory.map(record => new ClientHistoryRecord(record));
     }
 
     get wins() {
