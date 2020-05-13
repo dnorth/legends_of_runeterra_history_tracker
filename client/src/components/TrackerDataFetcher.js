@@ -1,5 +1,4 @@
 import React, { useReducer, useEffect, useState } from 'react'
-import socketIOClient from "socket.io-client";
 
 import TrackerData from './TrackerData';
 
