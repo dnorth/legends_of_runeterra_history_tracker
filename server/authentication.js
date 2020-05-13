@@ -1,11 +1,9 @@
 const axios = require('axios');
 const jwt = require("jsonwebtoken");
 
-const { winTrackerSecret, winTrackerClientId } = require("./secrets");
+const { winTrackerSecret, winTrackerClientId, historyTrackerSecret, historyTrackerClientId } = require("./secrets");
 const bearerPrefix = "Bearer ";
 const serverTokenDurationSec = 30;
-
-var secret = Buffer.from(winTrackerSecret, 'base64');
 
 function verifyAndDecode(header) {
     if (header.startsWith(bearerPrefix)) {
@@ -18,7 +16,9 @@ function verifyAndDecode(header) {
     }
 }
 
-function makeServerBroadcastToken(channelId) {
+function makeServerBroadcastToken(clientSecret, channelId) {
+    var secret = Buffer.from(clientSecret, 'base64');
+
     const payload = {
       exp: Math.floor(Date.now() / 1000) + serverTokenDurationSec,
       channel_id: "" + channelId,
@@ -33,25 +33,30 @@ function makeServerBroadcastToken(channelId) {
   }
 
   async function makeBroadcast(channelId, message) {
-      const headers = {
-          "Client-Id": winTrackerClientId,
-          "Content-Type": "application/json",
-          Authorization: bearerPrefix + makeServerBroadcastToken(channelId)
-      };
+    await broadcastToApplication(winTrackerClientId, winTrackerSecret, channelId, message);
+    await broadcastToApplication(historyTrackerClientId, historyTrackerSecret, channelId, message);
+  }
 
-      const body = JSON.stringify({
-        content_type: 'application/json',
-        message,
-        targets: [ 'broadcast' ]
-      });
+  const broadcastToApplication = async (clientId, clientSecret, channelId, message) => {
+    const headers = {
+      "Client-Id": clientId,
+      "Content-Type": "application/json",
+      Authorization: bearerPrefix + makeServerBroadcastToken(clientSecret, channelId)
+    };
 
-      try {
-        const response = await axios.post(`https://api.twitch.tv/extensions/message/${channelId}`, body, { headers });
+    const body = JSON.stringify({
+      content_type: 'application/json',
+      message,
+      targets: [ 'broadcast' ]
+    });
 
-        console.log('broadcast successful: ', response.status);
-      } catch(e) {
-          console.log('broadcast failed: ', e.message);
-      }
+    try {
+      const response = await axios.post(`https://api.twitch.tv/extensions/message/${channelId}`, body, { headers });
+
+      console.log(`broadcast to ${clientId} successful: ${response.status}`);
+    } catch(e) {
+        console.log('broadcast failed: ', e.message);
+    }
   }
 
   module.exports = {

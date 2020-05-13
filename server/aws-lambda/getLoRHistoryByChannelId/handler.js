@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const AWS = require('aws-sdk');
 
 const bearerPrefix = "Bearer ";
-const serverTokenDurationSec = 30;
 
 const IS_PROD = process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'production';
 
