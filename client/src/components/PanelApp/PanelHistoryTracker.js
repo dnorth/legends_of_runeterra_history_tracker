@@ -7,18 +7,15 @@ import './PanelHistoryTracker.css'
 
 const PanelHistoryTracker = (props) => {
     return (
-        <TrackerDataFetcher authentication={props.authentication} requestingClient={requestingClientTypes.HISTORY_TRACKER_PANEL}>
-            {({ trackerData, isLoaded }) => isLoaded
-                ? (
-                    <div className="winTrackerContainer">
-                        <div>
-                            <div>{trackerData.wins} &minus; {trackerData.losses}</div>
-                        </div>
-                    </div>
-                ) 
-                : <div></div>
-            }
-        </TrackerDataFetcher>
+        <div className="historyTrackerContainer">
+            <TrackerDataFetcher authentication={props.authentication} requestingClient={requestingClientTypes.HISTORY_TRACKER_PANEL}>
+                {({ trackerData, isLoaded }) => isLoaded
+                    ? trackerData.history.map(record => 
+                            (<div>{record.id}</div>))
+                    : <div></div>
+                }
+            </TrackerDataFetcher>
+        </div>
     )
 }
 

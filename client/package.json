@@ -8,6 +8,7 @@
     "test-watch": "jest --watch",
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development",
+    "start-prod": "npm run build && http-server dist -S -C cert.pem",
     "cert": "./bin/generate_cert.sh server",
     "host": "webpack-dev-server --mode development --devrig"
   },
@@ -29,6 +30,7 @@
     "enzyme-adapter-react-16": "^1.15.1",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^4.0.0-beta.11",
+    "http-server": "^0.12.3",
     "isomorphic-fetch": "^2.2.1",
     "jest": "^25.4.0",
     "jest-fetch-mock": "^3.0.3",

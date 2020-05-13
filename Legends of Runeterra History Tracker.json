@@ -19,7 +19,7 @@
   "extensionViews": [
     {
       "id": "1",
-      "label": "Broadcaster Panel",
+      "label": "Broadcaster View",
       "channelId": "45279752",
       "configurationAnchor": "panel",
       "displayChannelName": "lachusta",
@@ -60,7 +60,7 @@
     "installationCount": -42,
     "liveConfigUrl": "",
     "name": "Legends of Runeterra History Tracker",
-    "panelHeight": 300,
+    "panelHeight": 500,
     "privacyPolicyUrl": "",
     "requestIdentityLink": false,
     "requiredBroadcasterAbilities": [],
@@ -78,14 +78,14 @@
       "panel": "https://localhost:8080/panel.html"
     },
     "views": {
-      "config": {
-        "canLinkExternalContent": false,
-        "viewerUrl": "https://localhost:8080/config.html"
-      },
       "panel": {
-        "canLinkExternalContent": false,
-        "height": 300,
-        "viewerUrl": "https://localhost:8080/panel.html"
+        "viewerUrl": "https://localhost:8080/panel.html",
+        "height": 500,
+        "canLinkExternalContent": false
+      },
+      "config": {
+        "viewerUrl": "https://localhost:8080/config.html",
+        "canLinkExternalContent": false
       }
     },
     "whitelistedConfigUrls": [],

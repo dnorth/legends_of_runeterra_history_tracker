@@ -1,6 +1,6 @@
 const express = require('express');
+const cors = require('cors');
 const jsonwebtoken = require('jsonwebtoken');
-const socketIO = require('socket.io');
 const https = require('https');
 const fs = require('fs');
 const bodyParser = require('body-parser');
@@ -19,14 +19,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST');
-    // Note that the origin of an extension iframe will be null
-    // so the Access-Control-Allow-Origin has to be wildcard.
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    next();
-});
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send('Alive and well!');
@@ -44,21 +37,11 @@ const server = https.createServer({
     console.log('App is listening on port ' + port)
 });
 
-const io = socketIO(server);
-
 const broadcasterChannelId = 45279752;
 
 const LoRHistoryTracker = require('./LoRHistoryTracker');
 
-const lorHistoryTracker = new LoRHistoryTracker(io, broadcasterChannelId);
-
-io.on('connection', (socket) => {
-    socket.emit('onHistoryUpdated', lorHistoryTracker.history);
-
-    socket.on('disconnect', () => {
-    })
-})
-
+const lorHistoryTracker = new LoRHistoryTracker(broadcasterChannelId);
 
 lorHistoryTracker.startTrackingHistory(1000);
 

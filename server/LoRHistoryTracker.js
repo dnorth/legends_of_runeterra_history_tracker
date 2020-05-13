@@ -5,8 +5,7 @@ const { getLoRClientAPI, addOrUpdateHistoryRecordToDynamoDB } = require('./api-u
 const gameStateTypes = require('./GameState.types');
 
 class LoRHistoryTracker {
-    constructor(io, broadcasterChannelId) {
-        this.io = io;
+    constructor(broadcasterChannelId) {
         this.history = [];
         this.gameState = gameStateTypes.MENUS;
         this.activeRecordID = null;
@@ -66,7 +65,6 @@ class LoRHistoryTracker {
             const updatedRecord = recordToUpdate.updateRecord({...newProperties});
             this.history[recordIndex] = updatedRecord;
             addOrUpdateHistoryRecordToDynamoDB(updatedRecord);
-            this.io.sockets.emit('onHistoryUpdated', this.history);
         }
     }
 
@@ -83,7 +81,6 @@ class LoRHistoryTracker {
 
     set history(newFullHistory) {
         this._history = newFullHistory;
-        this.io.sockets.emit('onHistoryUpdated', this.history);
     }
 
     get wins() {

@@ -3,7 +3,10 @@ import socketIOClient from "socket.io-client";
 
 import TrackerData from './TrackerData';
 
-const HISTORY_ENDPOINT = "https://lmz0u3fo8a.execute-api.us-east-2.amazonaws.com/production/history";
+const LOCAL_HISTORY_ENDPOINT = 'https://localhost:6750/db/history';
+const PROD_HISTORY_ENDPOINT = "https://lmz0u3fo8a.execute-api.us-east-2.amazonaws.com/production/history";
+
+const REAL_HISTORY_ENDPOINT = process.env.NODE_ENV === 'production' ? PROD_HISTORY_ENDPOINT : LOCAL_HISTORY_ENDPOINT;
 
 const initialState = []
 
@@ -23,10 +26,6 @@ const reducer = (trackerData, action) => {
 }
 
 const TrackerDataFetcher = (props) => {
-    //TODO: call an AWS lambda that does a DB "get" with the channel Id and active session Id
-    // In order to accomplish the above this means we need to be saving channel ids in the DB with the game data (and create a GSI with partition key channel_id - gameStartTimestamp)
-    // We also need to create a new table that saves channel ids (maybe to player names?) to active session ids (for win tracker. not necessary for panel tracker if we want to just show last X games or whatever. Probably better to start there first) 
-
     const [trackerData, dispatch] = useReducer(reducer, initialState); //necessary because we're updating on pub/sub and useState doesn't work.
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -35,7 +34,7 @@ const TrackerDataFetcher = (props) => {
 
         const getFullHistoryOnLoad = async () => {
             try {
-                const response = await authentication.makeCall(HISTORY_ENDPOINT, props.requestingClient);
+                const response = await authentication.makeCall(REAL_HISTORY_ENDPOINT, props.requestingClient);
                 const responseBody = await response.json();
 
                 dispatch({ type: 'setFullHistory', fullHistory: responseBody.data });

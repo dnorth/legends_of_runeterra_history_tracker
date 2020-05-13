@@ -13,7 +13,7 @@ const responseCallback = (err, data, res) => {
     } else {
         const { Items } = data;
 
-        res.send(Items);
+        res.send({ data: Items });
     }
 }
 
