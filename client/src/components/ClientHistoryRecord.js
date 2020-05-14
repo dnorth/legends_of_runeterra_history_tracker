@@ -67,7 +67,8 @@ export default class ClientHistoryRecord {
     }
 
     get timeSinceGame() {
-        return moment(this.gameEndTimestamp).fromNow();
+        const timeSinceGame = moment(this.gameEndTimestamp).fromNow();
+        return timeSinceGame === "a few seconds ago" ? "moments ago" : timeSinceGame;
     }
 
     get localGameStartTimeFormatted() {
