@@ -4,7 +4,7 @@ import globalsData from '../data/globals-en_us.json';
 import GameStateTypes from './game-state.types'
 
 export default class ClientHistoryRecord {
-    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId }) {
+    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId, probableError }) {
         this.id = id;
         this.playerName = playerName;
         this.opponentName = opponentName;
@@ -15,13 +15,14 @@ export default class ClientHistoryRecord {
         this.gameEndTimestamp = gameEndTimestamp;
         this.sessionId = sessionId;
         this.twitchChannelId = twitchChannelId;
+        this.probableError = probableError;
     }
 
     toJson = () => {
         return {
             id: this.id,
             playerName: this.playerName,
-            opponentName: this.opponentName,
+            opponentName: this._opponentName,
             deckCode: this.deckCode,
             localPlayerWon: this.localPlayerWon,
             sessionGameId: this.sessionGameId,
@@ -46,10 +47,18 @@ export default class ClientHistoryRecord {
             return moment.utc(moment.duration(moment().diff(this.gameStartTimestamp)).asMilliseconds()).format('mm:ss');
         }
 
+        if (this.probableError) {
+            return ''
+        }
+
         return moment(this.gameEndTimestamp).from(this.gameStartTimestamp, true);
     }
 
     get gameState() {
+        if (this.probableError) {
+            return GameStateTypes.ERROR
+        }
+
         if (this.localPlayerWon === null) {
             return GameStateTypes.INPROGRESS
         }
@@ -58,11 +67,19 @@ export default class ClientHistoryRecord {
     }
 
     get timeSinceGame() {
-        return moment(this.gameStartTimestamp).fromNow();
+        return moment(this.gameEndTimestamp).fromNow();
     }
 
     get localGameStartTimeFormatted() {
         return moment(this.gameStartTimestamp).local().format("LLL")
+    }
+
+    get localGameEndTimeFormatted() {
+        return moment(this.gameEndTimestamp).local().format("LLL")
+    }
+
+    get gameEndedSuccessfully() {
+        return !!(this.gameState === GameStateTypes.VICTORY || this.gameState === GameStateTypes.DEFEAT)
     }
 
     getDecodedDeck = () => DeckEncoder.decode(this.deckCode)

@@ -2,7 +2,8 @@ const GameStateTypes = {
     MENUS: 'Menus',
     INPROGRESS: 'InProgress',
     VICTORY: 'Victory',
-    DEFEAT: 'Defeat'
+    DEFEAT: 'Defeat',
+    ERROR: 'Error'
 }
 
 export default GameStateTypes

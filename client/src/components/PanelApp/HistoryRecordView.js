@@ -9,7 +9,8 @@ const getGameStateText = (record) => {
     const typeMap = {
         [GameStateTypes.INPROGRESS]: 'In Progress',
         [GameStateTypes.VICTORY]: 'Victory',
-        [GameStateTypes.DEFEAT]: 'Defeat'
+        [GameStateTypes.DEFEAT]: 'Defeat',
+        [GameStateTypes.ERROR]: 'Error'
     }
 
     return typeMap[record.gameState]
@@ -36,15 +37,22 @@ const GameLength = ({ gameLength }) => (
 )
 
 const HistoryRecordView = ({ record }) => {
-    const classes = classNames('recordContainer', { 'playerWon': record.gameState === GameStateTypes.VICTORY, 'playerLost': record.gameState === GameStateTypes.DEFEAT, 'inProgress': record.gameState === GameStateTypes.INPROGRESS })
+    const classes = classNames('recordContainer', { 
+        'playerWon': record.gameState === GameStateTypes.VICTORY,
+        'playerLost': record.gameState === GameStateTypes.DEFEAT,
+        'inProgress': record.gameState === GameStateTypes.INPROGRESS,
+        'probableError': record.gameState === GameStateTypes.ERROR
+    })
+
+    const errorTitle = record.gameState === GameStateTypes.ERROR ? { title: 'Looks like something went wrong when trying to collect game data for this record...'} : {}
 
     return (
-        <div className={classes}>
+        <div className={classes} {...errorTitle}>
             <div className="leftSide">
-                { record.gameState !== GameStateTypes.INPROGRESS &&
+                { record.gameEndedSuccessfully &&
                     (
                         <>
-                            <div className="timeSinceGame ellipsis" title={record.localGameStartTimeFormatted}>{record.timeSinceGame}</div>
+                            <div className="timeSinceGame ellipsis" title={record.localGameEndTimeFormatted}>{record.timeSinceGame}</div>
                             <div className="bar" />
                         </>
                     )

@@ -1,6 +1,5 @@
 .recordContainer {
     height: 70px;
-    width: 100%;
     padding: 4px;
 
     display: grid;
@@ -30,6 +29,12 @@
 .playerLost {
     background-color: #e2b6b3;
     border-color: #cea7a7;
+}
+
+.probableError {
+    cursor: help;
+    background-color: #eaeaea;
+    opacity: 0.3;
 }
 
 .inProgress {
