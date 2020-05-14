@@ -4,11 +4,11 @@
 }
 
 body {
-    height: 500px;
     margin: 0;
     font-family: "Roboto";
     font-size: 12px;
     color: #555555;
+    background-color: #eaeaea;
 }
 
 #root {

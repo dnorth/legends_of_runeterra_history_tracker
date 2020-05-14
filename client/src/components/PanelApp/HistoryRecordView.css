@@ -33,7 +33,8 @@
 
 .probableError {
     cursor: help;
-    background-color: #eaeaea;
+    background-color: #A9A9A9;
+    border-color: #696969;
     opacity: 0.3;
 }
 
