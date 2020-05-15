@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
 import { animated, useTransition } from 'react-spring';
 
-import classNames from 'classnames'
-
 import HistoryRecordView from './HistoryRecordView';
-
-import './AnimatedHistoryTracker.css'
+import HeaderNav from './HeaderNav'
 
 const AnimatedHistoryTracker = ({ trackerData }) => {
     const [displayTopNavBar, setDisplayTopNavBar] = useState(false)
@@ -20,7 +17,7 @@ const AnimatedHistoryTracker = ({ trackerData }) => {
 
     return (
         <>
-            <div className={classNames("topNavBar", { "show": displayTopNavBar })}>Last 30 games</div>
+            <HeaderNav showNav={displayTopNavBar} />
             {transitions.map(({ item, key, props }) => <HistoryRecordView key={key} id={item.id} record={item} style={props} />)}
         </>
     )    

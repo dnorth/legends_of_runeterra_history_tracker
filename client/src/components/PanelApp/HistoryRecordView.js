@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import GameStateTypes from '../game-state.types';
 import { useInterval } from '../../util/custom-hooks.util'
 import { animated } from 'react-spring';
+import { Link } from 'react-router-dom'
 
 import ShareDeckButton from './ShareDeckButton';
 import Chevron from './Chevron';
@@ -51,32 +52,34 @@ const HistoryRecordView = ({ record, style }) => {
     const errorTitle = record.gameState === GameStateTypes.ERROR ? { title: 'Looks like something went wrong when trying to collect game data for this record...'} : {}
 
     return (
-        <animated.div className={classes} {...errorTitle} style={style} onClick={() => console.log('route to record page!')}>
-            <div className="leftSide">
-                { record.gameEndedSuccessfully &&
-                    (
-                        <>
-                            <div className="timeSinceGame ellipsis" title={record.localGameEndTimeFormatted}>{record.timeSinceGame}</div>
-                            <div className="bar" />
-                        </>
-                    )
-                }
-                <div className="resultsContainer">
-                    {getGameStateText(record)}
+        <Link to={{ pathname: `/${record.id}`, state: { record }}} className="recordLink">
+            <animated.div className={classes} {...errorTitle} style={style}>
+                <div className="leftSide">
+                    { record.gameEndedSuccessfully &&
+                        (
+                            <>
+                                <div className="timeSinceGame ellipsis" title={record.localGameEndTimeFormatted}>{record.timeSinceGame}</div>
+                                <div className="bar" />
+                            </>
+                        )
+                    }
+                    <div className="resultsContainer">
+                        {getGameStateText(record)}
+                    </div>
+                    { record.gameState === GameStateTypes.INPROGRESS ? <GameLengthInProgress record={record} /> : <GameLength gameLength={record.gameLength} /> }
                 </div>
-                { record.gameState === GameStateTypes.INPROGRESS ? <GameLengthInProgress record={record} /> : <GameLength gameLength={record.gameLength} /> }
-            </div>
-            <div className="factionsContainer">
-                {
-                    record.getDeckFactionImageUrls().map(url => <FactionImage src={url} key={url}/>)
-                }
-            </div>
-            <div className="opponentContainer">
-                <div>VS</div>
-                <div className="opponentName">{record.opponentName}</div>
-            </div>
-            <Chevron />
-        </animated.div>
+                <div className="factionsContainer">
+                    {
+                        record.getDeckFactionImageUrls().map(url => <FactionImage src={url} key={url}/>)
+                    }
+                </div>
+                <div className="opponentContainer">
+                    <div>VS</div>
+                    <div className="opponentName">{record.opponentName}</div>
+                </div>
+                <Chevron />
+            </animated.div>
+        </Link>
     )
 }
 

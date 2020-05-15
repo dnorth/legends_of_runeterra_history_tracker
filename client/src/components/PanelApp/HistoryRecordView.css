@@ -93,3 +93,8 @@
     width: 82px;
     text-align: center;
 }
+
+.recordLink {
+    color: inherit;
+    text-decoration: none;
+}

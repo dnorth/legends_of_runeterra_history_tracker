@@ -1,6 +1,7 @@
 import React from 'react'
 import Authentication from '../../util/Authentication/Authentication'
-import PanelHistoryTracker from './PanelHistoryTracker'
+
+import PanelRouter from './Router'
 
 import '../../fonts/Beaufort for LOL Bold.ttf'
 import classNames from 'classnames'
@@ -66,7 +67,7 @@ export default class App extends React.Component{
 
         if(finishedLoading && isVisible){
             return (
-                <PanelHistoryTracker className={classNames({'light-theme': theme === 'light'}, {'dark-theme': theme === 'dark'})} authentication={this.Authentication} />
+                <PanelRouter className={classNames({'light-theme': theme === 'light'}, {'dark-theme': theme === 'dark'})} authentication={this.Authentication} />
             )
         }else{
             return (

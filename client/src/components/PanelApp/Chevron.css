@@ -1,6 +1,6 @@
 .chevron {
 	border-style: solid;
-	border-width: 0.5em 0.5em 0 0;
+	border-width: 0.25em 0.25em 0 0;
 	content: '';
 	display: inline-block;
 	height: 1em;
@@ -10,7 +10,7 @@
 	transform: rotate(-45deg);
 	vertical-align: top;
 	width: 1em;
-    border-radius: 4px;
+    border-radius: 2px;
     color: #4b4b4b;
 }
 
