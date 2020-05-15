@@ -1,6 +1,7 @@
 import { DeckEncoder } from 'runeterra'
 import moment from 'moment'
 import globalsData from '../data/globals-en_us.json';
+import fullCardData from '../data/full-card-data';
 import GameStateTypes from './game-state.types'
 
 export default class ClientHistoryRecord {
@@ -95,5 +96,10 @@ export default class ClientHistoryRecord {
         const factionAbbreviations = this.getDeckFactions()
 
         return factionAbbreviations.map(faction => globalsData['regions'].find(region => region.abbreviation === faction).iconAbsolutePath);
+    }
+
+    getDetailedDeckInfo = () => {
+        const decodedDeck = this.getDecodedDeck();
+        return decodedDeck.map(deckCard => ({ ...deckCard, ...fullCardData.find(card => card.cardCode === deckCard.code) }))
     }
 }

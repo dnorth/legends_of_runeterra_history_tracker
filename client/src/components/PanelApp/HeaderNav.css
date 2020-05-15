@@ -1,19 +1,17 @@
 .topNavBar {
-    opacity: 0;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 20px 1fr 20px;
+    justify-items: center;
     align-items: center;
-
+    
     padding: 4px;
     background: #6e6e6e;
     margin-bottom: 2px;
     height: 20px;
 
-    transition: opacity 200ms ease-in;
-
     color: #ffffff;
-}
 
-.show {
-    opacity: 1;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }

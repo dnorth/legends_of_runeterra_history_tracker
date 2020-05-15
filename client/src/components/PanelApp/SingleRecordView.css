@@ -1,0 +1,11 @@
+.singleRecordView {
+    display: grid;
+    justify-items: center;
+    grid-row-gap: 20px;
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
