@@ -5,6 +5,7 @@ import { useInterval } from '../../util/custom-hooks.util'
 import { animated } from 'react-spring';
 
 import ShareDeckButton from './ShareDeckButton';
+import Chevron from './Chevron';
 
 import './HistoryRecordView.css'
 
@@ -50,7 +51,7 @@ const HistoryRecordView = ({ record, style }) => {
     const errorTitle = record.gameState === GameStateTypes.ERROR ? { title: 'Looks like something went wrong when trying to collect game data for this record...'} : {}
 
     return (
-        <animated.div className={classes} {...errorTitle} style={style}>
+        <animated.div className={classes} {...errorTitle} style={style} onClick={() => console.log('route to record page!')}>
             <div className="leftSide">
                 { record.gameEndedSuccessfully &&
                     (
@@ -74,7 +75,7 @@ const HistoryRecordView = ({ record, style }) => {
                 <div>VS</div>
                 <div className="opponentName">{record.opponentName}</div>
             </div>
-            <ShareDeckButton record={record} />
+            <Chevron />
         </animated.div>
     )
 }

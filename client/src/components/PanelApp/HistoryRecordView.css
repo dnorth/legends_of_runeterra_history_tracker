@@ -3,7 +3,7 @@
     padding: 4px;
 
     display: grid;
-    grid-template-columns: 84px 74px 82px 50px;
+    grid-template-columns: 84px 74px 102px 1fr;
 
     align-items: center;
     margin-bottom: 4px;
@@ -11,6 +11,12 @@
     border: 1px solid #cdd2d2;
     border-radius: 4px;
     box-sizing: border-box;
+
+    cursor: pointer;
+}
+
+.recordContainer:active {
+    transform: scale(0.98, 0.98) !important;
 }
 
 .leftSide {
@@ -72,32 +78,6 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-}
-
-.shareContainer {
-    position: relative;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.shareIcon {
-    position: absolute;
-}
-
-.shareButton {
-    position: absolute;
-}
-
-.shareContainer:active {
-    transform: scale(0.9, 0.9);
-}
-
-.hiddenDeckCode {
-    position: absolute;
-    top: -10000px;
-    left: -10000px;
 }
 
 .opponentContainer {

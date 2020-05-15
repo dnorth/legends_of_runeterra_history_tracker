@@ -1,0 +1,25 @@
+.shareContainer {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shareIcon {
+    position: absolute;
+}
+
+.shareButton {
+    position: absolute;
+}
+
+.shareContainer:active {
+    transform: scale(0.9, 0.9);
+}
+
+.hiddenDeckCode {
+    position: absolute;
+    top: -10000px;
+    left: -10000px;
+}

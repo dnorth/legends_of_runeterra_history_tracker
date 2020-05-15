@@ -2,6 +2,8 @@ import React, { useRef } from 'react'
 import ShareIcon from '../../images/share_icon.png';
 import PurchaseButton from '../../images/PurchaseButton_256x256.png';
 
+import './ShareDeckButton.css'
+
 import { useToastManager } from './ToastManager'
 
 const ShareDeckButton = (props) => {
