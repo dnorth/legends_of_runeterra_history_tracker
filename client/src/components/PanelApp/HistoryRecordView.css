@@ -3,7 +3,7 @@
     padding: 4px;
 
     display: grid;
-    grid-template-columns: 84px 74px 84px 50px;
+    grid-template-columns: 84px 74px 82px 50px;
 
     align-items: center;
     margin-bottom: 4px;
@@ -22,13 +22,13 @@
 }
 
 .playerWon {
-    background-color: #a3cfec;
-    border-color: #99b9cf;
+    background-color: #87C4FC;
+    border-color: #3055AD;
 }
 
 .playerLost {
-    background-color: #e2b6b3;
-    border-color: #cea7a7;
+    background-color: #FFB0BE;
+    border-color: #B13F5E;
 }
 
 .probableError {
@@ -39,8 +39,8 @@
 }
 
 .inProgress {
-    background-color: #F2D230;
-    border-color: #F2C029;
+    background-color: #F3C25A;
+    border-color: #8B6A2C;
 }
 
 .playerWon .resultsContainer {
@@ -55,7 +55,7 @@
     width: 45px;
     margin: 4px;
     height: 2px;
-    background: #cea7a7;
+    background: #504733;
 }
 
 .timeSinceGame {
@@ -110,6 +110,6 @@
 
 .opponentName {
     word-wrap: break-word;
-    width: 84px;
+    width: 82px;
     text-align: center;
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import GameStateTypes from '../game-state.types';
 import { useInterval } from '../../util/custom-hooks.util'
+import { animated } from 'react-spring';
 
 import ShareDeckButton from './ShareDeckButton';
 
@@ -38,7 +39,7 @@ const GameLength = ({ gameLength }) => (
     </div>
 )
 
-const HistoryRecordView = ({ record, onDeckCopy }) => {
+const HistoryRecordView = ({ record, style }) => {
     const classes = classNames('recordContainer', { 
         'playerWon': record.gameState === GameStateTypes.VICTORY,
         'playerLost': record.gameState === GameStateTypes.DEFEAT,
@@ -49,7 +50,7 @@ const HistoryRecordView = ({ record, onDeckCopy }) => {
     const errorTitle = record.gameState === GameStateTypes.ERROR ? { title: 'Looks like something went wrong when trying to collect game data for this record...'} : {}
 
     return (
-        <div className={classes} {...errorTitle}>
+        <animated.div className={classes} {...errorTitle} style={style}>
             <div className="leftSide">
                 { record.gameEndedSuccessfully &&
                     (
@@ -74,7 +75,7 @@ const HistoryRecordView = ({ record, onDeckCopy }) => {
                 <div className="opponentName">{record.opponentName}</div>
             </div>
             <ShareDeckButton record={record} />
-        </div>
+        </animated.div>
     )
 }
 
