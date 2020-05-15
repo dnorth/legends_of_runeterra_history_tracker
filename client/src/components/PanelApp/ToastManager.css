@@ -1,0 +1,17 @@
+.toastContainer {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+}
+
+.toast {
+    position: absolute;
+
+    padding: 16px;
+    background: #12805c;
+    color: white;
+    display: flex;
+    border-radius: 4px;
+}

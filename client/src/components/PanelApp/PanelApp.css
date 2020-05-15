@@ -7,18 +7,20 @@ body {
     margin: 0;
     font-family: "Roboto";
     font-size: 12px;
-    color: #555555;
-    background-color: #eaeaea;
+    color: #232127;
+    background-color: #F7F7F8;
 }
 
 #root {
     height: 100%;
 }
 
-.App-light{
-    color:red;
+.light-theme{
+    color: #232127;
+    background-color: #F7F7F8;
 }
 
-.App-dark{
-    color:#e5e3e8;
+.dark-theme{
+    color: #232127;
+    background-color: #201c2b;
 }

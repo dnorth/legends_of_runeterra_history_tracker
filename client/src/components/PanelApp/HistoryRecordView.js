@@ -3,6 +3,8 @@ import classNames from 'classnames'
 import GameStateTypes from '../game-state.types';
 import { useInterval } from '../../util/custom-hooks.util'
 
+import ShareDeckButton from './ShareDeckButton';
+
 import './HistoryRecordView.css'
 
 const getGameStateText = (record) => {
@@ -36,7 +38,7 @@ const GameLength = ({ gameLength }) => (
     </div>
 )
 
-const HistoryRecordView = ({ record }) => {
+const HistoryRecordView = ({ record, onDeckCopy }) => {
     const classes = classNames('recordContainer', { 
         'playerWon': record.gameState === GameStateTypes.VICTORY,
         'playerLost': record.gameState === GameStateTypes.DEFEAT,
@@ -68,8 +70,10 @@ const HistoryRecordView = ({ record }) => {
                 }
             </div>
             <div className="opponentContainer">
-                VS {record.opponentName}
+                <div>VS</div>
+                <div className="opponentName">{record.opponentName}</div>
             </div>
+            <ShareDeckButton record={record} />
         </div>
     )
 }

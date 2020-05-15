@@ -3,6 +3,7 @@ import Authentication from '../../util/Authentication/Authentication'
 import PanelHistoryTracker from './PanelHistoryTracker'
 
 import '../../fonts/Beaufort for LOL Bold.ttf'
+import classNames from 'classnames'
 
 import './PanelApp.css'
 
@@ -61,9 +62,11 @@ export default class App extends React.Component{
     }
     
     render(){
-        if(this.state.finishedLoading && this.state.isVisible){
+        const { finishedLoading, isVisible, theme } = this.state
+
+        if(finishedLoading && isVisible){
             return (
-                <PanelHistoryTracker authentication={this.Authentication} />
+                <PanelHistoryTracker className={classNames({'light-theme': theme === 'light'}, {'dark-theme': theme === 'dark'})} authentication={this.Authentication} />
             )
         }else{
             return (

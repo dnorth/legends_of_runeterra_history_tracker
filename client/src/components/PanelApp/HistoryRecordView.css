@@ -3,7 +3,7 @@
     padding: 4px;
 
     display: grid;
-    grid-template-columns: 84px 74px 1fr;
+    grid-template-columns: 84px 74px 84px 50px;
 
     align-items: center;
     margin-bottom: 4px;
@@ -72,4 +72,44 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+.shareContainer {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shareIcon {
+    position: absolute;
+}
+
+.shareButton {
+    position: absolute;
+}
+
+.shareContainer:active {
+    transform: scale(0.9, 0.9);
+}
+
+.hiddenDeckCode {
+    position: absolute;
+    top: -10000px;
+    left: -10000px;
+}
+
+.opponentContainer {
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.opponentName {
+    word-wrap: break-word;
+    width: 84px;
+    text-align: center;
 }
