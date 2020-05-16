@@ -1,0 +1,15 @@
+.vsButtonContainer {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vsItem {
+    position: absolute;
+}
+
+.vsText {
+    color: #fbf8c5;
+}

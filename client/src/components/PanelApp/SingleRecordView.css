@@ -2,10 +2,35 @@
     display: grid;
     justify-items: center;
     grid-row-gap: 20px;
+    padding: 4px;
+
+    color: #beaf90;
+    font-family: 'Beaufort for LOL Regular', "Roboto";
+
 }
 
 .cardContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.vsInfo {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.vsButton {
+    margin: 8px 0;
+}
+
+.bar {
+    width: 160px;
+    margin: 4px;
+    height: 2px;
+    background: #504733;
 }

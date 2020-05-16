@@ -5,6 +5,7 @@ import { useInterval } from '../../util/custom-hooks.util'
 import { animated } from 'react-spring';
 import { Link } from 'react-router-dom'
 
+import FactionImages from './FactionImages';
 import ShareDeckButton from './ShareDeckButton';
 import Chevron from './Chevron';
 
@@ -20,10 +21,6 @@ const getGameStateText = (record) => {
 
     return typeMap[record.gameState]
 }
-
-const FactionImage = ({ src }) => (
-    <img height="30px" width="30px" src={src} />
-)
 
 const GameLengthInProgress = ({ record }) => {
     const [newGameLength, setGameLength] = useState(record.gameLength)
@@ -59,7 +56,7 @@ const HistoryRecordView = ({ record, style }) => {
                         (
                             <>
                                 <div className="timeSinceGame ellipsis" title={record.localGameEndTimeFormatted}>{record.timeSinceGame}</div>
-                                <div className="bar" />
+                                <div className="historyViewBar" />
                             </>
                         )
                     }
@@ -68,11 +65,7 @@ const HistoryRecordView = ({ record, style }) => {
                     </div>
                     { record.gameState === GameStateTypes.INPROGRESS ? <GameLengthInProgress record={record} /> : <GameLength gameLength={record.gameLength} /> }
                 </div>
-                <div className="factionsContainer">
-                    {
-                        record.getDeckFactionImageUrls().map(url => <FactionImage src={url} key={url}/>)
-                    }
-                </div>
+                <FactionImages record={record} />
                 <div className="opponentContainer">
                     <div>VS</div>
                     <div className="opponentName">{record.opponentName}</div>

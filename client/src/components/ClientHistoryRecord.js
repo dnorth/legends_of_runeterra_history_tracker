@@ -100,6 +100,24 @@ export default class ClientHistoryRecord {
 
     getDetailedDeckInfo = () => {
         const decodedDeck = this.getDecodedDeck();
-        return decodedDeck.map(deckCard => ({ ...deckCard, ...fullCardData.find(card => card.cardCode === deckCard.code) }))
+        return decodedDeck.map(deckCard => ({ ...deckCard, ...fullCardData.find(card => card.cardCode === deckCard.code) })).sort((a, b) => a.cost - b.cost)
+    }
+
+    getCardTypeCount = () => {
+        const detailedDeckInfo = this.getDetailedDeckInfo();
+
+        return detailedDeckInfo.reduce((acc, item) => {
+            if(item.type === 'Spell') {
+                return {...acc, 'Spells': { ...acc.Spells, count: acc.Spells.count + item.count}}
+            }
+
+            if(item.type === 'Unit') {
+                if(item.supertype === 'Champion') {
+                    return {...acc, 'Champions': { ...acc.Champions, count: acc.Champions.count + item.count}}
+                } else {
+                    return {...acc, 'Followers': { ...acc.Followers, count: acc.Followers.count + item.count}}
+                }
+            }
+        }, { 'Champions': { count: 0 }, 'Spells': { count: 0 }, 'Followers': { count: 0 } })
     }
 }

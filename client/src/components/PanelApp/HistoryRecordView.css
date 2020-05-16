@@ -57,7 +57,7 @@
     color: #c6443e;
 }
 
-.bar {
+.historyViewBar {
     width: 45px;
     margin: 4px;
     height: 2px;
@@ -74,12 +74,6 @@
     text-overflow: ellipsis;
 }
 
-.factionsContainer {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
 .opponentContainer {
     padding: 4px;
     display: flex;
@@ -89,9 +83,13 @@
 }
 
 .opponentName {
+    margin-top: 4px;
     word-wrap: break-word;
     width: 82px;
     text-align: center;
+    font-family: "Univers-Roman";
+    font-weight: bold;
+    font-size: 14px;
 }
 
 .recordLink {

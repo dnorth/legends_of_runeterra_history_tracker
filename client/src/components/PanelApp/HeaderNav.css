@@ -1,17 +1,20 @@
-.topNavBar {
-    display: grid;
-    grid-template-columns: 20px 1fr 20px;
-    justify-items: center;
-    align-items: center;
-    
+.topNavBar {    
     padding: 4px;
-    background: #6e6e6e;
-    margin-bottom: 2px;
-    height: 20px;
+    height: 32px;
 
     color: #ffffff;
 
     position: sticky;
     top: 0;
     z-index: 1;
+
+    display: grid;
+    grid-template-columns: 20px 1fr 20px;
+    justify-items: center;
+    align-items: center;
+
+    background-image: url(../../images/BG_Menu.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #6e6e6e;
 }

@@ -1,0 +1,11 @@
+.stickyBackgroundContainer {
+    position: absolute;
+    z-index: -1;
+    height: 100%;
+}
+
+.stickyBackground {
+    position: sticky;
+    top: 0;
+    width: 100%;
+}

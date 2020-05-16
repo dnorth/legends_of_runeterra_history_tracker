@@ -1,0 +1,23 @@
+.cardCountContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+}
+
+.cardCountItem {
+    height: 50px;
+    width: 50px;
+}
+
+.cardTypeContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cardTypeText {
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}

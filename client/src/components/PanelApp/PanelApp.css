@@ -1,6 +1,16 @@
 @font-face {
+    font-family: 'Univers-Roman';
+    src: local('Univers-Roman'), url('../../fonts/UniversLTCYR-55Roman.otf') format('opentype');
+}
+
+@font-face {
     font-family: 'Beaufort for LOL Bold';
     src: local('Beaufort for LOL Bold'), url('../../fonts/Beaufort for LOL Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Beaufort for LOL Regular';
+    src: local('Beaufort for LOL Regular'), url('../../fonts/BeaufortforLOL-Regular.otf') format('opentype');
 }
 
 body {

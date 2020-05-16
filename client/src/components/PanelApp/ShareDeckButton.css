@@ -1,25 +1,43 @@
 .shareContainer {
     position: relative;
-
+    
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.shareIcon {
-    position: absolute;
+    
+    cursor: pointer;
 }
 
 .shareButton {
-    position: absolute;
+    width: 150px;
+    height: 34px;
 }
 
 .shareContainer:active {
-    transform: scale(0.9, 0.9);
+    transform: scale(0.95, 0.95);
+}
+
+.copyDeckText {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    white-space: nowrap;
+
+    font-size: 14px;
+    color: white;
+    font-family: "Roboto";
 }
 
 .hiddenDeckCode {
     position: absolute;
     top: -10000px;
     left: -10000px;
+}
+
+.deckCode {
+    width: 200px;
+    text-align: center;
+    word-wrap: break-word;
 }
