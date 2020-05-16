@@ -31,3 +31,7 @@
 .available {
     cursor: pointer;
 }
+
+.navStateText {
+    font-size: 14px;
+}
