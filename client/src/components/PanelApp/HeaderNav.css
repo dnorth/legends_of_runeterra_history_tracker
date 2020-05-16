@@ -9,7 +9,7 @@
     z-index: 1;
 
     display: grid;
-    grid-template-columns: 20px 1fr 20px;
+    grid-template-columns: 32px 1fr 32px;
     justify-items: center;
     align-items: center;
 
@@ -17,4 +17,17 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-color: #6e6e6e;
+}
+
+.chevronContainer {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.available {
+    cursor: pointer;
 }

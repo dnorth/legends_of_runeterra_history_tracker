@@ -15,8 +15,12 @@
     cursor: pointer;
 }
 
-.recordContainer:active {
+.recordContainer:hover {
     transform: scale(0.98, 0.98) !important;
+}
+
+.recordContainer:active {
+    transform: scale(0.95, 0.95) !important;
 }
 
 .leftSide {

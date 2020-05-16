@@ -10,12 +10,20 @@ import './HeaderNav.css'
 
 const HeaderNav = (props) => {
     const history = useHistory();
-    
+    const noop = () => {};
+
+    const canGoBackward = history.canGo(-1);
+    const canGoForward = history.canGo(1);
+
     return (
         <div className="topNavBar">
-            <div>{ history.canGo(-1) && <Chevron size={16} variant="left" color="white" onClick={history.goBack}/> }</div>
+            <div className={classNames("chevronContainer", { 'available': canGoBackward })} onClick={canGoBackward ? history.goBack : noop}>
+                { canGoBackward && <Chevron size={16} variant="left" color="white"/> }
+            </div>
             <div>Last 30 games</div>
-            <div>{ history.canGo(1) && <Chevron size={16} color="white" onClick={history.goForward}/> }</div>
+            <div className={classNames("chevronContainer", { 'available': canGoForward })} onClick={canGoForward ? history.goForward : noop}>
+                { canGoForward && <Chevron size={16} color="white" /> }
+            </div>
         </div>
     )
 }
