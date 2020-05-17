@@ -10,7 +10,7 @@ const lorTrayIcon = getPath('/resources/lor_icon_24x24.png');
 const getNewContextMenu = (status, statusLabel) => {
     const newContextMenu = Menu.buildFromTemplate([
         {
-            label: 'Legends of Runeterra Win Tracker',
+            label: 'Legends of Runeterra History Tracker',
         },
         LorStatusChecker.menuItem,
         {
@@ -25,16 +25,31 @@ const getNewContextMenu = (status, statusLabel) => {
     return newContextMenu;
 }
 
-app.whenReady().then(() => {
-    const appTray = new Tray(lorTrayIcon);
 
-    appTray.setToolTip('Runeterra Win Tracker');
+function createWindow () {
+    let tray = new Tray(lorTrayIcon);
 
-    appTray.on('click', () => {
-        appTray.popUpContextMenu(getNewContextMenu());
+    let win = new BrowserWindow({
+      show: false,
+      width: 800,
+      height: 600,
+      webPreferences: {
+        nodeIntegration: true
+      }
+    })
+
+    win.on('minimize',function(event){
+        tray.setToolTip('Runeterra Win Tracker');
+
     });
 
-    appTray.on('right-click', () => {
-        appTray.popUpContextMenu(getNewContextMenu());
+    tray.on('click', () => {
+        tray.popUpContextMenu(getNewContextMenu());
     });
-})
+
+    tray.on('right-click', () => {
+        tray.popUpContextMenu(getNewContextMenu());
+    });
+  }
+  
+  app.whenReady().then(createWindow)

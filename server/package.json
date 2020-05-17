@@ -17,7 +17,7 @@
     "start-no-db": "npm run server",
     "start-prod": "SET NODE_ENV=production && npm run start-no-db",
     "server": "node server.js",
-    "electron": "concurrently \"npm run electron\" \"npm run dynamoDb\" ",
+    "electron": "concurrently \"npm run electron-no-db\" \"npm run dynamoDb\" ",
     "electron-no-db": "electron electron-server.js",
     "dynamoDb": "cd dynamodb && java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb",
     "deploy-history-lambda": "cd aws-lambda/getLoRHistoryByChannelId && serverless deploy",

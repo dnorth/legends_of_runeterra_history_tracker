@@ -7,8 +7,10 @@
     "client": "cd client && npm start",
     "client-prod": "cd client && npm run start-prod",
     "client-test": "cd client && npm test",
+    "electron": "cd server && npm run electron",
     "server": "cd server && npm start",
     "server-prod": "cd server && npm run start-prod",
+    "start-with-electron": "concurrently \"npm run client\" \"npm run electron\" ",
     "start": "concurrently \"npm run client\" \"npm run server\" ",
     "start-prod": "concurrently \"npm run client-prod\" \"npm run server-prod"
   },

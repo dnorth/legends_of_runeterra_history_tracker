@@ -23,7 +23,7 @@ class LoRHistoryTracker {
 
             if(this.activeRecordID && this.gameState === gameStateTypes.INPROGRESS && response.GameState === gameStateTypes.MENUS) {
                 await this.onGameFinish();
-            }            
+            }                
         }, pollInterval);
     }
 
