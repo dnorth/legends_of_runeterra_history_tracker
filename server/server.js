@@ -13,6 +13,8 @@ const dynamoDBRoutes = require('./dynamodb/routes');
 const dynamoDBConfig = require('./dynamodb/config/config');
 AWS.config.update(IS_PROD ? dynamoDBConfig.aws_remote_config : dynamoDBConfig.aws_local_config);
 
+//Twitch Auth Config
+const twitchAuthRoutes = require('./twitchAuth/routes')
 
 const app = express();
 
@@ -26,6 +28,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/db', dynamoDBRoutes);
+app.use('/twitchAuth', twitchAuthRoutes);
 
 const port = process.env.PORT || 6750;
 

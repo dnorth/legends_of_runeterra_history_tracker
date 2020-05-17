@@ -1,6 +1,7 @@
 const { app, Tray, Menu, BrowserWindow } = require('electron')
 
 const LorStatusChecker = require('./StatusChecker');
+const TwitchAuth = require('./twitchAuth/TwitchAuth');
 const simpleLoRServer = require('./server')
 
 const { getPath } = require('./utils');
@@ -12,6 +13,8 @@ const getNewContextMenu = (status, statusLabel) => {
         {
             label: 'Legends of Runeterra History Tracker',
         },
+        TwitchAuth.menuItem,
+        ...TwitchAuth.logoutMenuItem,
         LorStatusChecker.menuItem,
         {
             label: 'Version 0.1.0',
