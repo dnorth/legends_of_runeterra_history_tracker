@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom';
 
 import ClientHistoryRecord from '../ClientHistoryRecord';
@@ -12,11 +12,13 @@ import './SingleRecordView.css'
 import PanelHistoryTracker from './PanelHistoryTracker';
 
 const Card = ({ card }) => {
+    const [showDetailCounter, setShowDetailCounter] = useState(false);
+
     const srcIfExists = card.assets && card.assets[0] && card.assets[0].gameAbsolutePath 
 
     return (
-        <DetailCounter count={`x${card.count}`} size={34} bottomOffset={140} rightOffset={-10}>
-            <img width="200px" src={srcIfExists} />
+        <DetailCounter count={`x${card.count}`} size={34} bottomOffset={140} rightOffset={-10} show={showDetailCounter}>
+            <img width="200px" src={srcIfExists} onLoad={() => setShowDetailCounter(true)}/>
         </DetailCounter>
     )
 }
@@ -31,7 +33,6 @@ const Cards = ({ record }) => (
 
 const SingleRecordView = (props) => {
     const location = useLocation();
-
     const { record } = location.state;
 
     return (

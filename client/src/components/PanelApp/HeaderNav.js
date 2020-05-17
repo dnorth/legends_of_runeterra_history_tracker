@@ -13,7 +13,6 @@ const HeaderNav = (props) => {
     const location = useLocation();
     const noop = () => {};
 
-    console.log('location: ', location);
     const canGoBackward = history.canGo(-1);
     const canGoForward = history.canGo(1);
 

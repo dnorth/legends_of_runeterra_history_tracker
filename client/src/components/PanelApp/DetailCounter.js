@@ -10,7 +10,9 @@ const DetailCounter = (props) => {
     return (
         <div className="detailCounterContainer">
             {props.children}
-            <div className="countRingText" style={styleProps}>{props.count}</div>
+            {
+                props.show && <div className="countRingText" style={styleProps}>{props.count}</div>
+            }
         </div>
     )
 }
@@ -18,7 +20,8 @@ const DetailCounter = (props) => {
 DetailCounter.defaultProps = {
     size: 24,
     bottomOffset: 0,
-    rightOffset: 0
+    rightOffset: 0,
+    show: true
 }
 
 export default DetailCounter;
