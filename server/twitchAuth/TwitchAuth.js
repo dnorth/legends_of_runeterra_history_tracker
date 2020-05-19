@@ -12,7 +12,6 @@ class TwitchAuth {
         const store = new Store();
         const authenticatedTwitchUser = store.get('authenticatedTwitchUser');
         const label = authenticatedTwitchUser ? authenticatedTwitchUser.display_name : 'Login'
-        //const icon = authenticatedTwitchUser ? authenticatedTwitchUser.profile_image_url : null
         return new MenuItem({
             label,
             click: () => shell.openExternal(`https://id.twitch.tv/oauth2/authorize?client_id=${historyTrackerClientId}&redirect_uri=${redirectUrl}&response_type=code&scope=user:read:email&state=thnksfrthmmrs`)
@@ -29,6 +28,16 @@ class TwitchAuth {
                 click: () => store.delete('authenticatedTwitchUser')
             })
         ] : []
+    }
+
+    static get accessTokens() {
+        const store = new Store();
+        const authenticatedTwitchUser = store.get('authenticatedTwitchUser');
+
+        return {
+            accessToken: authenticatedTwitchUser.accessToken,
+            refreshToken: authenticatedTwitchUser.refreshToken
+        }
     }
 }
 

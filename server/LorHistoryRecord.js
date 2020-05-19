@@ -1,5 +1,3 @@
-const dynamoDBConfig = require('./dynamodb/config/config');
-
 class LoRHistoryRecord {
     constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId }) {
         this.id = id;
@@ -31,7 +29,7 @@ class LoRHistoryRecord {
 
     get dynamoDbBasicParams() {
         return {
-            TableName: dynamoDBConfig.lor_history_table_name,
+            TableName: 'LoRHistory',
             Item: this.toJson()
         }
     }

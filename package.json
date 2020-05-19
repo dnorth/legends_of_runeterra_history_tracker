@@ -8,15 +8,16 @@
     "client-prod": "cd client && npm run start-prod",
     "client-test": "cd client && npm test",
     "electron": "cd server && npm run electron",
+    "electron-prod": "cd server && npm run start-electron-prod",
     "server": "cd server && npm start",
     "server-prod": "cd server && npm run start-prod",
     "start-with-electron": "concurrently \"npm run client\" \"npm run electron\" ",
     "start": "concurrently \"npm run client\" \"npm run server\" ",
-    "start-prod": "concurrently \"npm run client-prod\" \"npm run server-prod\" ",
+    "start-prod": "concurrently \"npm run client-prod\" \"npm run electron-prod\" ",
     "postinstall": "(npm run install-client); (npm run install-server); (npm run install-history-lambda);",
     "install-client": "cd client && npm install",
     "install-server": "cd server && npm install",
-    "install-history-lambda": "cd server/aws-lambda/getLoRHistoryByChannelId && npm install"
+    "install-history-lambda": "cd server/aws-lambda/functions && npm install"
   },
   "husky": {
     "hooks": {

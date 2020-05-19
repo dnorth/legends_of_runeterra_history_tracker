@@ -1,40 +1,5 @@
 'use strict';
-const jwt = require("jsonwebtoken");
-const AWS = require('aws-sdk');
-
-const bearerPrefix = "Bearer ";
-
-const IS_PROD = process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'production';
-
-const winTrackerSecret = IS_PROD ? process.env.WIN_TRACKER_SECRET : require("../../secrets").winTrackerSecret;
-const historyTrackerSecret = IS_PROD ? process.env.HISTORY_TRACKER_SECRET : require("../../secrets").historyTrackerSecret;
-const dynamoDBConfig = IS_PROD ? { accessKeyId: process.env.DYNAMODB_ACCESS_KEY_ID, secretAccessKey: process.env.DYNAMODB_SECRET_ACCESS_KEY, region: 'us-east-2' } : require('../../dynamodb/config/config').aws_local_config;
-
-const verifyAndDecode = (base64EncodedSecret, header) => {
-    const secret = Buffer.from(base64EncodedSecret, 'base64');
-
-    if (header && header.startsWith(bearerPrefix)) {
-        try {
-            const token = header.substring(bearerPrefix.length);
-            return jwt.verify(token, secret, { algorithms: ["HS256"] });
-        } catch (e) {
-          return null;
-        }
-    }
-
-    return null;
-}
-
-const getFormattedResponse = (statusCode, message) => (
-  {
-    statusCode,
-    headers: {
-      "Access-Control-Allow-Origin" : "*",
-      "Access-Control-Allow-Headers": "Authorization,Requesting-Client,Content-Type"
-    },
-    body: JSON.stringify(message, null, 4)
-  }
-)
+const { verifyAndDecode, getFormattedResponse, getDynamoDbDocClient } = require('./utils')
 
 module.exports.getLoRHistoryByChannelId = async event => {
   if(!event.headers || !event.headers['requesting-client']) {
@@ -43,14 +8,14 @@ module.exports.getLoRHistoryByChannelId = async event => {
     })
   }
 
-  const base64EncodedSecret = event.headers['requesting-client'] === 'Win Tracker' ? winTrackerSecret : historyTrackerSecret;
+  const base64EncodedSecret = event.headers['requesting-client'] === 'Win Tracker' ? process.env.WIN_TRACKER_SECRET : process.env.HISTORY_TRACKER_SECRET;
 
   const decodedJwt = verifyAndDecode(base64EncodedSecret, event.headers && event.headers.Authorization);
 
   if (decodedJwt) {
     const channelId = decodedJwt.channel_id;
 
-    const docClient = new AWS.DynamoDB.DocumentClient(dynamoDBConfig);
+    const docClient = getDynamoDbDocClient();
 
     const maybeQueryFrom = event.queryStringParameters && event.queryStringParameters.from;
     const maybeQueryTo = event.queryStringParameters && event.queryStringParameters.to;

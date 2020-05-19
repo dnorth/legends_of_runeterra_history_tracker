@@ -40,7 +40,7 @@ router.get('/authorize', async (req, res, next) => {
         const userInfoResponse = await axiosInstance.get();
         const authenticatedTwitchUser = userInfoResponse && userInfoResponse.data && userInfoResponse.data.data && userInfoResponse.data.data[0];
 
-        store.set('authenticatedTwitchUser', authenticatedTwitchUser);
+        store.set('authenticatedTwitchUser', { ...authenticatedTwitchUser, accessToken: data.access_token, refreshToken: data.refresh_token });
 
         res.send('User Successfully Authenticated! You can close this window.');
     } catch (e) {

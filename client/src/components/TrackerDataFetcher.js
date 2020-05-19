@@ -3,7 +3,7 @@ import React, { useReducer, useEffect, useState } from 'react'
 import TrackerData from './TrackerData';
 
 const LOCAL_HISTORY_ENDPOINT = 'https://localhost:6750/db/history';
-const PROD_HISTORY_ENDPOINT = "https://lmz0u3fo8a.execute-api.us-east-2.amazonaws.com/production/history";
+const PROD_HISTORY_ENDPOINT = "https://n1lych6sf6.execute-api.us-east-2.amazonaws.com/production/history";
 
 const REAL_HISTORY_ENDPOINT = process.env.NODE_ENV === 'production' ? PROD_HISTORY_ENDPOINT : LOCAL_HISTORY_ENDPOINT;
 

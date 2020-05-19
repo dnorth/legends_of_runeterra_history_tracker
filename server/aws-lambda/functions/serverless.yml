@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: getlorhistorybychannelid
+service: lorhistoryservice
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -60,7 +60,7 @@ provider:
 
 functions:
   getLoRHistoryByChannelId:
-    handler: handler.getLoRHistoryByChannelId
+    handler: getLoRHistoryByChannelId_handler.getLoRHistoryByChannelId
     environment:
       WIN_TRACKER_SECRET: ${ssm:/twitch-win-tracker-secret~true}
       HISTORY_TRACKER_SECRET: ${ssm:/twitch-history-tracker-secret~true}
@@ -83,7 +83,26 @@ functions:
               querystrings:
                 to: false
                 from: false
-
+  updateLoRHistory:
+    handler: updateLoRHistory_handler.updateLoRHistory
+    environment:
+      WIN_TRACKER_SECRET: ${ssm:/twitch-win-tracker-secret~true}
+      WIN_TRACKER_CLIENT_ID: ${ssm:/twitch-win-tracker-client-id}
+      HISTORY_TRACKER_SECRET: ${ssm:/twitch-history-tracker-secret~true}
+      HISTORY_TRACKER_CLIENT_ID: ${ssm:/twitch-history-tracker-client-id}
+      DYNAMODB_ACCESS_KEY_ID: ${ssm:/dynamodb-access-key-id~true}
+      DYNAMODB_SECRET_ACCESS_KEY: ${ssm:/dynamodb-secret-access-key~true}
+      NODE_ENV: production
+    events:
+      - http:
+          path: updateHistory
+          method: post
+          cors:
+            origin: '*'
+            headers:
+              - Authorization
+              - Content-Type
+            allowCredentials: false
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)

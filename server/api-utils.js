@@ -4,9 +4,12 @@ const AWS = require('aws-sdk');
 const { makeBroadcast } = require('./authentication');
 
 const LoRStatusChecker = require('./StatusChecker');
+const TwitchAuth = require('./twitchAuth/TwitchAuth');
+
+const IS_PROD = process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'production';
 
 const DEFAULT_LOR_PORT = 21337;
-const broadcasterChannelId = 45279752;
+const bearerPrefix = "Bearer ";
 
 const getLoRClientAPI = async (path, port) => {
     const lorPort = port || DEFAULT_LOR_PORT;
@@ -27,17 +30,44 @@ const getLoRClientAPI = async (path, port) => {
 }
 
 const addOrUpdateHistoryRecordToDynamoDB = (recordToUpdate) => {
+    return IS_PROD ? addOrUpdateHistoryProd(recordToUpdate) : addOrUpdateHistoryLocal(recordToUpdate);
+}
+
+const addOrUpdateHistoryLocal = (recordToUpdate) => {
     const docClient = new AWS.DynamoDB.DocumentClient();
 
     docClient.put(recordToUpdate.dynamoDbBasicParams, (err, data) => {
         if (err) {
-            makeBroadcast(broadcasterChannelId, JSON.stringify({"historyUpdated": { record: recordToUpdate.toJson(), success: false } }));
+            makeBroadcast(recordToUpdate.twitchChannelId, JSON.stringify({"historyUpdated": { record: recordToUpdate.toJson(), success: false } }));
             console.log(`failed to add/update record ${JSON.stringify(recordToUpdate.toJson(), null, 4)}! Error: ${err.message}`);
         } else {
-            makeBroadcast(broadcasterChannelId, JSON.stringify({"historyUpdated": { record: recordToUpdate.toJson(), success: true } }));
+            makeBroadcast(recordToUpdate.twitchChannelId, JSON.stringify({"historyUpdated": { record: recordToUpdate.toJson(), success: true } }));
             console.log(`successfully added/updated record ${recordToUpdate.id}!`);
         }
     });
+}
+
+const addOrUpdateHistoryProd = async (recordToUpdate) => {
+    const twitchTokens = TwitchAuth.accessTokens;
+
+    if(!twitchTokens.accessToken) {
+        return 'Not Logged in...';
+    }
+
+    const axiosInstance = axios.create({
+        baseURL: 'https://n1lych6sf6.execute-api.us-east-2.amazonaws.com/production/updateHistory',
+        headers: {
+            'Authorization': bearerPrefix + twitchTokens.accessToken,
+            'Content-Type': 'application/json'
+        }
+    })
+    
+    try {
+        const response = await axiosInstance.post('/', recordToUpdate.dynamoDbBasicParams);
+    } catch (e) {
+        console.log('Errored trying to update history, whoops! ', (response && response.data) || e);
+        //TODO: If error is still not authenticated, log them out of the app.
+    }
 }
 
 module.exports = {
