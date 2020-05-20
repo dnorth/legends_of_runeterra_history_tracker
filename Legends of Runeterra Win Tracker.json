@@ -7,19 +7,19 @@
       "isAllowed": true,
       "isEphemeral": false,
       "isOrigin": true,
-      "value": "https://localhost:8080"
+      "value": "https://127.0.0.1:8080"
     },
     {
       "isAllowed": true,
       "isEphemeral": false,
       "isOrigin": true,
-      "value": "wss://localhost:8080"
+      "value": "wss://127.0.0.1:8080"
     },
     {
       "isAllowed": true,
       "isEphemeral": false,
       "isOrigin": false,
-      "value": "https://localhost:5000/api/randomNumber"
+      "value": "https://127.0.0.1:5000/api/randomNumber"
     },
     {
       "isAllowed": true,
@@ -37,7 +37,7 @@
       "isAllowed": true,
       "isEphemeral": false,
       "isOrigin": true,
-      "value": "https://localhost:6750"
+      "value": "https://127.0.0.1:6750"
     }
   ],
   "extensionViews": [
@@ -94,7 +94,7 @@
     "authorName": "Chusdta",
     "bitsEnabled": false,
     "canInstall": true,
-    "configUrl": "https://localhost:8080/config.html",
+    "configUrl": "https://127.0.0.1:8080/config.html",
     "configurationLocation": "none",
     "description": "",
     "eulaTosUrl": "",
@@ -120,15 +120,15 @@
     "viewerSummary": "",
     "viewerUrl": "",
     "viewerUrls": {
-      "videoOverlay": "https://localhost:8080/video_overlay.html"
+      "videoOverlay": "https://127.0.0.1:8080/video_overlay.html"
     },
     "views": {
       "videoOverlay": {
-        "viewerUrl": "https://localhost:8080/video_overlay.html",
+        "viewerUrl": "https://127.0.0.1:8080/video_overlay.html",
         "canLinkExternalContent": false
       },
       "config": {
-        "viewerUrl": "https://localhost:8080/config.html",
+        "viewerUrl": "https://127.0.0.1:8080/config.html",
         "canLinkExternalContent": false
       }
     },

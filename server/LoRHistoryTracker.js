@@ -1,6 +1,7 @@
 const uuidv4 = require('uuid').v4;
 
 const LoRHistoryRecord = require('./LorHistoryRecord');
+const TwitchAuth = require('./twitchAuth/TwitchAuth');
 const { getLoRClientAPI, addOrUpdateHistoryRecordToDynamoDB } = require('./api-utils');
 const gameStateTypes = require('./GameState.types');
 
@@ -10,7 +11,6 @@ class LoRHistoryTracker {
         this.gameState = gameStateTypes.MENUS;
         this.activeRecordID = null;
         this.sessionId = uuidv4();
-        this.twitchChannelId = broadcasterChannelId;
     }
 
     startTrackingHistory(pollInterval) {
@@ -30,26 +30,36 @@ class LoRHistoryTracker {
     async onGameStart(playerName, opponentName) {
         this.gameState = gameStateTypes.INPROGRESS;
 
-        const response = await getLoRClientAPI('static-decklist');
+        const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
-        const newId = this.addRecordToHistory({ playerName, opponentName, deckCode: response.DeckCode, localPlayerWon: null, gameStartTimestamp: new Date().toISOString(), sessionId: this.sessionId });
-
-        this.activeRecordID = newId;
+        if(authenticatedTwitchUser.id) {
+            const response = await getLoRClientAPI('static-decklist');
+            const newId = this.addRecordToHistory(authenticatedTwitchUser.id, { playerName, opponentName, deckCode: response.DeckCode, localPlayerWon: null, gameStartTimestamp: new Date().toISOString(), sessionId: this.sessionId });
+            this.activeRecordID = newId;
+        } else {
+            console.log("It doesn't look like you're connected to twitch...")
+        }
     }
 
     async onGameFinish() {
         this.gameState = gameStateTypes.MENUS;
 
-        const response = await getLoRClientAPI('game-result');
+        const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
-        this.editExistingRecord(this.activeRecordID, { localPlayerWon: response.LocalPlayerWon, sessionGameId: response.GameID, gameEndTimestamp: new Date().toISOString() });
+        if(authenticatedTwitchUser.id) {
+            const response = await getLoRClientAPI('game-result');
 
-        this.activeRecordID = null;
+            this.editExistingRecord(authenticatedTwitchUser.id, this.activeRecordID, { localPlayerWon: response.LocalPlayerWon, sessionGameId: response.GameID, gameEndTimestamp: new Date().toISOString() });
+
+            this.activeRecordID = null;
+        } else {
+            console.log("It doesn't look like you're connected to twitch...")
+        }
     }
 
-    addRecordToHistory(newRecordProperties) {
+    addRecordToHistory(twitchChannelId, newRecordProperties) {
         const newId = uuidv4();
-        const newRecord = new LoRHistoryRecord({ twitchChannelId: this.twitchChannelId, id: newId, ...newRecordProperties});
+        const newRecord = new LoRHistoryRecord({ twitchChannelId, id: newId, ...newRecordProperties});
         this.history = [newRecord, ...this.history];
 
         addOrUpdateHistoryRecordToDynamoDB(newRecord);
@@ -57,7 +67,7 @@ class LoRHistoryTracker {
         return newId;
     }
 
-    editExistingRecord (recordId, newProperties) {
+    editExistingRecord (twitchChannelId, recordId, newProperties) {
         const recordIndex = this.history.findIndex(record => record.id === recordId);
         const recordToUpdate = this.history[recordIndex];
 

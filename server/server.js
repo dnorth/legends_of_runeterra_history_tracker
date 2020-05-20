@@ -40,11 +40,9 @@ const server = https.createServer({
     console.log('App is listening on port ' + port)
 });
 
-const broadcasterChannelId = 45279752;
-
 const LoRHistoryTracker = require('./LoRHistoryTracker');
 
-const lorHistoryTracker = new LoRHistoryTracker(broadcasterChannelId);
+const lorHistoryTracker = new LoRHistoryTracker();
 
 lorHistoryTracker.startTrackingHistory(1000);
 

@@ -4,35 +4,54 @@ const Store = require('electron-store');
 
 const { getPath } = require('../utils');
 
-const redirectUrl = 'https://localhost:6750/twitchAuth/authorize';
+const redirectUrl = 'https://127.0.0.1:6750/twitchAuth/authorize';
 const historyTrackerClientId = 'r606gixvsow1nuauf4sjoxctm91vcs';
 
 class TwitchAuth {
     static get menuItem() {
-        const store = new Store();
-        const authenticatedTwitchUser = store.get('authenticatedTwitchUser');
-        const label = authenticatedTwitchUser ? authenticatedTwitchUser.display_name : 'Login'
+        const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
+
+        const label = authenticatedTwitchUser.displayName ? authenticatedTwitchUser.displayName : 'Connect to Twitch'
         return new MenuItem({
             label,
             click: () => shell.openExternal(`https://id.twitch.tv/oauth2/authorize?client_id=${historyTrackerClientId}&redirect_uri=${redirectUrl}&response_type=code&scope=user:read:email&state=thnksfrthmmrs`)
         });
     }
 
-    static get logoutMenuItem() {
+    static get authenticatedTwitchUser() {
         const store = new Store();
         const authenticatedTwitchUser = store.get('authenticatedTwitchUser');
 
-        return authenticatedTwitchUser ? [
+        return authenticatedTwitchUser ? {
+            id: authenticatedTwitchUser.id,
+            login: authenticatedTwitchUser.login,
+            displayName: authenticatedTwitchUser.display_name,
+            type: authenticatedTwitchUser.type,
+            broadcasterType: authenticatedTwitchUser.broadcaster_type,
+            description: authenticatedTwitchUser.description,
+            profileImageUrl: authenticatedTwitchUser.profile_image_url,
+            offlineImageUrl: authenticatedTwitchUser.offline_image_url,
+            viewCount: authenticatedTwitchUser.view_count,
+            email: authenticatedTwitchUser.email,
+            accessToken: authenticatedTwitchUser.accessToken,
+            refreshToken:  authenticatedTwitchUser.refreshToken
+        } : {}
+    }
+
+    static get logoutMenuItem() {
+        const store = new Store();
+        const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
+
+        return authenticatedTwitchUser.id ? [
             new MenuItem({
-                label: 'Logout',
+                label: 'Disconnect from Twitch',
                 click: () => store.delete('authenticatedTwitchUser')
             })
         ] : []
     }
 
     static get accessTokens() {
-        const store = new Store();
-        const authenticatedTwitchUser = store.get('authenticatedTwitchUser');
+        const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
         return {
             accessToken: authenticatedTwitchUser.accessToken,

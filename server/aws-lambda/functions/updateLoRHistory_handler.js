@@ -3,12 +3,12 @@
 const { getFormattedResponse, broadcastToApplication, verifyBroadcaster, updateRecordInDb } = require('./utils');
 
 module.exports.updateLoRHistory = async event => {
-    const twitchAuthenticatedUser = await verifyBroadcaster(event.headers && event.headers.Authorization);
+    const authenticatedTwitchUser = await verifyBroadcaster(event.headers && event.headers.Authorization);
 
-    if(twitchAuthenticatedUser && event.body) {
+    if(authenticatedTwitchUser && event.body) {
         try {
             const bodyJSON = JSON.parse(event.body);
-            const channelId = twitchAuthenticatedUser.id;
+            const channelId = authenticatedTwitchUser.id;
     
             const finalBodyJSON = {
                 ...bodyJSON,
@@ -35,9 +35,6 @@ module.exports.updateLoRHistory = async event => {
     } else {
         return getFormattedResponse(401, {
             message: 'Valid auth token and body required.',
-            twitchAuthenticatedUser,
-            body: event.body,
-            event
-          })
+        })
     }
 }

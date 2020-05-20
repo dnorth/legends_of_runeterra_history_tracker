@@ -10,7 +10,7 @@ class LorStatusChecker {
     static status = false;
 
     static get label() {
-        return LorStatusChecker.status ? 'Connected' : 'Not Connected';
+        return LorStatusChecker.status ? 'Connected to LoR' : 'Not Connected to LoR';
     }
 
     static get icon() {

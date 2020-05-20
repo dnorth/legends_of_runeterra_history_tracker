@@ -5,7 +5,7 @@ const Store = require('electron-store');
 
 const { historyTrackerClientId, historyTrackerAPISecret } = require('../secrets');
 
-const redirectUrl = 'https://localhost:6750/twitchAuth/authorize'
+const redirectUrl = 'https://127.0.0.1:6750/twitchAuth/authorize'
 
 router.get('/authorize', async (req, res, next) => {
     const store = new Store()

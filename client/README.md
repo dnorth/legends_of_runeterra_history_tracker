@@ -58,7 +58,7 @@ Next, do the following:
 
 1. Change directories into the cloned folder.
 2. Run `npm install` to install all prerequisite packages needed to run the template. 
-3. Run `npm run start` to run the sample. By default, you should be be able to go to `https://localhost:8080/` and have the page show the instructions to get up and running. This README includes that same information. This sample requires it be run on https://twitch.tv/ or the Twitch Developer Rig to utilize the Twitch Extension Helper.  
+3. Run `npm run start` to run the sample. By default, you should be be able to go to `https://127.0.0.1:8080/` and have the page show the instructions to get up and running. This README includes that same information. This sample requires it be run on https://twitch.tv/ or the Twitch Developer Rig to utilize the Twitch Extension Helper.  
    1. It should also give a certificate error- this is expected, as the sample uses a self-signed certificate to support HTTPS. 
    2. If you had to change the port (likely due to a port conflict), update the port in the URL above. 
 
@@ -69,7 +69,7 @@ Next, do the following:
     *   The extension installed on your own channel. This can be done in the "Invite Only" section of the Extension Store, where you'll find your extension listed.
 2.  Once you've installed your extension, you'll need to activate the extension and add it to any of the available slots: Panel, Component, or Overlay. Do note that Component or Overlay extensions require you to be live when testing.
 3.  Go to your channel on Twitch and you'll have to click on "Accept" on the extension. It should load.
-4.  If it doesn't load, don't fret! Simply visit the URL for the view (https://localhost:8080/panel.html for a panel view, for example) and accept the certificate. Go back to your channel page on Twitch and you'll be good to go!
+4.  If it doesn't load, don't fret! Simply visit the URL for the view (https://127.0.0.1:8080/panel.html for a panel view, for example) and accept the certificate. Go back to your channel page on Twitch and you'll be good to go!
 
 ## Moving to Hosted Test (and beyond!)
 
