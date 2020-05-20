@@ -32,12 +32,6 @@
       "isEphemeral": false,
       "isOrigin": true,
       "value": "https://127.0.0.1:8080"
-    },
-    {
-      "isAllowed": true,
-      "isEphemeral": false,
-      "isOrigin": true,
-      "value": "wss://127.0.0.1:8080"
     }
   ],
   "extensionViews": [
@@ -73,7 +67,7 @@
     "authorName": "Chusta",
     "bitsEnabled": false,
     "canInstall": true,
-    "configUrl": "https://localhost:8080/config.html",
+    "configUrl": "https://127.0.0.1:8080/config.html",
     "configurationLocation": "none",
     "description": "The Legends of Runeterra live history tracker lets you display your history.... live!",
     "eulaTosUrl": "",
@@ -95,20 +89,20 @@
     "summary": "Legends of Runeterra history AS it's happening... What's not to love?",
     "supportEmail": "Lds.north+twitch@gamil.com",
     "vendorCode": "",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "viewerSummary": "",
-    "viewerUrl": "https://localhost:8080/panel.html",
+    "viewerUrl": "https://127.0.0.1:8080/panel.html",
     "viewerUrls": {
-      "panel": "https://localhost:8080/panel.html"
+      "panel": "https://127.0.0.1:8080/panel.html"
     },
     "views": {
       "panel": {
-        "viewerUrl": "https://localhost:8080/panel.html",
+        "viewerUrl": "https://127.0.0.1:8080/panel.html",
         "height": 500,
         "canLinkExternalContent": false
       },
       "config": {
-        "viewerUrl": "https://localhost:8080/config.html",
+        "viewerUrl": "https://127.0.0.1:8080/config.html",
         "canLinkExternalContent": false
       }
     },

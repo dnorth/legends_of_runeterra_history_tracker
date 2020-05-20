@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const Store = require('electron-store');
+const TwitchAuth = require('./TwitchAuth');
 
 const { historyTrackerClientId, historyTrackerAPISecret } = require('../secrets');
-
-const redirectUrl = 'https://127.0.0.1:6750/twitchAuth/authorize'
 
 router.get('/authorize', async (req, res, next) => {
     const store = new Store()
@@ -23,7 +22,7 @@ router.get('/authorize', async (req, res, next) => {
                 client_secret: historyTrackerAPISecret,
                 code: accessCode,
                 grant_type: 'authorization_code',
-                redirect_uri: redirectUrl
+                redirect_uri: TwitchAuth.redirectUrl
             }
         });
         
@@ -42,9 +41,10 @@ router.get('/authorize', async (req, res, next) => {
 
         store.set('authenticatedTwitchUser', { ...authenticatedTwitchUser, accessToken: data.access_token, refreshToken: data.refresh_token });
 
-        res.send('User Successfully Authenticated! You can close this window.');
+        res.send(`You've successfully authenticated to the Legends of Runeterra History Tracker as ${authenticatedTwitchUser.display_name}! You can close this window.`);
     } catch (e) {
-        res.send(e.response ? e.response.data : e.message);
+        const errorMessage = e.response ? e.response.data : e.message;
+        res.send({ message: 'Something went wrong with the authentication process... ', errorMessage });
     }
 });
 

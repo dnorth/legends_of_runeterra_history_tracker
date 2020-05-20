@@ -6,7 +6,7 @@ const simpleLoRServer = require('./server')
 
 const { getPath } = require('./utils');
 
-const lorTrayIcon = getPath('/resources/lor_icon_24x24.png');
+const lorTrayIcon = getPath('/resources/lor_semi_transparent_32x32.png');
 
 const getNewContextMenu = (status, statusLabel) => {
     const newContextMenu = Menu.buildFromTemplate([

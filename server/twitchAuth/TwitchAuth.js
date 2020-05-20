@@ -4,17 +4,22 @@ const Store = require('electron-store');
 
 const { getPath } = require('../utils');
 
-const redirectUrl = 'https://127.0.0.1:6750/twitchAuth/authorize';
 const historyTrackerClientId = 'r606gixvsow1nuauf4sjoxctm91vcs';
 
 class TwitchAuth {
+    static get redirectUrl() {
+        return 'http://127.0.0.1:6750/twitchAuth/authorize';
+    }
+
     static get menuItem() {
         const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
-        const label = authenticatedTwitchUser.displayName ? authenticatedTwitchUser.displayName : 'Connect to Twitch'
+        const label = authenticatedTwitchUser.displayName ? `Connected to Twitch as ${authenticatedTwitchUser.displayName}` : 'Connect to Twitch'
         return new MenuItem({
             label,
-            click: () => shell.openExternal(`https://id.twitch.tv/oauth2/authorize?client_id=${historyTrackerClientId}&redirect_uri=${redirectUrl}&response_type=code&scope=user:read:email&state=thnksfrthmmrs`)
+            click: () => authenticatedTwitchUser.displayName
+            ? () => {}
+            : shell.openExternal(`https://id.twitch.tv/oauth2/authorize?client_id=${historyTrackerClientId}&redirect_uri=${TwitchAuth.redirectUrl}&response_type=code&scope=user:read:email&state=thnksfrthmmrs`)
         });
     }
 

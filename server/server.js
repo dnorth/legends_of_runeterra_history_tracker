@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const jsonwebtoken = require('jsonwebtoken');
-const https = require('https');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const AWS = require('aws-sdk');
@@ -32,13 +31,7 @@ app.use('/twitchAuth', twitchAuthRoutes);
 
 const port = process.env.PORT || 6750;
 
-const server = https.createServer({
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
-}, app)
-.listen(port, () => {
-    console.log('App is listening on port ' + port)
-});
+app.listen(port, () => console.log('App is listening on port ', port))
 
 const LoRHistoryTracker = require('./LoRHistoryTracker');
 

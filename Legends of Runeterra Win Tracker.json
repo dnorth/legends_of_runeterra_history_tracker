@@ -12,12 +12,6 @@
     {
       "isAllowed": true,
       "isEphemeral": false,
-      "isOrigin": true,
-      "value": "wss://127.0.0.1:8080"
-    },
-    {
-      "isAllowed": true,
-      "isEphemeral": false,
       "isOrigin": false,
       "value": "https://127.0.0.1:5000/api/randomNumber"
     },

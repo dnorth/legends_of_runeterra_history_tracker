@@ -4,6 +4,9 @@ const webpack = require("webpack")
 
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ZipPlugin = require('zip-webpack-plugin');
+
+const TopLevelPackage = require('../package.json');
 
 // defines where the bundle file will live
 const bundlePath = path.resolve(__dirname, "dist/")
@@ -47,7 +50,11 @@ module.exports = (_env,argv)=> {
   // edit webpack plugins here!
   let plugins = [
     new CleanWebpackPlugin(['dist']),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new ZipPlugin({
+      filename: `${TopLevelPackage.version}.zip`,
+      path: path.resolve(__dirname, "builds/")
+    })
   ]
 
   for(name in entryPoints){
