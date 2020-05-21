@@ -5,8 +5,7 @@ const { makeBroadcast } = require('./authentication');
 
 const LoRStatusChecker = require('./StatusChecker');
 const TwitchAuth = require('./twitchAuth/TwitchAuth');
-
-const IS_PROD = process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'production';
+const { IS_PROD } = require('./ProdChecker');
 
 const DEFAULT_LOR_PORT = 21337;
 const bearerPrefix = "Bearer ";

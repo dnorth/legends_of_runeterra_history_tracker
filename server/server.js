@@ -4,8 +4,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const AWS = require('aws-sdk');
-
-const IS_PROD = process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'production';
+const { IS_PROD } = require('./ProdChecker');
 
 //DynamoDb Config
 const dynamoDBRoutes = require('./dynamodb/routes');

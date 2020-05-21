@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const AWS = require('aws-sdk');
 const axios = require('axios');
 
-const IS_PROD = process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'production';
+const { IS_PROD } = require('../../ProdChecker');
 
 const dynamoDBConfig = IS_PROD
   ? { accessKeyId: process.env.DYNAMODB_ACCESS_KEY_ID, secretAccessKey: process.env.DYNAMODB_SECRET_ACCESS_KEY, region: 'us-east-2' }

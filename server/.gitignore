@@ -31,3 +31,6 @@ secrets.js
 server.cert
 server.key
 dynamodb/config/
+
+# builds
+builds
