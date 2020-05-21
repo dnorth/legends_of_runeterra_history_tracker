@@ -44,24 +44,31 @@ class TwitchAuth {
     }
 
     static get logoutMenuItem() {
-        const store = new Store();
         const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
         return authenticatedTwitchUser.id ? [
             new MenuItem({
                 label: 'Disconnect from Twitch',
-                click: () => store.delete('authenticatedTwitchUser')
+                click: () => TwitchAuth.removeUserIfExists()
             })
         ] : []
     }
 
-    static get accessTokens() {
-        const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
-
-        return {
-            accessToken: authenticatedTwitchUser.accessToken,
-            refreshToken: authenticatedTwitchUser.refreshToken
+    static removeUserIfExists = () => {
+        const store = new Store();
+        
+        if(store.has('authenticatedTwitchUser')) {
+            store.delete('authenticatedTwitchUser');
         }
+    }
+
+    static updateAuthenticatedUser = (newUserPropsToSpread) => {
+        const store = new Store();
+
+        const authenticatedTwitchUser = store.get('authenticatedTwitchUser');
+
+        const updatedUser = authenticatedTwitchUser ? { ...authenticatedTwitchUser, ...newUserPropsToSpread} : { ...newUserPropsToSpread }
+        store.set('authenticatedTwitchUser', updatedUser);
     }
 }
 

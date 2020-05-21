@@ -79,11 +79,23 @@ const broadcastToApplication = async (clientId, clientSecret, channelId, message
     }
 }
 
+const verifyBroadcasterWithRefresh = async (originalAccessToken, originalRefreshToken) => {
+  let { authenticatedTwitchUser, attemptToRefresh } = await verifyBroadcaster(originalAccessToken, originalRefreshToken);
+
+  if(attemptToRefresh) {
+    return await attemptToRefreshToken(originalRefreshToken);
+  } else {
+    return { authenticatedTwitchUser }
+  }
+}
+
 const verifyBroadcaster = async (accessToken, refreshToken) => {
+    const bareAccessToken = trimBearerPrefixIfExists(accessToken);
+  
     const axiosInstance = axios.create({
         baseURL: 'https://api.twitch.tv/helix/users',
         headers: {
-            'Authorization': accessToken,
+            'Authorization': bearerPrefix + bareAccessToken,
             "Client-ID": process.env.HISTORY_TRACKER_CLIENT_ID
         }
     })
@@ -92,13 +104,42 @@ const verifyBroadcaster = async (accessToken, refreshToken) => {
         const userInfoResponse = await axiosInstance.get();
         const authenticatedTwitchUser = userInfoResponse && userInfoResponse.data && userInfoResponse.data.data && userInfoResponse.data.data[0];
 
-        return authenticatedTwitchUser; 
+        return { authenticatedTwitchUser }; 
     } catch (e) {
-        console.log('User Auth Error: ', e.response && e.response.data);
-        //if response is bad, use refreshToken to attempt to get user again.
-        return null;
+        if(e.response && e.response.data && e.response.data.error === 'Unauthorized') {
+          return { authenticatedTwitchUser: null, attemptToRefresh: true }
+        }
+        
+        console.log('some unknown error: ', (e.response && e.response.data) || e.message);
+        return { authenticatedTwitchUser: null };
     }
 }
+
+const attemptToRefreshToken = async (refreshToken) => {
+  if (!refreshToken) {
+    return { authenticatedTwitchUser: null };
+  }
+
+  try {
+    const refreshTokenResponse = await axios.post('https://id.twitch.tv/oauth2/token', null, { params: {
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+      client_id: process.env.HISTORY_TRACKER_CLIENT_ID,
+      client_secret: process.env.HISTORY_TRACKER_API_SECRET
+    }});
+    
+    const refreshTokenResponseData = refreshTokenResponse.data;
+
+    const { authenticatedTwitchUser } = await verifyBroadcaster(refreshTokenResponseData.access_token, refreshTokenResponseData.refresh_token);
+
+    return { authenticatedTwitchUser, newTokens: { accessToken: refreshTokenResponseData.access_token, refreshToken: refreshTokenResponseData.refresh_token } }
+  } catch (e) {
+    return { authenticatedTwitchUser: null }
+  }
+
+}
+
+const trimBearerPrefixIfExists = (accessCode) => accessCode.startsWith(bearerPrefix) ? accessCode.substring(bearerPrefix.length) : accessCode
 
 const updateRecordInDb = (dbParams) => {
     return new Promise((resolve, reject) => {
@@ -119,6 +160,6 @@ module.exports = {
     verifyAndDecode,
     getFormattedResponse,
     broadcastToApplication,
-    verifyBroadcaster,
+    verifyBroadcasterWithRefresh,
     updateRecordInDb
 }

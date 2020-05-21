@@ -1,9 +1,9 @@
 'use strict';
 
-const { getFormattedResponse, broadcastToApplication, verifyBroadcaster, updateRecordInDb } = require('./utils');
+const { getFormattedResponse, broadcastToApplication, verifyBroadcasterWithRefresh, updateRecordInDb } = require('./utils');
 
 module.exports.updateLoRHistory = async event => {
-    const authenticatedTwitchUser = await verifyBroadcaster(event.headers && event.headers.Authorization);
+    const { authenticatedTwitchUser, newTokens } = await verifyBroadcasterWithRefresh(event.headers && event.headers.Authorization, event.queryStringParameters && event.queryStringParameters.refreshToken);
 
     if(authenticatedTwitchUser && event.body) {
         try {
@@ -23,8 +23,9 @@ module.exports.updateLoRHistory = async event => {
             await broadcastToApplication(process.env.WIN_TRACKER_CLIENT_ID, process.env.WIN_TRACKER_SECRET, channelId, message);
             await broadcastToApplication(process.env.HISTORY_TRACKER_CLIENT_ID, process.env.HISTORY_TRACKER_SECRET, channelId, message);
     
-            return getFormattedResponse(204, {
-                message: `Successfully updated and broadcasted record to channel ${channelId}!`
+            return getFormattedResponse(200, {
+                message: `Successfully updated and broadcasted record to channel ${channelId}!`,
+                newAuthenticatedTwitchUser: newTokens ? { ...authenticatedTwitchUser, ...newTokens } : null
             })
         } catch (e) {
             return getFormattedResponse(502, {
@@ -35,6 +36,7 @@ module.exports.updateLoRHistory = async event => {
     } else {
         return getFormattedResponse(401, {
             message: 'Valid auth token and body required.',
+            invalidateUser: true
         })
     }
 }

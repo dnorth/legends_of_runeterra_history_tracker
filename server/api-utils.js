@@ -48,25 +48,34 @@ const addOrUpdateHistoryLocal = (recordToUpdate) => {
 }
 
 const addOrUpdateHistoryProd = async (recordToUpdate) => {
-    const twitchTokens = TwitchAuth.accessTokens;
+    const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
-    if(!twitchTokens.accessToken) {
+    if(!authenticatedTwitchUser.accessToken) {
         return 'Not Logged in...';
     }
 
     const axiosInstance = axios.create({
         baseURL: 'https://n1lych6sf6.execute-api.us-east-2.amazonaws.com/production/updateHistory',
         headers: {
-            'Authorization': bearerPrefix + twitchTokens.accessToken,
+            'Authorization': bearerPrefix + authenticatedTwitchUser.accessToken,
             'Content-Type': 'application/json'
         }
     })
     
     try {
-        const response = await axiosInstance.post('/', recordToUpdate.dynamoDbBasicParams);
+        const response = await axiosInstance.post('/', recordToUpdate.dynamoDbBasicParams, { params: { refreshToken: authenticatedTwitchUser.refreshToken }});
+        const responseData = response.data;
+
+        if(responseData.newAuthenticatedTwitchUser) {
+            TwitchAuth.updateAuthenticatedUser(responseData.newAuthenticatedTwitchUser);
+        }
     } catch (e) {
-        console.log('Errored trying to update history, whoops! ', (response && response.data) || e);
-        //TODO: If error is still not authenticated, log them out of the app.
+        if (e.response && e.response.invalidateUser) {
+            console.log("Couldn't authenticate... removing user.");
+            TwitchAuth.removeUserIfExists();
+        } else {
+            console.log('unknown error: ', (e.response && e.response.data) || e.message)
+        }
     }
 }
 

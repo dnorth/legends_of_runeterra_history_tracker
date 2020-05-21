@@ -50,11 +50,7 @@ module.exports = (_env,argv)=> {
   // edit webpack plugins here!
   let plugins = [
     new CleanWebpackPlugin(['dist']),
-    new webpack.HotModuleReplacementPlugin(),
-    new ZipPlugin({
-      filename: `${TopLevelPackage.version}.zip`,
-      path: path.resolve(__dirname, "builds/")
-    })
+    new webpack.HotModuleReplacementPlugin()
   ]
 
   for(name in entryPoints){
@@ -70,6 +66,13 @@ module.exports = (_env,argv)=> {
       }
     }    
   }
+
+  plugins.push(
+    new ZipPlugin({
+      filename: `${TopLevelPackage.version}.zip`,
+      path: path.resolve(__dirname, "builds/")
+    })
+  )
 
   let config={
     //entry points for webpack- remove if not used/needed

@@ -2,8 +2,10 @@
     "path": "updateHistory",
     "httpMethod": "POST",
     "headers": {
-        "Authorization": "Bearer 6lo5hmvb1wqdplz2zq6v01i3o0f0vb"
+        "Authorization": "Bearer wfqdv8t0mj5u06i9paodrfa76suiy5"
     },
     "body": "{\"TableName\":\"LoRHistory\",\"Item\":{\"id\":\"b946eec5-8352-4c57-9964-5177f3b5bc84\",\"playerName\":\"TestyBoi\",\"opponentName\":\"Test PROD YA!\",\"deckCode\":\"CECACAQEBABACAYTFYBACBA3GQBQEAYDA4EQGAICAMAQGAIED43DWBABAMPCWLZXAA\",\"localPlayerWon\":true,\"gameStartTimestamp\":\"2020-05-19T06:12:23.869Z\",\"sessionId\":\"b7087bd9-8c41-40b2-abf2-b0a889c1cc57\",\"twitchChannelId\":\"45279752\"}}",
-    "queryStringParameters": {}
+    "queryStringParameters": {
+        "refreshToken": "ugl4gmlit2u1m7qj2v8cunbk4gc3rg3oxpzdl25drzyt2dj5ui"
+    }
 }

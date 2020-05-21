@@ -64,6 +64,7 @@ functions:
     environment:
       WIN_TRACKER_SECRET: ${ssm:/twitch-win-tracker-secret~true}
       HISTORY_TRACKER_SECRET: ${ssm:/twitch-history-tracker-secret~true}
+      HISTORY_TRACKER_API_SECRET: ${ssm:/twitch-history-tracker-api-secret~true}
       DYNAMODB_ACCESS_KEY_ID: ${ssm:/dynamodb-access-key-id~true}
       DYNAMODB_SECRET_ACCESS_KEY: ${ssm:/dynamodb-secret-access-key~true}
       NODE_ENV: production
@@ -90,6 +91,7 @@ functions:
       WIN_TRACKER_CLIENT_ID: ${ssm:/twitch-win-tracker-client-id}
       HISTORY_TRACKER_SECRET: ${ssm:/twitch-history-tracker-secret~true}
       HISTORY_TRACKER_CLIENT_ID: ${ssm:/twitch-history-tracker-client-id}
+      HISTORY_TRACKER_API_SECRET: ${ssm:/twitch-history-tracker-api-secret~true}
       DYNAMODB_ACCESS_KEY_ID: ${ssm:/dynamodb-access-key-id~true}
       DYNAMODB_SECRET_ACCESS_KEY: ${ssm:/dynamodb-secret-access-key~true}
       NODE_ENV: production

@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const Store = require('electron-store');
 const TwitchAuth = require('./TwitchAuth');
 
 const { historyTrackerClientId, historyTrackerAPISecret } = require('../secrets');
 
 router.get('/authorize', async (req, res, next) => {
-    const store = new Store()
 
     if(req.query.state !== 'thnksfrthmmrs' || !req.query.code) {
         res.sendStatus(403);
@@ -39,7 +37,7 @@ router.get('/authorize', async (req, res, next) => {
         const userInfoResponse = await axiosInstance.get();
         const authenticatedTwitchUser = userInfoResponse && userInfoResponse.data && userInfoResponse.data.data && userInfoResponse.data.data[0];
 
-        store.set('authenticatedTwitchUser', { ...authenticatedTwitchUser, accessToken: data.access_token, refreshToken: data.refresh_token });
+        TwitchAuth.updateAuthenticatedUser({ ...authenticatedTwitchUser, accessToken: data.access_token, refreshToken: data.refresh_token });
 
         res.send(`You've successfully authenticated to the Legends of Runeterra History Tracker as ${authenticatedTwitchUser.display_name}! You can close this window.`);
     } catch (e) {
