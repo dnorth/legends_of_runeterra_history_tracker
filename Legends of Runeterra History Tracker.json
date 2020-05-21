@@ -57,6 +57,29 @@
         "width": 1280,
         "height": 720
       }
+    },
+    {
+      "id": "2",
+      "label": "Config",
+      "channelId": "45279752",
+      "configurationAnchor": "panel",
+      "displayChannelName": "lachusta",
+      "type": "config",
+      "features": {
+        "isBitsEnabled": false,
+        "isChatEnabled": false,
+        "isSubscriptionStatusAvailable": false
+      },
+      "linked": true,
+      "linkedUserId": "265737932",
+      "mode": "config",
+      "isPopout": false,
+      "role": "Broadcaster",
+      "orientation": "Portrait",
+      "frameSize": {
+        "width": 1280,
+        "height": 720
+      }
     }
   ],
   "frontendCommand": "npm start",

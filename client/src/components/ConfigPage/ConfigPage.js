@@ -59,7 +59,7 @@ export default class ConfigPage extends React.Component{
             return(
                 <div className="Config">
                     <div className={this.state.theme==='light' ? 'Config-light' : 'Config-dark'}>
-                       No configuration needed for this extension!
+                       Download the <a className="appDownloadLink" target="_blank" href="https://s3.us-east-2.amazonaws.com/runeterra.history.tracker/Electron+Builds/Runeterra+History+Tracker+Setup+0.1.0.exe">Runeterra History Tracker App.</a>
                     </div>
                 </div>
             )

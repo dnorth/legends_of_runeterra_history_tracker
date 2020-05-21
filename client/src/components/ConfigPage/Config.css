@@ -26,3 +26,8 @@ body {
 .Config-dark{
     color:#efeff1;
 }
+
+.appDownloadLink {
+    color: #87C4FC;
+    text-decoration: inherit;
+}
