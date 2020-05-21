@@ -1,9 +1,9 @@
 const { MenuItem } = require('electron')
 
-const { getPath } = require('./utils');
+const { getNativeImage } = require('./utils');
 
-const statusIconRed = getPath('/resources/status_red_12.png');
-const statusIconGreen = getPath('/resources/status_green_12.png');
+const statusIconRed = getNativeImage('/resources/status_red_12.png');
+const statusIconGreen = getNativeImage('/resources/status_green_12.png');
 
 
 class LorStatusChecker {

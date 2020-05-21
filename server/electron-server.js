@@ -4,9 +4,9 @@ const LorStatusChecker = require('./StatusChecker');
 const TwitchAuth = require('./twitchAuth/TwitchAuth');
 const simpleLoRServer = require('./server')
 
-const { getPath } = require('./utils');
+const { getNativeImage } = require('./utils');
 
-const lorTrayIcon = getPath('/resources/lor_semi_transparent_32x32.png');
+const lorTrayIcon = getNativeImage('/resources/lor_semi_transparent_32x32.png');
 
 const getNewContextMenu = (status, statusLabel) => {
     const newContextMenu = Menu.buildFromTemplate([
@@ -43,7 +43,6 @@ function createWindow () {
 
     win.on('minimize',function(event){
         tray.setToolTip('Runeterra Win Tracker');
-
     });
 
     tray.on('click', () => {

@@ -14,6 +14,23 @@
     "jsonwebtoken": "^8.5.1",
     "uuid": "^8.0.0"
   },
+  "author": {
+    "name": "Danny North",
+    "email": "Lds.north+tracker@gmail.com"
+  },
+  "description": "Legends of Runeterra history tracker",
+  "respository": "https://github.com/dnorth/legends_of_runeterra_win_tracker_twitch_extension",
+  "build": {
+    "appId": "com.electron.runeterraHistoryTracker",
+    "productName": "Runeterra History Tracker",
+    "win": {
+      "target": "NSIS"
+    },
+    "directories": {
+      "buildResources": "./buildResources",
+      "output": "./builds"
+    }
+  },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run dynamoDb\" ",
     "start-no-db": "npm run server",
@@ -27,10 +44,14 @@
     "invoke-get-history-lambda-prod": "cd aws-lambda/functions && serverless invoke -f getLoRHistoryByChannelId --path getLoRHistory_local_request_data.json",
     "invoke-get-history-lambda": "cd aws-lambda/functions && serverless invoke local -f getLoRHistoryByChannelId --path getLoRHistory_local_request_data.json",
     "invoke-post-history-lambda-prod": "cd aws-lambda/functions && serverless invoke -f updateLoRHistory --path updateLoRHistory_local_request_data.json",
-    "invoke-post-history-lambda": "cd aws-lambda/functions && serverless invoke local -f updateLoRHistory --path updateLoRHistory_local_request_data.json"
+    "invoke-post-history-lambda": "cd aws-lambda/functions && serverless invoke local -f updateLoRHistory --path updateLoRHistory_local_request_data.json",
+    "build": "electron-builder --dir",
+    "package": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
-    "electron": "^8.2.4"
+    "electron": "^8.2.4",
+    "electron-builder": "^22.6.1"
   }
 }
