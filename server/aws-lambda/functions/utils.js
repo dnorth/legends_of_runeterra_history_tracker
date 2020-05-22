@@ -3,9 +3,7 @@ const jwt = require("jsonwebtoken");
 const AWS = require('aws-sdk');
 const axios = require('axios');
 
-const { IS_PROD } = require('../../ProdChecker');
-
-const dynamoDBConfig = IS_PROD
+const dynamoDBConfig = process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'production'
   ? { accessKeyId: process.env.DYNAMODB_ACCESS_KEY_ID, secretAccessKey: process.env.DYNAMODB_SECRET_ACCESS_KEY, region: 'us-east-2' }
   : require('../../dynamodb/config/config').aws_local_config;
 
@@ -115,6 +113,28 @@ const verifyBroadcaster = async (accessToken, refreshToken) => {
     }
 }
 
+const authenticateTwitchUser = async (accessCode, redirectUrl) => {
+  try {
+    const authResponse = await axios.post(`https://id.twitch.tv/oauth2/token`, null, { 
+      params: {
+          client_id: process.env.HISTORY_TRACKER_CLIENT_ID,
+          client_secret: process.env.HISTORY_TRACKER_API_SECRET,
+          code: accessCode,
+          grant_type: 'authorization_code',
+          redirect_uri: redirectUrl
+      }
+    });
+
+    const data = authResponse.data || {}
+
+  return { accessToken: data.access_token, refreshToken: data.refresh_token };
+
+  } catch(e) {
+    console.log('error when attempting to authenticate twitch user: ', (e.response && e.response.data) || e.message);
+    return {};
+  }
+}
+
 const attemptToRefreshToken = async (refreshToken) => {
   if (!refreshToken) {
     return { authenticatedTwitchUser: null };
@@ -139,7 +159,7 @@ const attemptToRefreshToken = async (refreshToken) => {
 
 }
 
-const trimBearerPrefixIfExists = (accessCode) => accessCode.startsWith(bearerPrefix) ? accessCode.substring(bearerPrefix.length) : accessCode
+const trimBearerPrefixIfExists = (accessCode) => accessCode && accessCode.startsWith(bearerPrefix) ? accessCode.substring(bearerPrefix.length) : accessCode
 
 const updateRecordInDb = (dbParams) => {
     return new Promise((resolve, reject) => {
@@ -160,6 +180,8 @@ module.exports = {
     verifyAndDecode,
     getFormattedResponse,
     broadcastToApplication,
+    verifyBroadcaster,
     verifyBroadcasterWithRefresh,
-    updateRecordInDb
+    updateRecordInDb,
+    authenticateTwitchUser
 }

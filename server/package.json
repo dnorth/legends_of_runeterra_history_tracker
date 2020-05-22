@@ -45,6 +45,8 @@
     "invoke-get-history-lambda": "cd aws-lambda/functions && serverless invoke local -f getLoRHistoryByChannelId --path getLoRHistory_local_request_data.json",
     "invoke-post-history-lambda-prod": "cd aws-lambda/functions && serverless invoke -f updateLoRHistory --path updateLoRHistory_local_request_data.json",
     "invoke-post-history-lambda": "cd aws-lambda/functions && serverless invoke local -f updateLoRHistory --path updateLoRHistory_local_request_data.json",
+    "invoke-auth-twitch-user-lambda-prod": "cd aws-lambda/functions && serverless invoke -f authenticateTwitchUser --path authenticateTwitchUser_local_request_data.json",
+    "invoke-auth-twitch-user-lambda": "cd aws-lambda/functions && serverless invoke local -f authenticateTwitchUser --path authenticateTwitchUser_local_request_data.json",
     "build": "electron-builder --dir",
     "package": "electron-builder",
     "postinstall": "electron-builder install-app-deps"

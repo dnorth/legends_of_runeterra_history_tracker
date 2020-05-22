@@ -105,6 +105,21 @@ functions:
               - Authorization
               - Content-Type
             allowCredentials: false
+  authenticateTwitchUser:
+    handler: authenticateTwitchUser_handler.authenticateTwitchUser
+    environment:
+      HISTORY_TRACKER_API_SECRET: ${ssm:/twitch-history-tracker-api-secret~true}
+      HISTORY_TRACKER_CLIENT_ID: ${ssm:/twitch-history-tracker-client-id}
+      NODE_ENV: production
+    events:
+      - http:
+          path: authTwitchUser
+          method: post
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+            allowCredentials: false
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)

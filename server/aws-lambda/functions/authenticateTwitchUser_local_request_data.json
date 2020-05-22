@@ -1,0 +1,9 @@
+{
+    "path": "authenticateTwitchUser",
+    "httpMethod": "POST",
+    "headers": {},
+    "queryStringParameters": {
+        "accessCode": "g1ne2v9o0dfnewjpx7hgfidq4agda7",
+        "redirectUrl": "http://127.0.0.1:6750/twitchAuth/authorize"
+    }
+}

@@ -7,6 +7,10 @@ const { getPath } = require('../utils');
 const historyTrackerClientId = 'r606gixvsow1nuauf4sjoxctm91vcs';
 
 class TwitchAuth {
+    static get Store() {
+        return new Store({ name: 'lor_history_tracker' })
+    }
+
     static get redirectUrl() {
         return 'http://127.0.0.1:6750/twitchAuth/authorize';
     }
@@ -24,7 +28,7 @@ class TwitchAuth {
     }
 
     static get authenticatedTwitchUser() {
-        const store = new Store();
+        const store = TwitchAuth.Store;
         const authenticatedTwitchUser = store.get('authenticatedTwitchUser');
 
         return authenticatedTwitchUser ? {
@@ -55,7 +59,7 @@ class TwitchAuth {
     }
 
     static removeUserIfExists = () => {
-        const store = new Store();
+        const store = TwitchAuth.Store;
         
         if(store.has('authenticatedTwitchUser')) {
             store.delete('authenticatedTwitchUser');
@@ -63,7 +67,7 @@ class TwitchAuth {
     }
 
     static updateAuthenticatedUser = (newUserPropsToSpread) => {
-        const store = new Store();
+        const store = TwitchAuth.Store;
 
         const authenticatedTwitchUser = store.get('authenticatedTwitchUser');
 
