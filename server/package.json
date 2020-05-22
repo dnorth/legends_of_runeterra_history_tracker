@@ -23,13 +23,19 @@
   "build": {
     "appId": "com.electron.runeterraHistoryTracker",
     "productName": "Runeterra History Tracker",
+    "artifactName": "${productName} Installer (${os} latest).${ext}",
     "win": {
       "target": "NSIS"
     },
     "directories": {
       "buildResources": "./buildResources",
       "output": "./builds"
-    }
+    },
+    "files": [
+      "!**/secrets.js",
+      "!**/aws-lambda",
+      "!**/dynamodb"
+    ]
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run dynamoDb\" ",

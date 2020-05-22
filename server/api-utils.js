@@ -1,7 +1,4 @@
 const axios = require('axios');
-const AWS = require('aws-sdk');
-
-const { makeBroadcast } = require('./authentication');
 
 const LoRStatusChecker = require('./StatusChecker');
 const TwitchAuth = require('./twitchAuth/TwitchAuth');
@@ -33,6 +30,8 @@ const addOrUpdateHistoryRecordToDynamoDB = (recordToUpdate) => {
 }
 
 const addOrUpdateHistoryLocal = (recordToUpdate) => {
+    const { makeBroadcast } = require('./authentication');
+    const AWS = require('aws-sdk');
     const docClient = new AWS.DynamoDB.DocumentClient();
 
     docClient.put(recordToUpdate.dynamoDbBasicParams, (err, data) => {

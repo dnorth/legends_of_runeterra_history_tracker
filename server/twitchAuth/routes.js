@@ -4,10 +4,8 @@ const axios = require('axios');
 const TwitchAuth = require('./TwitchAuth');
 const { IS_PROD } = require('../ProdChecker');
 
-const { historyTrackerClientId, historyTrackerAPISecret } = require('../secrets');
 
 router.get('/authorize', async (req, res, next) => {
-
     if(req.query.state !== 'thnksfrthmmrs' || !req.query.code) {
         res.sendStatus(403);
     }
@@ -29,6 +27,8 @@ router.get('/authorize', async (req, res, next) => {
 });
 
 const getTwitchAuthLocal = async (accessCode) => {
+    const { historyTrackerClientId, historyTrackerAPISecret } = require('../secrets');
+
     try {
         const authResponse = await axios.post(`https://id.twitch.tv/oauth2/token`, null, { 
             params: {
