@@ -33,4 +33,4 @@ server.key
 dynamodb/config/
 
 # builds
-builds
+Electron Builds/

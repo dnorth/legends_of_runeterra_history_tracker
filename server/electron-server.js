@@ -1,8 +1,9 @@
-const { app, Tray, Menu, BrowserWindow } = require('electron')
+const { app, Tray, Menu, BrowserWindow, Point } = require('electron')
+
+const isFirstInstance = app.requestSingleInstanceLock();
 
 const LorStatusChecker = require('./StatusChecker');
 const TwitchAuth = require('./twitchAuth/TwitchAuth');
-const simpleLoRServer = require('./server')
 
 const { getNativeImage } = require('./utils');
 
@@ -28,6 +29,14 @@ const getNewContextMenu = (status, statusLabel) => {
     return newContextMenu;
 }
 
+if (isFirstInstance) {
+    const simpleLoRServer = require('./server');
+
+    app.whenReady().then(createWindow);
+} else {
+    app.quit();
+}
+
 
 function createWindow () {
     let tray = new Tray(lorTrayIcon);
@@ -41,9 +50,11 @@ function createWindow () {
       }
     })
 
-    win.on('minimize',function(event){
-        tray.setToolTip('Runeterra Win Tracker');
-    });
+    tray.setToolTip('Runeterra History Tracker');
+    tray.focus();
+    tray.popUpContextMenu(getNewContextMenu(), { x: tray.getBounds().x, y: tray.getBounds().y})
+
+    win.on('minimize', () => {});
 
     tray.on('click', () => {
         tray.popUpContextMenu(getNewContextMenu());
@@ -52,6 +63,12 @@ function createWindow () {
     tray.on('right-click', () => {
         tray.popUpContextMenu(getNewContextMenu());
     });
+
+    app.on('second-instance', () => {
+        tray.displayBalloon({
+            title: "Oops... Looking for me?",
+            content: "The Runeterra History Tracker app is already running in the system tray below."
+        })
+    })
   }
   
-  app.whenReady().then(createWindow)
