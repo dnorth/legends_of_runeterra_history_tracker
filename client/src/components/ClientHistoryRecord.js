@@ -39,7 +39,7 @@ export default class ClientHistoryRecord {
     }
 
     get opponentName() {
-        const isComputer = this._opponentName.startsWith('decks_') || this._opponentName.startsWith('deckname_');
+        const isComputer = this._opponentName.startsWith('decks_') || this._opponentName.startsWith('deckname_') || this._opponentName.startsWith('front_five_');
         return isComputer ? 'A.I.' : this._opponentName
     }
 

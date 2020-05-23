@@ -100,7 +100,7 @@ module.exports = (_env,argv)=> {
           ]
         },
         {
-          test: /\.(jpe?g|png|gif|svg)$/i, 
+          test: /\.(jpe?g|png|gif)$/i, 
           loader: "file-loader",
           options:{
             name:"img/[name].[ext]"
@@ -109,6 +109,20 @@ module.exports = (_env,argv)=> {
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/, 
           use: ["file-loader"],
+        },
+        {
+          test: /\.svg$/,
+          use: [
+            {
+              loader: "babel-loader"
+            },
+            {
+              loader: "react-svg-loader",
+              options: {
+                jsx: true
+              }
+            }
+          ]
         }
       ]
     },

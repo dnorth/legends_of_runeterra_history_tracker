@@ -40,7 +40,7 @@ const AnimatedRoutes = (routeProps) => {
                                     <SingleRecordView />
                                 </Route>
                             <Route path="/">
-                                <PanelHistoryTracker authentication={routeProps.authentication} />
+                                <PanelHistoryTracker trackerData={routeProps.trackerData} />
                             </Route>
                         </Switch>
                     </animated.div>

@@ -1,5 +1,7 @@
 import React from 'react'
 import Authentication from '../../util/Authentication/Authentication'
+import TrackerDataFetcher from '../TrackerDataFetcher'
+import requestingClientTypes from '../requesting-client.types';
 
 import PanelRouter from './Router'
 
@@ -43,9 +45,6 @@ export default class App extends React.Component{
             this.twitch.onAuthorized((auth)=>{
                 this.Authentication.setToken(auth.token, auth.userId)
                 if(!this.state.finishedLoading){
-                    // if the component hasn't finished loading (as in we've not set up after getting a token), let's set it up now.
-
-                    // now we've done the setup for the component, let's set the state to true to force a rerender with the correct data.
                     this.setState(()=>{
                         return {finishedLoading:true}
                     })
@@ -67,14 +66,18 @@ export default class App extends React.Component{
 
         if(finishedLoading && isVisible){
             return (
-                <PanelRouter className={classNames({'light-theme': theme === 'light'}, {'dark-theme': theme === 'dark'})} authentication={this.Authentication} />
+                <TrackerDataFetcher authentication={this.Authentication} requestingClient={requestingClientTypes.HISTORY_TRACKER_PANEL}>
+                {({ trackerData, isLoaded }) => isLoaded
+                    ? <PanelRouter trackerData={trackerData} className={classNames({'light-theme': theme === 'light'}, {'dark-theme': theme === 'dark'})} />
+                    : <div></div>
+                }
+                </TrackerDataFetcher>
             )
-        }else{
+        } else {
             return (
                 <div className="App">
                 </div>
             )
         }
-
     }
 }

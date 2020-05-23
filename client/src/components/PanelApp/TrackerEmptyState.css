@@ -1,0 +1,16 @@
+.emptyStateContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 24px;
+    color: #beaf90;
+}
+
+.emptyStateIcon {
+    stroke: #beaf90;
+    fill: #beaf90;
+    height: 120px;
+    width: 120px;
+}

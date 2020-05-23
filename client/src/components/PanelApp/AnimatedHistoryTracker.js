@@ -3,6 +3,8 @@ import { useTransition } from 'react-spring';
 
 import HistoryRecordView from './HistoryRecordView';
 
+import './AnimatedHistoryTracker.css'
+
 const AnimatedHistoryTracker = ({ trackerData }) => {
 
     const transitions = useTransition(trackerData.history, record => record.id, {
@@ -12,7 +14,11 @@ const AnimatedHistoryTracker = ({ trackerData }) => {
         trail: 50,
     })
 
-    return transitions.map(({ item, key, props }) => <HistoryRecordView key={key} id={item.id} record={item} style={props} />)
+    return (
+        <div className="historyTrackerContainer">
+            {transitions.map(({ item, key, props }) => <HistoryRecordView key={key} id={item.id} record={item} style={props} />)}
+        </div>
+    )
 }
 
 export default AnimatedHistoryTracker;

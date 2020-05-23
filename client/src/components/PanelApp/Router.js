@@ -12,7 +12,7 @@ const PanelRouter = (props) => (
     <ToastProvider>
         <div className={classNames("historyTrackerContainer", props.className)}>
             <MemoryRouter>
-                <AnimatedRoutes authentication={props.authentication} />
+                <AnimatedRoutes trackerData={props.trackerData} />
             </MemoryRouter>
         </div>
     </ToastProvider>
