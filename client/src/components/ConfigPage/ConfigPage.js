@@ -1,5 +1,9 @@
 import React from 'react'
+import classNames from 'classnames'
 import Authentication from '../../util/Authentication/Authentication'
+
+import '../../fonts/Beaufort for LOL Bold.ttf'
+import '../../fonts/UniversLTCYR-55Roman.otf';
 
 import './Config.css'
 
@@ -55,12 +59,21 @@ export default class ConfigPage extends React.Component{
     }
 
     render(){
+        const isLightTheme = this.state.theme==='light'
+
         if(this.state.finishedLoading && this.Authentication.isModerator()){
             return(
-                <div className="Config">
-                    <div className={this.state.theme==='light' ? 'Config-light' : 'Config-dark'}>
-                       Download the <a className="appDownloadLink" target="_blank" href="https://s3.us-east-2.amazonaws.com/runeterra.history.tracker/Electron+Builds/Runeterra+History+Tracker+Installer+(win+latest).exe" download>Runeterra History Tracker App.</a>
-                    </div>
+                <div className={classNames("Config", { 'Config-light': isLightTheme }, { 'Config-dark': !isLightTheme})}>
+                        <h1 className="configTitle">Getting Started</h1>
+                        <ConfigText 
+                            content={<span>1. Download the <a className="appDownloadLink" target="_blank" href="https://s3.us-east-2.amazonaws.com/runeterra.history.tracker/Electron+Builds/Runeterra+History+Tracker+Installer+(win+latest).exe" download>Runeterra History Tracker App</a> Installer.</span>}
+                            subtext={'Note: Windows Defender might prevent the installer from being run. In order to use this extension you need to click "More Info" and "Run Anyway".'}
+                        />
+                        <ConfigText 
+                            content="2. Connect the app to your Twitch account."
+                            subtext='Note: The Runeterra History Tracker is a "System Tray Only" application. Look for the icon where you might find your sound or network settings!'
+                        />
+                        <ConfigText content="3. Start playing Legends of Runeterra to track your history!" />
                 </div>
             )
         }
@@ -75,3 +88,10 @@ export default class ConfigPage extends React.Component{
         }
     }
 }
+
+const ConfigText = ({ content, subtext}) => (
+    <p className="configTextContainer">
+        <span classNamee="configText">{content}</span>
+        <span className="configSubtext">{subtext}</span>
+    </p>
+)

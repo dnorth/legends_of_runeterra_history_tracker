@@ -15,7 +15,7 @@ const AnimatedHistoryTracker = ({ trackerData }) => {
     })
 
     return (
-        <div className="historyTrackerContainer">
+        <div className="historyTracker">
             {transitions.map(({ item, key, props }) => <HistoryRecordView key={key} id={item.id} record={item} style={props} />)}
         </div>
     )

@@ -1,6 +1,9 @@
 const { MenuItem, shell } = require('electron');
 const uuidv4 = require('uuid').v4;
 const Store = require('electron-store');
+const { getNativeImage } = require('../utils');
+
+const TwitchIcon = getNativeImage('/resources/twitch-icon-24x24.png');
 
 const { getPath } = require('../utils');
 
@@ -18,9 +21,10 @@ class TwitchAuth {
     static get menuItem() {
         const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
-        const label = authenticatedTwitchUser.displayName ? `Connected to Twitch as ${authenticatedTwitchUser.displayName}` : 'Connect to Twitch'
+        const label = authenticatedTwitchUser.displayName ? `Connected as ${authenticatedTwitchUser.displayName}` : 'Connect to Twitch'
         return new MenuItem({
             label,
+            icon: TwitchIcon,
             click: () => authenticatedTwitchUser.displayName
             ? () => {}
             : shell.openExternal(`https://id.twitch.tv/oauth2/authorize?client_id=${historyTrackerClientId}&redirect_uri=${TwitchAuth.redirectUrl}&response_type=code&scope=user:read:email&state=thnksfrthmmrs`)

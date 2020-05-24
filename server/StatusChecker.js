@@ -6,23 +6,23 @@ const statusIconRed = getNativeImage('/resources/status_red_12.png');
 const statusIconGreen = getNativeImage('/resources/status_green_12.png');
 
 
-class LorStatusChecker {
+class LoRStatusChecker {
     static status = false;
 
     static get label() {
-        return LorStatusChecker.status ? 'Connected to LoR' : 'Not Connected to LoR';
+        return LoRStatusChecker.status ? 'Connected to LoR' : 'Not Connected to LoR';
     }
 
     static get icon() {
-        return LorStatusChecker.status ? statusIconGreen : statusIconRed
+        return LoRStatusChecker.status ? statusIconGreen : statusIconRed
     }
 
     static get menuItem() {
         return new MenuItem({
-            label: LorStatusChecker.label,
-            icon: LorStatusChecker.icon
+            label: LoRStatusChecker.label,
+            icon: LoRStatusChecker.icon
         });
     }
 }
 
-module.exports = LorStatusChecker;
+module.exports = LoRStatusChecker;
