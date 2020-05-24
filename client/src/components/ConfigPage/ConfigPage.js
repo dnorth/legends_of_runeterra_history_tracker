@@ -74,6 +74,11 @@ export default class ConfigPage extends React.Component{
                             subtext='Note: The Runeterra History Tracker is a "System Tray Only" application. Look for the icon where you might find your sound or network settings!'
                         />
                         <ConfigText content="3. Start playing Legends of Runeterra to track your history!" />
+                        <div className="supportHelpText">
+                            <div>If you have any questions or concerns, please reach out to:</div>
+                            <a className="supportHelpEmail">runeterra.history.tracker+streamer@gmail.com</a>
+                            <div>and I will answer as soon as possible!</div>
+                        </div>
                 </div>
             )
         }

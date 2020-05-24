@@ -60,3 +60,17 @@ body {
     font-family: "Univers-Roman", "Roboto";
     letter-spacing: unset;
 }
+
+.supportHelpText {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-weight: 100;
+    font-size: 14px;
+    font-family: "Univers-Roman", "Roboto";
+    line-height: 1.3em;
+}
+
+.supportHelpEmail {
+    color: #87C4FC;
+}
