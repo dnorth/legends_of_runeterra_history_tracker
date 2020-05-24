@@ -37,10 +37,12 @@ body {
 
 .Config-light{
     color:#beaf90;
+    background-color: #111111;
 }
 
 .Config-dark{
     color:#beaf90;
+    background-color: #111111;
 }
 
 .appDownloadLink {
