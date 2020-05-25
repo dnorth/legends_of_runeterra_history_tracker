@@ -2,6 +2,7 @@ module.exports = {
     credentials:"s3_uploader_creds.json",
     bucketName:"runeterra.history.tracker",
     patterns:[
-        "Electron Builds/*.exe"
+        "server/Electron Builds/*.exe",
+        "client/assets/champ_pfps/*"
     ]
 }

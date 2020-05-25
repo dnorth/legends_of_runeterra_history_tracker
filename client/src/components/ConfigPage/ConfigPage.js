@@ -66,7 +66,7 @@ export default class ConfigPage extends React.Component{
                 <div className={classNames("Config", { 'Config-light': isLightTheme }, { 'Config-dark': !isLightTheme})}>
                         <h1 className="configTitle">Getting Started</h1>
                         <ConfigText 
-                            content={<span>1. Download the <a className="appDownloadLink" target="_blank" href="https://s3.us-east-2.amazonaws.com/runeterra.history.tracker/Electron+Builds/Runeterra+History+Tracker+Installer+(win+latest).exe" download>Runeterra History Tracker App</a> Installer.</span>}
+                            content={<span>1. Download the <a className="appDownloadLink" target="_blank" href="https://s3.us-east-2.amazonaws.com/runeterra.history.tracker/server/Electron+Builds/Runeterra+History+Tracker+Installer+(win+latest).exe" download>Runeterra History Tracker App</a> Installer.</span>}
                             subtext={'Note: Windows Defender might prevent the installer from being run. In order to use this extension you need to click "More Info" and "Run Anyway".'}
                         />
                         <ConfigText 
@@ -96,7 +96,7 @@ export default class ConfigPage extends React.Component{
 
 const ConfigText = ({ content, subtext}) => (
     <p className="configTextContainer">
-        <span classNamee="configText">{content}</span>
+        <span className="configText">{content}</span>
         <span className="configSubtext">{subtext}</span>
     </p>
 )

@@ -18,7 +18,8 @@
     "postinstall": "(npm run install-client); (npm run install-server); (npm run install-history-lambda);",
     "install-client": "cd client && npm install",
     "install-server": "cd server && npm install",
-    "install-history-lambda": "cd server/aws-lambda/functions && npm install"
+    "install-history-lambda": "cd server/aws-lambda/functions && npm install",
+    "upload-to-s3": "s3-upload"
   },
   "husky": {
     "hooks": {
@@ -29,5 +30,7 @@
     "concurrently": "^5.1.0",
     "husky": "^4.2.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "s3-upload": "^0.1.0"
+  }
 }

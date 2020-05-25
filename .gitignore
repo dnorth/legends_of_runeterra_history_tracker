@@ -1,2 +1,5 @@
 # npm
 node_modules
+
+# secrets
+s3_uploader_creds.json

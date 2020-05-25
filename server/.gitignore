@@ -31,7 +31,6 @@ secrets.js
 server.cert
 server.key
 dynamodb/config/
-s3_uploader_creds.json
 
 # builds
 Electron Builds/

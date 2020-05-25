@@ -54,15 +54,12 @@
     "invoke-auth-twitch-user-lambda": "cd aws-lambda/functions && serverless invoke local -f authenticateTwitchUser --path authenticateTwitchUser_local_request_data.json",
     "build": "electron-builder",
     "package": "electron-builder",
-    "package-prod": "electron-builder && npm run upload",
-    "postinstall": "electron-builder install-app-deps",
-    "upload": "s3-upload"
+    "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
     "aws-sdk": "^2.682.0",
     "concurrently": "^5.2.0",
     "electron": "^8.2.4",
-    "electron-builder": "^22.6.1",
-    "s3-upload": "^0.1.0"
+    "electron-builder": "^22.6.1"
   }
 }
