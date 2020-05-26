@@ -154,6 +154,7 @@ const attemptToRefreshToken = async (refreshToken) => {
 
     return { authenticatedTwitchUser, newTokens: { accessToken: refreshTokenResponseData.access_token, refreshToken: refreshTokenResponseData.refresh_token } }
   } catch (e) {
+    console.log('error when attempting to refresh token: ', (e.response && e.response.data) || e.message);
     return { authenticatedTwitchUser: null }
   }
 

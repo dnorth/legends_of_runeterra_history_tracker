@@ -2,6 +2,8 @@ import React, { useRef } from 'react'
 
 import './ShareDeckButton.css'
 
+import Divider from '../Divider';
+
 import DeckShareButton from '../../images/Btn_Secondary_Face_Highlight.png';
 
 import { useToastManager } from './ToastManager'
@@ -14,11 +16,14 @@ const ShareDeckButton = (props) => {
         deckCodeRef.current.select();
         document.execCommand("copy");
         addToast('Successfully Copied Deck to Clipboard!')
-        //display toast
     }
     
     return (
         <>
+            <div className="deckCodeTitle">
+                DECK CODE
+                <Divider width={100}/>
+            </div>
             <div className="deckCode">{props.record.deckCode}</div>
             <div className="shareContainer" title="Copy Deck Code to Clipboard" onClick={copyCodeToClipboard}>
                 <img src={DeckShareButton} className="shareButton"/>

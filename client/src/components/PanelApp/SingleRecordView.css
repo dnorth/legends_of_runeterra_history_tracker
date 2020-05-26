@@ -1,12 +1,20 @@
 .singleRecordView {
     display: grid;
     justify-items: center;
-    grid-row-gap: 20px;
-    padding: 4px;
+    grid-template-columns: 1fr 234px 1fr;
+    grid-template-areas: ". recordContent .";
 
     color: #beaf90;
     font-family: 'Beaufort for LOL Regular', "Roboto";
 
+}
+
+.recordContent {
+    grid-area: recordContent;
+    display: grid;
+    justify-items: center;
+    grid-row-gap: 20px;
+    padding: 4px 16px;
 }
 
 .cardContainer {
@@ -26,11 +34,4 @@
 
 .vsButton {
     margin: 8px 0;
-}
-
-.bar {
-    width: 160px;
-    margin: 4px;
-    height: 2px;
-    background: #504733;
 }

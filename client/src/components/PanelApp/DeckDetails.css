@@ -1,7 +1,7 @@
 .cardCountContainer {
     display: flex;
     justify-content: space-between;
-    width: 200px;
+    width: 100%;
 }
 
 .cardCountItem {
@@ -20,4 +20,38 @@
     font-size: 12px;
     text-transform: uppercase;
     margin-bottom: 4px;
+}
+
+.champPfpContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.champPfpOverlayContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.champPfp {
+    padding: 8px;
+    width: 80px;
+    height: auto;
+}
+
+.champOverlay {
+    position: absolute;
+    width: 84px;
+    height: auto;
+    top: 0;
+    left: 0;
+    padding: 6px;
+}
+
+.champNotFoundName {
+    position: absolute;
+    top: 25px;
+    color: #504733;
+    font-size: 15px;
 }

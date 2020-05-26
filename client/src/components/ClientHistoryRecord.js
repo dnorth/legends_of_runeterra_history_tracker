@@ -108,16 +108,20 @@ export default class ClientHistoryRecord {
 
         return detailedDeckInfo.reduce((acc, item) => {
             if(item.type === 'Spell') {
-                return {...acc, 'Spells': { ...acc.Spells, count: acc.Spells.count + item.count}}
+                return {...acc, 'Spells': { ...acc.Spells, count: acc.Spells.count + item.count, items: [...acc.Spells.items, item] }}
             }
 
             if(item.type === 'Unit') {
                 if(item.supertype === 'Champion') {
-                    return {...acc, 'Champions': { ...acc.Champions, count: acc.Champions.count + item.count}}
+                    return {...acc, 'Champions': { ...acc.Champions, count: acc.Champions.count + item.count, items: [...acc.Champions.items, item] }}
                 } else {
-                    return {...acc, 'Followers': { ...acc.Followers, count: acc.Followers.count + item.count}}
+                    return {...acc, 'Followers': { ...acc.Followers, count: acc.Followers.count + item.count, items: [...acc.Followers.items, item] }}
                 }
             }
-        }, { 'Champions': { count: 0 }, 'Spells': { count: 0 }, 'Followers': { count: 0 } })
+        }, { 'Champions': { count: 0, items: [] }, 'Spells': { count: 0, items: [] }, 'Followers': { count: 0, items: [] } })
+    }
+
+    static getCardProfilePicUrl = (code) => {
+        return `https://s3.us-east-2.amazonaws.com/runeterra.history.tracker/client/assets/champ_pfps/${code}.png`;
     }
 }

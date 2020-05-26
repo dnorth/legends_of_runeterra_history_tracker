@@ -41,3 +41,8 @@
     text-align: center;
     word-wrap: break-word;
 }
+
+.deckCodeTitle {
+    font-size: 18px;
+    margin-bottom: -15px; /* to anyone who sees this... i'm so sorry... It was just the easiest way... :disappointed */
+}
