@@ -1,5 +1,5 @@
 class LoRHistoryRecord {
-    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId }) {
+    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId, cardsInDeck }) {
         this.id = id;
         this.playerName = playerName;
         this.opponentName = opponentName;
@@ -10,9 +10,10 @@ class LoRHistoryRecord {
         this.gameEndTimestamp = gameEndTimestamp;
         this.sessionId = sessionId;
         this.twitchChannelId = twitchChannelId.toString();
+        this.cardsInDeck = cardsInDeck;
     }
 
-    updateRecord = ({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId }) => {
+    updateRecord = ({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId, cardsInDeck }) => {
         this.id = id || this.id;
         this.playerName = playerName || this.playerName;
         this.opponentName = opponentName || this.opponentName;
@@ -23,6 +24,7 @@ class LoRHistoryRecord {
         this.gameEndTimestamp = gameEndTimestamp || this.gameEndTimestamp;
         this.sessionId = sessionId || this.sessionId;
         this.twitchChannelId = twitchChannelId || this.twitchChannelId;
+        this.cardsInDeck = cardsInDeck || this.cardsInDeck;
 
         return this;
     }
@@ -45,7 +47,8 @@ class LoRHistoryRecord {
             gameStartTimestamp: this.gameStartTimestamp,
             gameEndTimestamp: this.gameEndTimestamp,
             sessionId: this.sessionId,
-            twitchChannelId: this.twitchChannelId
+            twitchChannelId: this.twitchChannelId,
+            cardsInDeck: this.cardsInDeck
         }
     }
 }

@@ -62,7 +62,9 @@ const DeckDetails = ({ record }) => {
                 <CardType record={record} type="Spells" icon={SpellIcon} />
             </div>
             <ChampionProfilePics record={record} />
-            <ShareDeckButton record={record} />
+            {
+                record.deckCode && <ShareDeckButton record={record} />
+            }
         </>
     )
 } 

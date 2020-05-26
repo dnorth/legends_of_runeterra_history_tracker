@@ -1,0 +1,17 @@
+.quinnEmote {
+    height: 60px;
+    width: 60px;
+    margin-right: 4px;
+}
+
+.recordErrorBoundary {
+    height: 70px;
+    padding: 4px 16px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+
+    border: 1px solid #cdd2d2;
+    border-radius: 4px;
+    box-sizing: border-box;
+}

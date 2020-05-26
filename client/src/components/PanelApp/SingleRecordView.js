@@ -8,6 +8,7 @@ import FactionImages from './FactionImages'
 import DeckDetails from './DeckDetails'
 import DetailCounter from './DetailCounter'
 import Divider from '../Divider'
+import ErrorBoundary from '../ErrorBoundary';
 
 import './SingleRecordView.css'
 import PanelHistoryTracker from './PanelHistoryTracker';
@@ -37,22 +38,24 @@ const SingleRecordView = (props) => {
     const { record } = location.state;
 
     return (
-        <div>
-            <StickyBackground />
-            <div className="singleRecordView">
-                <div className="recordContent">
-                    <div className="vsInfo">
-                        <div>{record.playerName}</div>
-                        <FactionImages record={record} size={34} />
-                        <VSButton className="vsButton" />
-                        <div>{record.opponentName}</div>
+        <ErrorBoundary>
+            <div>
+                <StickyBackground />
+                <div className="singleRecordView">
+                    <div className="recordContent">
+                        <div className="vsInfo">
+                            <div>{record.playerName}</div>
+                            <FactionImages record={record} size={34} />
+                            <VSButton className="vsButton" />
+                            <div>{record.opponentName}</div>
+                        </div>
+                        <Divider />
+                        <DeckDetails record={record} />
+                        <Cards record={record} />
                     </div>
-                    <Divider />
-                    <DeckDetails record={record} />
-                    <Cards record={record} />
                 </div>
-             </div>
-        </div>
+            </div>
+        </ErrorBoundary>
     )
 }
 

@@ -1,11 +1,11 @@
-import { DeckEncoder } from 'runeterra'
+import { DeckEncoder, Card } from 'runeterra'
 import moment from 'moment'
 import globalsData from '../data/globals-en_us.json';
 import fullCardData from '../data/full-card-data';
 import GameStateTypes from './game-state.types'
 
 export default class ClientHistoryRecord {
-    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId, probableError }) {
+    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId, probableError, cardsInDeck }) {
         this.id = id;
         this.playerName = playerName;
         this.opponentName = opponentName;
@@ -17,6 +17,7 @@ export default class ClientHistoryRecord {
         this.sessionId = sessionId;
         this.twitchChannelId = twitchChannelId;
         this.probableError = probableError;
+        this.cardsInDeck = cardsInDeck;
     }
 
     toJson = () => {
@@ -30,7 +31,8 @@ export default class ClientHistoryRecord {
             gameStartTimestamp: this.gameStartTimestamp,
             gameEndTimestamp: this.gameEndTimestamp,
             sessionId: this.sessionId,
-            twitchChannelId: this.twitchChannelId
+            twitchChannelId: this.twitchChannelId,
+            cardsInDeck: cardsInDeck
         }
     }
 
@@ -84,7 +86,27 @@ export default class ClientHistoryRecord {
         return !!(this.gameState === GameStateTypes.VICTORY || this.gameState === GameStateTypes.DEFEAT)
     }
 
-    getDecodedDeck = () => DeckEncoder.decode(this.deckCode)
+    getDecodedDeck = () => {
+        if (this.cardsInDeck) {
+            return this.buildThirdPartyCards();
+        }
+
+        return this.deckCode ? DeckEncoder.decode(this.deckCode) : [];
+    }
+
+    getOrganizedCardsInDeck = () => this.cardsInDeck.reduce((acc, item) => {
+        if(item in acc) {
+            return { ...acc, [item]: acc[item] + 1 }
+        } else {
+            return { ...acc, [item]: 1 }
+        }
+    }, {});
+
+    buildThirdPartyCards = () => {
+        const organizedCards = this.getOrganizedCardsInDeck();
+
+        return Object.entries(organizedCards).map(([cardCode, cardCount]) => new Card(cardCode, cardCount));
+    }
 
     getDeckFactions = () => {
         const decodedDeck = this.getDecodedDeck();

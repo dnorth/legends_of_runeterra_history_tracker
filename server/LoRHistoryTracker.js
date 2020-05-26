@@ -4,6 +4,7 @@ const LoRHistoryRecord = require('./LorHistoryRecord');
 const TwitchAuth = require('./twitchAuth/TwitchAuth');
 const { getLoRClientAPI, addOrUpdateHistoryRecordToDynamoDB } = require('./api-utils');
 const gameStateTypes = require('./GameState.types');
+const { isEmptyObject } = require('./utils');
 
 class LoRHistoryTracker {
     constructor(broadcasterChannelId) {
@@ -16,8 +17,12 @@ class LoRHistoryTracker {
     startTrackingHistory(pollInterval) {
         setInterval(async () => {
             const response = await getLoRClientAPI('positional-rectangles');
-            
+
+            const expeditionsResponse = await getLoRClientAPI('expeditions-state');
+            const staticDecklistResponse = await getLoRClientAPI('static-decklist');
+
             if(!this.activeRecordID && this.gameState === gameStateTypes.MENUS && response.GameState === gameStateTypes.INPROGRESS) {
+                console.log('game started!')
                 await this.onGameStart(response.PlayerName, response.OpponentName);
             }
 
@@ -33,13 +38,42 @@ class LoRHistoryTracker {
         const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
         if(authenticatedTwitchUser.id) {
-            const response = await getLoRClientAPI('static-decklist');
-            const newId = this.addRecordToHistory(authenticatedTwitchUser.id, { playerName, opponentName, deckCode: response.DeckCode, localPlayerWon: null, gameStartTimestamp: new Date().toISOString(), sessionId: this.sessionId });
-            this.activeRecordID = newId;
+            const staticDecklistResponse = await getLoRClientAPI('static-decklist');
+
+            if(isEmptyObject(staticDecklistResponse.CardsInDeck))
+            {
+                //I think we're in an Expeditions match but let's make sure...
+                const expeditionsResponse = await getLoRClientAPI('expeditions-state');
+
+                if (expeditionsResponse.IsActive) {
+                    //Very positive it's an expeditions match
+                    console.log('expeditions match')
+                    this.onExpeditionMatchStart(playerName, opponentName, authenticatedTwitchUser, expeditionsResponse);
+                } else {
+                    //Kind of a strange state... but let's just assume it's a normal match.
+                    const newId = this.onNormalMatchStart(playerName, opponentName, authenticatedTwitchUser, staticDecklistResponse);
+                    console.log(`Cards in Deck returned empty but there was no active expedition for game ${newId}.`)
+                }
+            } else {
+                console.log('normal match')
+                this.onNormalMatchStart(playerName, opponentName, authenticatedTwitchUser, staticDecklistResponse);
+            }
         } else {
             console.log("It doesn't look like you're connected to twitch...")
         }
     }
+
+    onExpeditionMatchStart(playerName, opponentName, authenticatedTwitchUser, expeditionsResponse) {
+        const newId = this.addRecordToHistory(authenticatedTwitchUser.id, { playerName, opponentName, deckCode: null, cardsInDeck: expeditionsResponse.Deck, localPlayerWon: null, gameStartTimestamp: new Date().toISOString(), sessionId: this.sessionId });
+        this.activeRecordID = newId;
+        return newId;
+    }
+
+    onNormalMatchStart(playerName, opponentName, authenticatedTwitchUser, staticDecklistResponse) {
+        const newId = this.addRecordToHistory(authenticatedTwitchUser.id, { playerName, opponentName, deckCode: staticDecklistResponse.DeckCode, localPlayerWon: null, gameStartTimestamp: new Date().toISOString(), sessionId: this.sessionId });
+        this.activeRecordID = newId;
+        return newId;
+    } 
 
     async onGameFinish() {
         this.gameState = gameStateTypes.MENUS;

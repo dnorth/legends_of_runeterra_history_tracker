@@ -37,13 +37,13 @@
 .champPfp {
     padding: 8px;
     width: 80px;
-    height: auto;
+    height: 80px;
 }
 
 .champOverlay {
     position: absolute;
     width: 84px;
-    height: auto;
+    height: 84px;
     top: 0;
     left: 0;
     padding: 6px;

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import FactionImages from './FactionImages';
 import ShareDeckButton from './ShareDeckButton';
 import Chevron from './Chevron';
+import HistoryRecordErrorBoundary from './HistoryRecordErrorBoundary';
 
 import './HistoryRecordView.css'
 
@@ -49,30 +50,32 @@ const HistoryRecordView = ({ record, style }) => {
     const errorTitle = record.gameState === GameStateTypes.ERROR ? { title: 'Looks like something went wrong when trying to collect game data for this record...'} : {}
 
     return (
-        <Link to={{ pathname: `/${record.id}`, state: { record }}} className="recordLink">
-            <animated.div className={classes} {...errorTitle} style={style}>
-                <div className="leftSide">
-                    { record.gameEndedSuccessfully &&
-                        (
-                            <>
-                                <div className="timeSinceGame ellipsis" title={record.localGameEndTimeFormatted}>{record.timeSinceGame}</div>
-                                <div className="historyViewBar" />
-                            </>
-                        )
-                    }
-                    <div className="resultsContainer">
-                        {getGameStateText(record)}
+        <HistoryRecordErrorBoundary className="probableError" style={style}>
+            <Link to={{ pathname: `/${record.id}`, state: { record }}} className="recordLink">
+                <animated.div className={classes} {...errorTitle} style={style}>
+                    <div className="leftSide">
+                        { record.gameEndedSuccessfully &&
+                            (
+                                <>
+                                    <div className="timeSinceGame ellipsis" title={record.localGameEndTimeFormatted}>{record.timeSinceGame}</div>
+                                    <div className="historyViewBar" />
+                                </>
+                            )
+                        }
+                        <div className="resultsContainer">
+                            {getGameStateText(record)}
+                        </div>
+                        { record.gameState === GameStateTypes.INPROGRESS ? <GameLengthInProgress record={record} /> : <GameLength gameLength={record.gameLength} /> }
                     </div>
-                    { record.gameState === GameStateTypes.INPROGRESS ? <GameLengthInProgress record={record} /> : <GameLength gameLength={record.gameLength} /> }
-                </div>
-                <FactionImages record={record} />
-                <div className="opponentContainer">
-                    <div>VS</div>
-                    <div className="opponentName">{record.opponentName}</div>
-                </div>
-                <Chevron />
-            </animated.div>
-        </Link>
+                    <FactionImages record={record} />
+                    <div className="opponentContainer">
+                        <div>VS</div>
+                        <div className="opponentName">{record.opponentName}</div>
+                    </div>
+                    <Chevron />
+                </animated.div>
+            </Link>
+        </HistoryRecordErrorBoundary>
     )
 }
 

@@ -2,6 +2,7 @@ import React from 'react'
 import Authentication from '../../util/Authentication/Authentication'
 import TrackerDataFetcher from '../TrackerDataFetcher'
 import requestingClientTypes from '../requesting-client.types';
+import ErrorBoundary from '../ErrorBoundary';
 
 import PanelRouter from './Router'
 
@@ -66,12 +67,14 @@ export default class App extends React.Component{
 
         if(finishedLoading && isVisible){
             return (
-                <TrackerDataFetcher authentication={this.Authentication} requestingClient={requestingClientTypes.HISTORY_TRACKER_PANEL}>
-                {({ trackerData, isLoaded }) => isLoaded
-                    ? <PanelRouter trackerData={trackerData} className={classNames({'light-theme': theme === 'light'}, {'dark-theme': theme === 'dark'})} />
-                    : <div></div>
-                }
-                </TrackerDataFetcher>
+                <ErrorBoundary>
+                    <TrackerDataFetcher authentication={this.Authentication} requestingClient={requestingClientTypes.HISTORY_TRACKER_PANEL}>
+                    {({ trackerData, isLoaded }) => isLoaded
+                        ? <PanelRouter trackerData={trackerData} className={classNames({'light-theme': theme === 'light'}, {'dark-theme': theme === 'dark'})} />
+                        : <div></div>
+                    }
+                    </TrackerDataFetcher>
+                </ErrorBoundary>
             )
         } else {
             return (
