@@ -39,20 +39,36 @@ const GameLength = ({ gameLength }) => (
     </div>
 )
 
+const getTitleText = (record, canSeeDeckDetails) => {
+    let title = null;
+
+    if (!canSeeDeckDetails) {
+        title = 'No deck details available.'
+    }
+
+    if (record.gameState === GameStateTypes.ERROR) {
+        title = 'Looks like something went wrong when trying to collect game data for this record.'
+    }
+
+    return title ? { title } : {}
+}
+
 const HistoryRecordView = ({ record, style }) => {
+    const canSeeDeckDetails = record.deckCode || record.cardsInDeck;
+
     const classes = classNames('recordContainer', { 
         'playerWon': record.gameState === GameStateTypes.VICTORY,
         'playerLost': record.gameState === GameStateTypes.DEFEAT,
         'inProgress': record.gameState === GameStateTypes.INPROGRESS,
-        'probableError': record.gameState === GameStateTypes.ERROR
+        'probableError': record.gameState === GameStateTypes.ERROR,
+        'clickable': canSeeDeckDetails,
+        'notClickable': !canSeeDeckDetails
     })
-
-    const errorTitle = record.gameState === GameStateTypes.ERROR ? { title: 'Looks like something went wrong when trying to collect game data for this record...'} : {}
 
     return (
         <HistoryRecordErrorBoundary className="probableError" style={style}>
-            <Link to={{ pathname: `/${record.id}`, state: { record }}} className="recordLink">
-                <animated.div className={classes} {...errorTitle} style={style}>
+            <Link to={{ pathname: `/${record.id}`, state: { record }}} onClick={e => canSeeDeckDetails ? null : e.preventDefault()} className='recordLink'>
+                <animated.div className={classes} {...getTitleText(record, canSeeDeckDetails)} style={style}>
                     <div className="leftSide">
                         { record.gameEndedSuccessfully &&
                             (
@@ -72,7 +88,9 @@ const HistoryRecordView = ({ record, style }) => {
                         <div>VS</div>
                         <div className="opponentName">{record.opponentName}</div>
                     </div>
-                    <Chevron />
+                    {
+                        canSeeDeckDetails && <Chevron />
+                    }
                 </animated.div>
             </Link>
         </HistoryRecordErrorBoundary>

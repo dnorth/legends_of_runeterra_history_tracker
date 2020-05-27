@@ -18,9 +18,9 @@ const getLoRClientAPI = async (path, port) => {
         if( e.code === 'ECONNREFUSED') {
             LoRStatusChecker.status = false;
 
-            return { message: `Cannot detect that Legends of Runeterra is open. Please ensure that you have Third Party Tools enable and that it is set to ${lorPort}.` }
+            return { errorMessage: `Cannot detect that Legends of Runeterra is open. Please ensure that you have Third Party Tools enable and that it is set to ${lorPort}.` }
         } else {
-            return { message: e.message, code: e.code }
+            return { errorMessage: e.message, code: e.code }
         } 
     }
 }

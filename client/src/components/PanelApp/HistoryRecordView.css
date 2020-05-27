@@ -15,8 +15,12 @@
     cursor: pointer;
 }
 
-.recordContainer:active {
+.clickable:active {
     transform: scale(0.95, 0.95) !important;
+}
+
+.notClickable {
+    cursor: help;
 }
 
 .leftSide {

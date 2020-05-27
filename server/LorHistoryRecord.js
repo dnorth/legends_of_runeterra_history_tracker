@@ -1,5 +1,5 @@
 class LoRHistoryRecord {
-    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId, cardsInDeck }) {
+    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId, cardsInDeck, expeditionsData, gameType }) {
         this.id = id;
         this.playerName = playerName;
         this.opponentName = opponentName;
@@ -11,9 +11,11 @@ class LoRHistoryRecord {
         this.sessionId = sessionId;
         this.twitchChannelId = twitchChannelId.toString();
         this.cardsInDeck = cardsInDeck;
+        this.expeditionsData = expeditionsData;
+        this.gameType = gameType;
     }
 
-    updateRecord = ({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId, cardsInDeck }) => {
+    updateRecord = ({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId, cardsInDeck, expeditionsData, gameType }) => {
         this.id = id || this.id;
         this.playerName = playerName || this.playerName;
         this.opponentName = opponentName || this.opponentName;
@@ -25,6 +27,8 @@ class LoRHistoryRecord {
         this.sessionId = sessionId || this.sessionId;
         this.twitchChannelId = twitchChannelId || this.twitchChannelId;
         this.cardsInDeck = cardsInDeck || this.cardsInDeck;
+        this.expeditionsData = expeditionsData || this.expeditionsData;
+        this.gameType = gameType || this.gameType;
 
         return this;
     }
@@ -37,18 +41,23 @@ class LoRHistoryRecord {
     }
 
     toJson = () => {
+        //Deck data for challenges doesn't come back properly. So let's just not save that. 
+        const isAChallenge = this.opponentName.startsWith('game_');
+
         return {
             id: this.id,
             playerName: this.playerName,
             opponentName: this.opponentName,
-            deckCode: this.deckCode,
+            deckCode: isAChallenge ? null : this.deckCode,
             localPlayerWon: this.localPlayerWon,
             sessionGameId: this.sessionGameId,
             gameStartTimestamp: this.gameStartTimestamp,
             gameEndTimestamp: this.gameEndTimestamp,
             sessionId: this.sessionId,
             twitchChannelId: this.twitchChannelId,
-            cardsInDeck: this.cardsInDeck
+            cardsInDeck: isAChallenge ? null : this.cardsInDeck,
+            expeditionsData: this.expeditionsData,
+            gameType: this.gameType
         }
     }
 }

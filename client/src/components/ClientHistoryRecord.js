@@ -5,7 +5,7 @@ import fullCardData from '../data/full-card-data';
 import GameStateTypes from './game-state.types'
 
 export default class ClientHistoryRecord {
-    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId, probableError, cardsInDeck }) {
+    constructor({ id, playerName, opponentName, deckCode, localPlayerWon, sessionGameId, gameStartTimestamp, gameEndTimestamp, sessionId, twitchChannelId, probableError, cardsInDeck, expeditionsData, gameType }) {
         this.id = id;
         this.playerName = playerName;
         this.opponentName = opponentName;
@@ -18,6 +18,8 @@ export default class ClientHistoryRecord {
         this.twitchChannelId = twitchChannelId;
         this.probableError = probableError;
         this.cardsInDeck = cardsInDeck;
+        this.expeditionsData = expeditionsData;
+        this.gameType = gameType;
     }
 
     toJson = () => {
@@ -32,7 +34,9 @@ export default class ClientHistoryRecord {
             gameEndTimestamp: this.gameEndTimestamp,
             sessionId: this.sessionId,
             twitchChannelId: this.twitchChannelId,
-            cardsInDeck: cardsInDeck
+            cardsInDeck: this.cardsInDeck,
+            expeditionsData: this.expeditionsData,
+            gameType: this.gameType
         }
     }
 
@@ -41,7 +45,8 @@ export default class ClientHistoryRecord {
     }
 
     get opponentName() {
-        const isComputer = this._opponentName.startsWith('decks_') || this._opponentName.startsWith('deckname_') || this._opponentName.startsWith('front_five_');
+        const computerNames = ['decks_', 'deckname_', 'front_five_', 'game_'];
+        const isComputer = computerNames.some(name => this._opponentName.startsWith(name));
         return isComputer ? 'A.I.' : this._opponentName
     }
 
