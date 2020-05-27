@@ -128,7 +128,7 @@ export default class ClientHistoryRecord {
 
     getDetailedDeckInfo = () => {
         const decodedDeck = this.getDecodedDeck();
-        return decodedDeck.map(deckCard => ({ ...deckCard, ...fullCardData.find(card => card.cardCode === deckCard.code) })).sort((a, b) => a.cost - b.cost)
+        return decodedDeck.map(deckCard => ({ ...deckCard, ...fullCardData.find(card => card.cardCode === deckCard.code) })).sort((a, b) => (a.cost - b.cost) || a.name.localeCompare(b.name));
     }
 
     getCardTypeCount = () => {
