@@ -1,6 +1,6 @@
 const { app, Tray, Menu, BrowserWindow, Point } = require('electron')
 const { autoUpdater } = require("electron-updater");
-const packageJson = require('./package.json');
+const topLevelPackage = require('./package.json');
 
 const isFirstInstance = app.requestSingleInstanceLock();
 
@@ -20,7 +20,7 @@ const getNewContextMenu = (status, statusLabel) => {
         ...TwitchAuth.logoutMenuItem,
         LorStatusChecker.menuItem,
         {
-            label: `Version ${packageJson.version}`,
+            label: `Version ${topLevelPackage.version}`,
         },
         {
             label: 'Quit',

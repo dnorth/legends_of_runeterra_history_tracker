@@ -1,6 +1,5 @@
 {
   "name": "legends_of_runeterra_twitch_win_tracker",
-  "version": "0.1.0",
   "main": "electron-server.js",
   "license": "MIT",
   "dependencies": {
