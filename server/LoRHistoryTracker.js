@@ -18,6 +18,8 @@ class LoRHistoryTracker {
         setInterval(async () => {
             const response = await getLoRClientAPI('positional-rectangles');
 
+            const expeditionsResponse = await getLoRClientAPI('expeditions-state');
+
             if(!this.activeRecordID && this.gameState === gameStateTypes.MENUS && response.GameState === gameStateTypes.INPROGRESS) {
                 console.log('game started!')
                 await this.onGameStart(response.PlayerName, response.OpponentName);
@@ -38,7 +40,7 @@ class LoRHistoryTracker {
             const staticDecklistResponse = await getLoRClientAPI('static-decklist');
 
 
-            if(isEmptyObject(staticDecklistResponse.CardsInDeck) || staticDecklistResponse.errorMessage) //https://github.com/RiotGames/developer-relations/issues/282
+            if(this.isExpeditionMatch(staticDecklistResponse))
             {
                 //I think we're in an Expeditions match but let's make sure...
                 const expeditionsResponse = await getLoRClientAPI('expeditions-state');
@@ -58,6 +60,25 @@ class LoRHistoryTracker {
         } else {
             console.log("It doesn't look like you're connected to twitch...")
         }
+    }
+
+    isExpeditionMatch = (staticDecklistResponse) => {
+        const isEmptyOrError = isEmptyObject(staticDecklistResponse.CardsInDeck) || staticDecklistResponse.errorMessage; //https://github.com/RiotGames/developer-relations/issues/282
+
+        if(isEmptyOrError) {
+            return true;
+        }
+
+        const cardsInDeckExist = typeof staticDecklistResponse.CardsInDeck === 'object';
+
+        if(!cardsInDeckExist) {
+            return false; //i've seen this happen in normal matches on restart of the game? I don't know... this is a guess.
+        }
+
+        const numCardsInDeck = Object.values(staticDecklistResponse.CardsInDeck).reduce((acc, count) => acc + count, 0);
+        const isNotAValidDeck = numCardsInDeck !== 40;
+
+        return isNotAValidDeck;
     }
 
     onExpeditionMatchStart(playerName, opponentName, authenticatedTwitchUser, expeditionsResponse) {
@@ -105,6 +126,7 @@ class LoRHistoryTracker {
 
 
         if(recordToUpdate.gameType === 'Expeditions') {
+            await this.sleep(3000); //expeditions-state API is slow to give updated info. Yeah i'm sure this is going to solve ALL my problems.... :facepalm:
             const expeditionsResponse = await getLoRClientAPI('expeditions-state');
             maybeExpeditionsData = { expeditionsData: expeditionsResponse }
         }
@@ -114,6 +136,10 @@ class LoRHistoryTracker {
             this.history[recordIndex] = updatedRecord;
             addOrUpdateHistoryRecordToDynamoDB(updatedRecord);
         }
+    }
+
+    sleep = (ms) => {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     resetSession = () => {
