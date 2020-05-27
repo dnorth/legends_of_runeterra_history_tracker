@@ -9,6 +9,7 @@
     "cors": "^2.8.5",
     "electron-is-dev": "^1.2.0",
     "electron-store": "^5.1.1",
+    "electron-updater": "^4.3.1",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "uuid": "^8.0.0"
@@ -34,7 +35,13 @@
       "!**/secrets.js",
       "!**/aws-lambda",
       "!**/dynamodb"
-    ]
+    ],
+    "publish": {
+      "provider": "s3",
+      "bucket": "runeterra.history.tracker",
+      "region": "us-east-2",
+      "path": "server/Electron Builds"
+    }
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run dynamoDb\" ",
@@ -53,7 +60,7 @@
     "invoke-auth-twitch-user-lambda-prod": "cd aws-lambda/functions && serverless invoke -f authenticateTwitchUser --path authenticateTwitchUser_local_request_data.json",
     "invoke-auth-twitch-user-lambda": "cd aws-lambda/functions && serverless invoke local -f authenticateTwitchUser --path authenticateTwitchUser_local_request_data.json",
     "build": "electron-builder",
-    "package": "electron-builder",
+    "build-prod": "electron-builder --publish always",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
