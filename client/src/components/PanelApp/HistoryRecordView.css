@@ -3,7 +3,7 @@
     padding: 4px;
 
     display: grid;
-    grid-template-columns: 84px 74px 102px 1fr;
+    grid-template-columns: 84px 74px minmax(82px, 1fr) 24px;
 
     align-items: center;
     margin-bottom: 4px;
@@ -89,7 +89,7 @@
 .opponentName {
     margin-top: 4px;
     word-wrap: break-word;
-    width: 82px;
+    width: 100%;
     text-align: center;
     font-family: "Univers-Roman";
     font-weight: bold;
