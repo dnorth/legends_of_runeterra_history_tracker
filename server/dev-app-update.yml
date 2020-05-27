@@ -1,0 +1,4 @@
+provider: s3
+bucket: runeterra.history.tracker
+region: us-east-2
+path: server/Electron Builds

@@ -1,17 +1,16 @@
 const { app, Tray, Menu, BrowserWindow, Point } = require('electron')
-const { autoUpdater } = require("electron-updater");
-const topLevelPackage = require('./package.json');
 
 const isFirstInstance = app.requestSingleInstanceLock();
 
 const LorStatusChecker = require('./StatusChecker');
 const TwitchAuth = require('./twitchAuth/TwitchAuth');
+const AutoUpdater = require('./AutoUpdater');
 
 const { getNativeImage } = require('./utils');
 
 const lorTrayIcon = getNativeImage('/resources/lor_semi_transparent_32x32.png');
 
-const getNewContextMenu = (status, statusLabel) => {
+const getNewContextMenu = (autoUpdater) => {
     const newContextMenu = Menu.buildFromTemplate([
         {
             label: 'Legends of Runeterra History Tracker',
@@ -19,9 +18,7 @@ const getNewContextMenu = (status, statusLabel) => {
         TwitchAuth.menuItem,
         ...TwitchAuth.logoutMenuItem,
         LorStatusChecker.menuItem,
-        {
-            label: `Version ${topLevelPackage.version}`,
-        },
+        autoUpdater.menuItem,
         {
             label: 'Quit',
             click: app.quit
@@ -52,18 +49,20 @@ function createWindow () {
       }
     })
 
+    const autoUpdater = new AutoUpdater();
+
     tray.setToolTip('Runeterra History Tracker');
     tray.focus();
-    tray.popUpContextMenu(getNewContextMenu(), { x: tray.getBounds().x, y: tray.getBounds().y})
+    tray.popUpContextMenu(getNewContextMenu(autoUpdater), { x: tray.getBounds().x, y: tray.getBounds().y})
 
     win.on('minimize', () => {});
 
     tray.on('click', () => {
-        tray.popUpContextMenu(getNewContextMenu());
+        tray.popUpContextMenu(getNewContextMenu(autoUpdater));
     });
 
     tray.on('right-click', () => {
-        tray.popUpContextMenu(getNewContextMenu());
+        tray.popUpContextMenu(getNewContextMenu(autoUpdater));
     });
 
     app.on('second-instance', () => {
