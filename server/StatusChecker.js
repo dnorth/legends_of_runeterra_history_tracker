@@ -1,5 +1,5 @@
 const { MenuItem } = require('electron')
-
+const { autoUpdater } = require("electron-updater");
 const { getNativeImage } = require('./utils');
 
 const statusIconRed = getNativeImage('/resources/status_red_12.png');
@@ -22,6 +22,13 @@ class LoRStatusChecker {
             label: LoRStatusChecker.label,
             icon: LoRStatusChecker.icon
         });
+    }
+
+    static setStatus(newStatus) {
+        if (newStatus !== LoRStatusChecker.status) {
+            LoRStatusChecker.status = newStatus;
+            autoUpdater.checkForUpdates();
+        }
     }
 }
 

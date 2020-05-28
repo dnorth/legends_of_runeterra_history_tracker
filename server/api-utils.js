@@ -12,11 +12,11 @@ const getLoRClientAPI = async (path, port) => {
 
     try {
         const response = await axios.get(`http://127.0.0.1:${lorPort}/${path}`);
-        LoRStatusChecker.status = true;
+        LoRStatusChecker.setStatus(true);
         return response.data;
     } catch(e) {
         if( e.code === 'ECONNREFUSED') {
-            LoRStatusChecker.status = false;
+            LoRStatusChecker.setStatus(false);
 
             return { errorMessage: `Cannot detect that Legends of Runeterra is open. Please ensure that you have Third Party Tools enable and that it is set to ${lorPort}.` }
         } else {
