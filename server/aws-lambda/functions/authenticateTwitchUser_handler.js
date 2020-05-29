@@ -10,7 +10,7 @@ module.exports.authenticateTwitchUser = async event => {
     const { authenticatedTwitchUser } = await verifyBroadcaster(accessToken, refreshToken);
 
     if(authenticatedTwitchUser) {
-        console.log(`Successfully authenticated twitch user ${authenticatedTwitchUser}!`)
+        console.log(`Successfully authenticated twitch user ${JSON.stringify(authenticatedTwitchUser)}!`)
         return getFormattedResponse(200, {
             message: 'Successfully Authenticated!',
             authenticatedTwitchUser: { ...authenticatedTwitchUser, accessToken, refreshToken }
