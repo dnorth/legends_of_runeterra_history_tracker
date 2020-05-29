@@ -9,7 +9,7 @@ class LoRHistoryRecord {
         this.gameStartTimestamp = gameStartTimestamp;
         this.gameEndTimestamp = gameEndTimestamp;
         this.sessionId = sessionId;
-        this.twitchChannelId = twitchChannelId.toString();
+        this.twitchChannelId = twitchChannelId;
         this.cardsInDeck = cardsInDeck;
         this.expeditionsData = expeditionsData;
         this.gameType = gameType;
@@ -40,6 +40,13 @@ class LoRHistoryRecord {
         }
     }
 
+    get dynamoDbPlayerNameParams() {
+        return {
+            ...this.dynamoDbBasicParams,
+            IndexName: 'playerName-index'
+        }
+    }
+
     toJson = () => {
         //Deck data for challenges doesn't come back properly. So let's just not save that. 
         const isAChallenge = this.opponentName.startsWith('game_');
@@ -54,7 +61,7 @@ class LoRHistoryRecord {
             gameStartTimestamp: this.gameStartTimestamp,
             gameEndTimestamp: this.gameEndTimestamp,
             sessionId: this.sessionId,
-            twitchChannelId: this.twitchChannelId,
+            twitchChannelId: this.twitchChannelId || 'playerName',
             cardsInDeck: isAChallenge ? null : this.cardsInDeck,
             expeditionsData: this.expeditionsData,
             gameType: this.gameType

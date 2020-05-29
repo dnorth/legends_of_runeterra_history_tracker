@@ -3,7 +3,25 @@
 const { getFormattedResponse, broadcastToApplication, verifyBroadcasterWithRefresh, updateRecordInDb } = require('./utils');
 
 module.exports.updateLoRHistory = async event => {
-    const { authenticatedTwitchUser, newTokens } = await verifyBroadcasterWithRefresh(event.headers && event.headers.Authorization, event.queryStringParameters && event.queryStringParameters.refreshToken);
+    const authorizationHeader = event.headers && event.headers.Authorization;
+
+    if(authorizationHeader === 'playerName' && event.body) {
+        try {
+            const bodyJSON = JSON.parse(event.body);
+            await updateRecordInDb(bodyJSON);
+
+            return getFormattedResponse(200, {
+                message: `Successfully updated playerName record ${bodyJSON.Item.id}!`
+            })
+        } catch (e) {
+            return getFormattedResponse(502, {
+                message: 'Hmmm... something went wrong when trying to update the playerName record.',
+                errorMessage: e && e.message
+            })
+        }
+    }
+
+    const { authenticatedTwitchUser, newTokens } = await verifyBroadcasterWithRefresh(authorizationHeader, event.queryStringParameters && event.queryStringParameters.refreshToken);
 
     if(authenticatedTwitchUser && event.body) {
         try {

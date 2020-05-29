@@ -1,4 +1,7 @@
 const { app, Tray, Menu, BrowserWindow, Point } = require('electron')
+const log = require('electron-log');
+console.log = log.log;
+console.log('this is a test log.');
 
 const isFirstInstance = app.requestSingleInstanceLock();
 

@@ -21,7 +21,6 @@ class LoRHistoryTracker {
             const expeditionsResponse = await getLoRClientAPI('expeditions-state');
 
             if(!this.activeRecordID && this.gameState === gameStateTypes.MENUS && response.GameState === gameStateTypes.INPROGRESS) {
-                console.log('game started!')
                 await this.onGameStart(response.PlayerName, response.OpponentName);
             }
 
@@ -36,29 +35,23 @@ class LoRHistoryTracker {
 
         const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
-        if(authenticatedTwitchUser.id) {
-            const staticDecklistResponse = await getLoRClientAPI('static-decklist');
+        const staticDecklistResponse = await getLoRClientAPI('static-decklist');
 
+        if(this.isExpeditionMatch(staticDecklistResponse))
+        {
+            //I think we're in an Expeditions match but let's make sure...
+            const expeditionsResponse = await getLoRClientAPI('expeditions-state');
 
-            if(this.isExpeditionMatch(staticDecklistResponse))
-            {
-                //I think we're in an Expeditions match but let's make sure...
-                const expeditionsResponse = await getLoRClientAPI('expeditions-state');
-
-                if (expeditionsResponse.IsActive) {
-                    //Very positive it's an expeditions match
-                    this.onExpeditionMatchStart(playerName, opponentName, authenticatedTwitchUser, expeditionsResponse);
-                } else {
-                    //Kind of a strange state... but let's just assume it's a normal match.
-                    const newId = this.onNormalMatchStart(playerName, opponentName, authenticatedTwitchUser, staticDecklistResponse);
-                    console.log(`Cards in Deck returned empty but there was no active expedition for game ${newId}.`)
-                }
+            if (expeditionsResponse.IsActive) {
+                //Very positive it's an expeditions match
+                this.onExpeditionMatchStart(playerName, opponentName, authenticatedTwitchUser, expeditionsResponse);
             } else {
-                console.log('normal match')
-                this.onNormalMatchStart(playerName, opponentName, authenticatedTwitchUser, staticDecklistResponse);
+                //Kind of a strange state... but let's just assume it's a normal match.
+                const newId = this.onNormalMatchStart(playerName, opponentName, authenticatedTwitchUser, staticDecklistResponse);
+                console.log(`Cards in Deck returned empty but there was no active expedition for game ${newId}.`)
             }
         } else {
-            console.log("It doesn't look like you're connected to twitch...")
+            this.onNormalMatchStart(playerName, opponentName, authenticatedTwitchUser, staticDecklistResponse);
         }
     }
 
@@ -98,15 +91,11 @@ class LoRHistoryTracker {
 
         const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
-        if(authenticatedTwitchUser.id) {
-            const response = await getLoRClientAPI('game-result');
+        const response = await getLoRClientAPI('game-result');
 
-            this.editExistingRecord(authenticatedTwitchUser.id, this.activeRecordID, { localPlayerWon: response.LocalPlayerWon, sessionGameId: response.GameID, gameEndTimestamp: new Date().toISOString() });
+        this.editExistingRecord(authenticatedTwitchUser.id, this.activeRecordID, { localPlayerWon: response.LocalPlayerWon, sessionGameId: response.GameID, gameEndTimestamp: new Date().toISOString() });
 
-            this.activeRecordID = null;
-        } else {
-            console.log("It doesn't look like you're connected to twitch...")
-        }
+        this.activeRecordID = null;
     }
 
     addRecordToHistory(twitchChannelId, newRecordProperties) {

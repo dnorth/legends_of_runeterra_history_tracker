@@ -1,6 +1,6 @@
 {
   "name": "legends_of_runeterra_twitch_win_tracker",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "electron-server.js",
   "license": "MIT",
   "dependencies": {
@@ -58,6 +58,8 @@
     "invoke-get-history-lambda": "cd aws-lambda/functions && serverless invoke local -f getLoRHistoryByChannelId --path getLoRHistory_local_request_data.json",
     "invoke-post-history-lambda-prod": "cd aws-lambda/functions && serverless invoke -f updateLoRHistory --path updateLoRHistory_local_request_data.json",
     "invoke-post-history-lambda": "cd aws-lambda/functions && serverless invoke local -f updateLoRHistory --path updateLoRHistory_local_request_data.json",
+    "invoke-post-history-lambda-playerName-prod": "cd aws-lambda/functions && serverless invoke -f updateLoRHistory --path updateLoRHistory_playerName_local_request_data.json",
+    "invoke-post-history-lambda-playerName": "cd aws-lambda/functions && serverless invoke local -f updateLoRHistory --path updateLoRHistory_playerName_local_request_data.json",
     "invoke-auth-twitch-user-lambda-prod": "cd aws-lambda/functions && serverless invoke -f authenticateTwitchUser --path authenticateTwitchUser_local_request_data.json",
     "invoke-auth-twitch-user-lambda": "cd aws-lambda/functions && serverless invoke local -f authenticateTwitchUser --path authenticateTwitchUser_local_request_data.json",
     "build": "electron-builder",

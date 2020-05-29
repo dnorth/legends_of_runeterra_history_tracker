@@ -168,8 +168,10 @@ const updateRecordInDb = (dbParams) => {
     
         docClient.put(dbParams, (err, data) => {
             if (err) {
+                console.log('something went wrong when trying to save record in the Database. DbParams: ', dbParams, ' error: ', err)
                 reject();
             } else {
+                console.log('successfully updated record: ', dbParams.Item.id, ' for playerName: ', dbParams.Item.playerName);
                 resolve();
             }
         });

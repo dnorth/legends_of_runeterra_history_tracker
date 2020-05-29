@@ -3,6 +3,7 @@ const { verifyAndDecode, getFormattedResponse, getDynamoDbDocClient } = require(
 
 module.exports.getLoRHistoryByChannelId = async event => {
   if(!event.headers || !event.headers['requesting-client']) {
+    console.log('request made with invalid requesting client. Here are the headers: ', event.headers);
     return getFormattedResponse(400, {
       message: 'Valid Requesting Client Required.'
     })
@@ -44,18 +45,22 @@ module.exports.getLoRHistoryByChannelId = async event => {
     try {
       const response = await docClient.query(params).promise();
 
+      console.log(`successfully requested data for channel ${channelId}.`);
+
       return getFormattedResponse(200, {
         data: response.Items
       })
 
     } catch(error) {
+      console.log(`Something went wrong when trying to request data... Here is the error: ${error}`);
       return getFormattedResponse(500, {
-          errorMessage: error.message,
+          errorMessage: error && error.message,
           message: 'Could not get items...',
           data: []
         })
     }
   } else {
+    console.log('invalid twitch user requesting data. Here are the headers: ', event.headers);
     return getFormattedResponse(401, {
       message: 'Valid JWT required.'
     })

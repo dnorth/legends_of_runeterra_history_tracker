@@ -48,14 +48,12 @@ const addOrUpdateHistoryLocal = (recordToUpdate) => {
 const addOrUpdateHistoryProd = async (recordToUpdate) => {
     const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
-    if(!authenticatedTwitchUser.accessToken) {
-        return 'Not Logged in...';
-    }
+    const authorizationHeader = authenticatedTwitchUser.accessToken ? bearerPrefix + authenticatedTwitchUser.accessToken : 'playerName';
 
     const axiosInstance = axios.create({
         baseURL: 'https://n1lych6sf6.execute-api.us-east-2.amazonaws.com/production/updateHistory',
         headers: {
-            'Authorization': bearerPrefix + authenticatedTwitchUser.accessToken,
+            'Authorization': authorizationHeader,
             'Content-Type': 'application/json'
         }
     })
