@@ -18,12 +18,12 @@ body {
     font-family: "Roboto";
     font-size: 12px;
     color: #232127;
-    background-color: #F7F7F8;
+    background-color: #EAEAEA;
 }
 
 .light-theme{
     color: #232127;
-    background-color: #F7F7F8;
+    background-color: #EAEAEA;
 }
 
 .dark-theme{
