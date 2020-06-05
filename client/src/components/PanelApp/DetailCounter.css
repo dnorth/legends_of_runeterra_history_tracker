@@ -5,10 +5,21 @@
 .countRingText {
     position: absolute;
     color: #fbf8c5;
-    background-image: url(../../images/progress_ring.png);
     background-size: contain;
 
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.variant-default {
+    background-image: url(../../images/progress_ring.png);
+}
+
+.variant-card {
+    background-image: url(../../images/card-count.png);
+}
+
+.countImg {
+    
 }

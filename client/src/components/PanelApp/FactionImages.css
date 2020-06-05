@@ -2,4 +2,15 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    align-items: center;
+}
+
+.factionName {
+    position: absolute;
+    font-size: 14px;
+    text-shadow: -1px 0 4px white, 0 1px 4px white, 1px 0 4px white, 0 -1px 4px white;
+}
+
+.overBackground {
+    text-shadow: -1px 0 4px black, 0 1px 4px black, 1px 0 4px black, 0 -1px 4px black;
 }

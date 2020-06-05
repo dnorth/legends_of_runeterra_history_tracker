@@ -11,11 +11,11 @@ module.exports.updateLoRHistory = async event => {
             await updateRecordInDb(bodyJSON);
 
             return getFormattedResponse(200, {
-                message: `Successfully updated playerName record ${bodyJSON.Item.id}!`
+                message: `Successfully updated playerName record ${bodyJSON.Item.id} for user ${bodyJSON.Item.playerName}!`
             })
         } catch (e) {
             return getFormattedResponse(502, {
-                message: 'Hmmm... something went wrong when trying to update the playerName record.',
+                message: `Hmmm... something went wrong when trying to update the playerName record for ${bodyJSON.Item.playerName}.`,
                 errorMessage: e && e.message
             })
         }
@@ -42,7 +42,7 @@ module.exports.updateLoRHistory = async event => {
             await broadcastToApplication(process.env.HISTORY_TRACKER_CLIENT_ID, process.env.HISTORY_TRACKER_SECRET, channelId, message);
     
             return getFormattedResponse(200, {
-                message: `Successfully updated and broadcasted record to channel ${channelId}!`,
+                message: `Successfully updated and broadcasted record to channel ${channelId} (${authenticatedTwitchUser.login})!`,
                 newAuthenticatedTwitchUser: newTokens ? { ...authenticatedTwitchUser, ...newTokens } : null
             })
         } catch (e) {

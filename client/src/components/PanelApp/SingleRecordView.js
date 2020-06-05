@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom';
 
 import ClientHistoryRecord from '../ClientHistoryRecord';
@@ -12,15 +12,23 @@ import ErrorBoundary from '../ErrorBoundary';
 
 import './SingleRecordView.css'
 import PanelHistoryTracker from './PanelHistoryTracker';
+import DefaultCard from '../../images/card-back.png'
 
 const Card = ({ card }) => {
-    const [showDetailCounter, setShowDetailCounter] = useState(false);
+    const [imageError, setImageError] = useState(false);
+    const imgRef = useRef(null);
 
     const srcIfExists = card.assets && card.assets[0] && card.assets[0].gameAbsolutePath;
+    const imgLoaded = imgRef.current && imgRef.current.complete && !imageError;
 
     return (
-        <DetailCounter count={`x${card.count}`} size={34} bottomOffset={140} rightOffset={-10} show={showDetailCounter}>
-            <img width="200px" src={srcIfExists} onLoad={() => setShowDetailCounter(true)}/>
+        <DetailCounter count={`x${card.count}`} size={34} bottomOffset={258} rightOffset={-11} variant="card">
+            <div className="cardContainer">
+                {!imgLoaded && (
+                    <div className="cardName">{card.name}</div>
+                )}
+                <img width="200px" ref={imgRef} src={imgLoaded && srcIfExists ? srcIfExists : DefaultCard} onError={() => setImageError(true)} />
+            </div>
         </DetailCounter>
     )
 }
@@ -45,7 +53,7 @@ const SingleRecordView = (props) => {
                     <div className="recordContent">
                         <div className="vsInfo">
                             <div>{record.playerName}</div>
-                            <FactionImages record={record} size={34} />
+                            <FactionImages record={record} size={34} overBackground />
                             <VSButton className="vsButton" />
                             <div>{record.opponentName}</div>
                         </div>

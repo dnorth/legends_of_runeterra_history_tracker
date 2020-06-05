@@ -123,7 +123,14 @@ export default class ClientHistoryRecord {
     getDeckFactionImageUrls = () => {
         const factionAbbreviations = this.getDeckFactions()
 
-        return factionAbbreviations.map(faction => globalsData['regions'].find(region => region.abbreviation === faction).iconAbsolutePath);
+        return factionAbbreviations.map(factionShortCode => {
+            const foundFaction = globalsData['regions'].find(region => region.abbreviation === factionShortCode) || {};
+            
+            return {
+                url: foundFaction.iconAbsolutePath,
+                shortCode: factionShortCode
+            }
+        });
     }
 
     getDetailedDeckInfo = () => {

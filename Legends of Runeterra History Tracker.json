@@ -93,13 +93,13 @@
   "manifest": {
     "anchor": "panel",
     "assetUrls": [],
-    "authorName": "Chusta",
+    "authorName": "LaChusta",
     "bitsEnabled": false,
     "canInstall": true,
     "configUrl": "https://127.0.0.1:8080/config.html",
     "configurationLocation": "none",
-    "description": "Track your Legends of Runeterra match history in real time!\n\nThe Legends of Runeterra History Tracker Extension connects to your matches and updates your viewers as the game is happening. Viewers on your channel will be able to see your in-progress match, previous matches, and detailed deck information.\n\n----------------------------------\nThe Legends of Runeterra History Tracker isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.",
-    "eulaTosUrl": "",
+    "description": "-- Make sure you follow the \"Configure\" steps after installing to make the extension work --\n\nTrack your Legends of Runeterra match history in real time!\n\nThe Legends of Runeterra History Tracker Extension connects to your matches and updates your viewers as the game is happening. Viewers on your channel will be able to see your in-progress match, previous matches, and detailed deck information.",
+    "eulaTosUrl": "https://github.com/dnorth/legends_of_runeterra_win_tracker_twitch_extension/blob/master/EULA.md",
     "hasChatSupport": false,
     "iconUrl": "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.0/logofa165455-d1ca-470e-a373-8d6289677707",
     "iconUrls": {
@@ -112,7 +112,7 @@
     "liveConfigUrl": "",
     "name": "Legends of Runeterra History Tracker",
     "panelHeight": 500,
-    "privacyPolicyUrl": "",
+    "privacyPolicyUrl": "https://github.com/dnorth/legends_of_runeterra_win_tracker_twitch_extension/blob/master/Privacy%20Policy.md",
     "requestIdentityLink": false,
     "requiredBroadcasterAbilities": [],
     "screenshotUrls": [
@@ -125,10 +125,10 @@
     "sku": "",
     "state": "Testing",
     "subscriptionsSupportLevel": "none",
-    "summary": "Legends of Runeterra detailed match history AS it's happening... What's not to love? https://www.buymeacoffee.com/historytracker",
+    "summary": "Legends of Runeterra detailed match history AS it's happening... What's not to love?",
     "supportEmail": "runeterra.history.tracker@gmail.com",
     "vendorCode": "",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "viewerSummary": "",
     "viewerUrl": "https://127.0.0.1:8080/panel.html",
     "viewerUrls": {

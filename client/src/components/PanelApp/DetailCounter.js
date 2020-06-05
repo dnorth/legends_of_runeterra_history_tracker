@@ -1,7 +1,5 @@
 import React from 'react';
 
-import ProgressRing from '../../images/progress_ring.png'
-
 import './DetailCounter.css';
 
 const DetailCounter = (props) => {
@@ -11,7 +9,7 @@ const DetailCounter = (props) => {
         <div className="detailCounterContainer">
             {props.children}
             {
-                props.show && <div className="countRingText" style={styleProps}>{props.count}</div>
+                props.show && <div className={`countRingText variant-${props.variant}`} style={styleProps}>{props.count}</div>
             }
         </div>
     )
@@ -21,7 +19,8 @@ DetailCounter.defaultProps = {
     size: 24,
     bottomOffset: 0,
     rightOffset: 0,
-    show: true
+    show: true,
+    variant: 'default'
 }
 
 export default DetailCounter;
