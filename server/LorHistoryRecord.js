@@ -3,7 +3,7 @@ class LoRHistoryRecord {
         this.id = id;
         this.playerName = playerName;
         this.opponentName = opponentName;
-        this.deckCode = deckCode;
+        this.deckCode = deckCode === "" ? null : deckCode;
         this.localPlayerWon = localPlayerWon;
         this.sessionGameId = sessionGameId;
         this.gameStartTimestamp = gameStartTimestamp;
@@ -19,7 +19,7 @@ class LoRHistoryRecord {
         this.id = id || this.id;
         this.playerName = playerName || this.playerName;
         this.opponentName = opponentName || this.opponentName;
-        this.deckCode = deckCode || this.deckCode;
+        this.deckCode = deckCode === "" ? (this.deckCode || null) : (deckCode || this.deckCode);
         this.localPlayerWon = localPlayerWon == null ? this.localPlayerWon : localPlayerWon;
         this.sessionGameId = sessionGameId === null ? this.sessionGameId : sessionGameId;
         this.gameStartTimestamp = gameStartTimestamp || this.gameStartTimestamp;

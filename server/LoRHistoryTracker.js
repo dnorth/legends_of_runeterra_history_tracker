@@ -12,72 +12,42 @@ class LoRHistoryTracker {
         this.gameState = gameStateTypes.MENUS;
         this.activeRecordID = null;
         this.sessionId = uuidv4();
+        this.currentDeckCode = null;
     }
 
     startTrackingHistory(pollInterval) {
         setInterval(async () => {
             const response = await getLoRClientAPI('positional-rectangles');
 
-            const expeditionsResponse = await getLoRClientAPI('expeditions-state');
+            const staticDecklistResponse = await getLoRClientAPI('static-decklist');
+
+            if(!this.currentDeckCode && this.activeRecordID && staticDecklistResponse.DeckCode) {
+                const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
+
+                this.editExistingRecord(authenticatedTwitchUser.id, this.activeRecordID, { deckCode: staticDecklistResponse.DeckCode });
+
+                this.currentDeckCode = staticDecklistResponse.DeckCode;
+                console.log('\nUpdated deck code after the fact.\n');
+            }
 
             if(!this.activeRecordID && this.gameState === gameStateTypes.MENUS && response.GameState === gameStateTypes.INPROGRESS) {
-                await this.onGameStart(response.PlayerName, response.OpponentName);
+                this.currentDeckCode = staticDecklistResponse.DeckCode;
+                await this.onGameStart(response.PlayerName, response.OpponentName, staticDecklistResponse);
             }
 
             if(this.activeRecordID && this.gameState === gameStateTypes.INPROGRESS && response.GameState === gameStateTypes.MENUS) {
+                this.currentDeckCode = null;
                 await this.onGameFinish();
             }                
         }, pollInterval);
     }
 
-    async onGameStart(playerName, opponentName) {
+    async onGameStart(playerName, opponentName, staticDecklistResponse) {
         this.gameState = gameStateTypes.INPROGRESS;
 
         const authenticatedTwitchUser = TwitchAuth.authenticatedTwitchUser;
 
-        const staticDecklistResponse = await getLoRClientAPI('static-decklist');
-
-        if(this.isExpeditionMatch(staticDecklistResponse))
-        {
-            //I think we're in an Expeditions match but let's make sure...
-            const expeditionsResponse = await getLoRClientAPI('expeditions-state');
-
-            if (expeditionsResponse.IsActive) {
-                //Very positive it's an expeditions match
-                this.onExpeditionMatchStart(playerName, opponentName, authenticatedTwitchUser, expeditionsResponse);
-            } else {
-                //Kind of a strange state... but let's just assume it's a normal match.
-                const newId = this.onNormalMatchStart(playerName, opponentName, authenticatedTwitchUser, staticDecklistResponse);
-                console.log(`Cards in Deck returned empty but there was no active expedition for game ${newId}.`)
-            }
-        } else {
-            this.onNormalMatchStart(playerName, opponentName, authenticatedTwitchUser, staticDecklistResponse);
-        }
-    }
-
-    isExpeditionMatch = (staticDecklistResponse) => {
-        const isEmptyOrError = isEmptyObject(staticDecklistResponse.CardsInDeck) || staticDecklistResponse.errorMessage; //https://github.com/RiotGames/developer-relations/issues/282
-
-        if(isEmptyOrError) {
-            return true;
-        }
-
-        const cardsInDeckExist = typeof staticDecklistResponse.CardsInDeck === 'object';
-
-        if(!cardsInDeckExist) {
-            return false; //i've seen this happen in normal matches on restart of the game? I don't know... this is a guess.
-        }
-
-        const numCardsInDeck = Object.values(staticDecklistResponse.CardsInDeck).reduce((acc, count) => acc + count, 0);
-        const isNotAValidDeck = numCardsInDeck !== 40;
-
-        return isNotAValidDeck;
-    }
-
-    onExpeditionMatchStart(playerName, opponentName, authenticatedTwitchUser, expeditionsResponse) {
-        const newId = this.addRecordToHistory(authenticatedTwitchUser.id, { gameType: 'Expeditions', playerName, opponentName, deckCode: null, cardsInDeck: expeditionsResponse.Deck, expeditionsData: expeditionsResponse, localPlayerWon: null, gameStartTimestamp: new Date().toISOString(), sessionId: this.sessionId });
-        this.activeRecordID = newId;
-        return newId;
+        this.onNormalMatchStart(playerName, opponentName, authenticatedTwitchUser, staticDecklistResponse);
     }
 
     onNormalMatchStart(playerName, opponentName, authenticatedTwitchUser, staticDecklistResponse) {
@@ -111,17 +81,9 @@ class LoRHistoryTracker {
     async editExistingRecord (twitchChannelId, recordId, newProperties) {
         const recordIndex = this.history.findIndex(record => record.id === recordId);
         const recordToUpdate = this.history[recordIndex];
-        let maybeExpeditionsData = {};
-
-
-        if(recordToUpdate.gameType === 'Expeditions') {
-            await this.sleep(3000); //expeditions-state API is slow to give updated info. Yeah i'm sure this is going to solve ALL my problems.... :facepalm:
-            const expeditionsResponse = await getLoRClientAPI('expeditions-state');
-            maybeExpeditionsData = { expeditionsData: expeditionsResponse }
-        }
 
         if(recordToUpdate) {
-            const updatedRecord = recordToUpdate.updateRecord({...newProperties, ...maybeExpeditionsData});
+            const updatedRecord = recordToUpdate.updateRecord({...newProperties });
             this.history[recordIndex] = updatedRecord;
             addOrUpdateHistoryRecordToDynamoDB(updatedRecord);
         }
