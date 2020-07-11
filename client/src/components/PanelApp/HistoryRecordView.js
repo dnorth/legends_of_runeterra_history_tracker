@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
 import GameStateTypes from '../game-state.types';
 import { useInterval } from '../../util/custom-hooks.util'
@@ -53,6 +53,29 @@ const getTitleText = (record, canSeeDeckDetails) => {
     return title ? { title } : {}
 }
 
+const TimeSinceGame = ({ record }) => {
+    const timeToRerender = 1000 * 60;
+
+    const [placeholderForRerender, forceRerender] = useState(0)
+
+    const timeoutIndex = setTimeout(() => {
+        forceRerender(placeholderForRerender == 0 ? 1 : 0);
+    }, timeToRerender);
+
+    useEffect(() => {
+        return () => {
+            clearTimeout(timeoutIndex);
+        }
+    }, [timeoutIndex])
+
+    return (
+        <>
+            <div className="timeSinceGame ellipsis" title={record.localGameEndTimeFormatted}>{record.timeSinceGame}</div>
+            <div className="historyViewBar" />
+        </>
+    )
+}
+
 const HistoryRecordView = ({ record, style }) => {
     const canSeeDeckDetails = record.deckCode || record.cardsInDeck;
 
@@ -70,13 +93,7 @@ const HistoryRecordView = ({ record, style }) => {
             <Link to={{ pathname: `/${record.id}`, state: { record }}} onClick={e => canSeeDeckDetails ? null : e.preventDefault()} className='recordLink'>
                 <animated.div className={classes} {...getTitleText(record, canSeeDeckDetails)} style={style}>
                     <div className="leftSide">
-                        { record.gameEndedSuccessfully &&
-                            (
-                                <>
-                                    <div className="timeSinceGame ellipsis" title={record.localGameEndTimeFormatted}>{record.timeSinceGame}</div>
-                                    <div className="historyViewBar" />
-                                </>
-                            )
+                        { record.gameEndedSuccessfully && <TimeSinceGame record={record} />
                         }
                         <div className="resultsContainer">
                             {getGameStateText(record)}
