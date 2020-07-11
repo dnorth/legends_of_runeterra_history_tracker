@@ -62,7 +62,8 @@
       "frameSize": {
         "width": 1280,
         "height": 720
-      }
+      },
+      "viewerType": "Broadcaster"
     },
     {
       "id": "2",
@@ -85,7 +86,8 @@
       "frameSize": {
         "width": 1280,
         "height": 720
-      }
+      },
+      "viewerType": "Broadcaster"
     }
   ],
   "frontendCommand": "npm start",
@@ -116,11 +118,12 @@
     "requestIdentityLink": false,
     "requiredBroadcasterAbilities": [],
     "screenshotUrls": [
-      "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.0/screenshotb393281e-ffc3-45c0-afe7-294139153df4",
-      "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.0/screenshot9f1eaa7a-61a4-43b7-bac0-ff7a60172690",
-      "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.0/screenshotdec0d6dd-4602-451e-b73c-698737489a1f",
-      "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.0/screenshot9e6063c5-7e1f-477d-931d-33fa9a8ac307",
-      "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.0/screenshot14b3bedf-d06e-40df-95e5-19a5c48ac6e9"
+      "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.1/screenshot81fb1d54-6d0e-41a3-b02c-52f552b3380d",
+      "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.1/screenshot319ca2b5-541a-4421-a25e-614607db62bd",
+      "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.1/screenshote69b4990-2f93-4c70-aadb-be25fd7a6840",
+      "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.1/screenshot7b378d11-2049-45b0-ba0d-dadd69a8a1f8",
+      "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.1/screenshotf54fda86-4209-42c1-b9f7-cf376f216616",
+      "https://extensions-discovery-images.twitch.tv/r606gixvsow1nuauf4sjoxctm91vcs/0.1.1/screenshot16e41d6d-55cb-48de-8021-fcfa3395a51f"
     ],
     "sku": "",
     "state": "Testing",
@@ -128,7 +131,7 @@
     "summary": "Legends of Runeterra detailed match history AS it's happening... What's not to love?",
     "supportEmail": "runeterra.history.tracker@gmail.com",
     "vendorCode": "",
-    "version": "0.1.1",
+    "version": "0.3.0",
     "viewerSummary": "",
     "viewerUrl": "https://127.0.0.1:8080/panel.html",
     "viewerUrls": {
@@ -149,5 +152,5 @@
     "whitelistedPanelUrls": []
   },
   "name": "Legends of Runeterra History Tracker",
-  "version": 1
+  "version": 2
 }
