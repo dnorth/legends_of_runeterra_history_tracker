@@ -67,7 +67,7 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
-    "aws-sdk": "^2.682.0",
+    "aws-sdk": "^2.814.0",
     "concurrently": "^5.2.0",
     "electron": "^8.2.4",
     "electron-builder": "^22.6.1"
